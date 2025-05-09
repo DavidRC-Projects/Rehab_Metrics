@@ -52,18 +52,18 @@ def validate_user(input_str):
     This function validates the username and name inputs to ensure it is 2-10 characters long and does not allow special characters.
     """
     if len (input_str) <2 or len(input_str) > 10:
-        return False
+        return False, "Username must be between 2 and 10 characters."
     
     for char in NOT_VALID:
         if char in input_str:
-            return False, "Invalid name, please enter a username between 2-10 characters and not contain special characters."
+            return False, "Invalid name, please enter a username that does not contain special characters."
     
     return True, ""
 
 def questions():
     questions = [
         ("What is your name?", validate_user, "Invalid name, please enter a name between 2-10 characters and not contain special characters."),
-        ("When did you have your surgery? (DD-MM-YYYY)", validate_date, "Date must be in DD/MM/YYYY format."),
+        ("When did you have your surgery? (DD/MM/YYYY)", validate_date, "Date must be in DD/MM/YYYY format."),
         ("Have you had any complications since your surgery? (Yes/No)", validate_complications, "Please answer with 'Yes' or 'No'.")
     ]
     
@@ -75,7 +75,7 @@ def questions():
                 return
             is_valid, validation_message = validator(answer)
             if is_valid:
-                print(f"Your answer: {answer}\n")
+                print(f"{validation_message}\n" if validation_message else f"Your answer: {answer}\n")
                 break
             else:
                 print(validation_message if validation_message else error_message)
@@ -85,8 +85,15 @@ def validate_date(date_str):
     Validates date in DD-MM-YYYY format.
     """
     try:
+        surgery_date = datetime.strptime(date_str, "%d/%m/%Y")
+        today = datetime.today()
+        days_ago = (today - surgery_date).days
+
+        if days_ago < 0:
+            return False, "The surgery date can't be in the future. Please check and try again."
         datetime.strptime(date_str, "%d/%m/%Y")
-        return True, ""
+        
+        return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
     except ValueError:
         return False, ""
 
