@@ -64,7 +64,8 @@ def questions():
     questions = [
         ("What is your name?", validate_user, "Invalid name, please enter a name between 2-10 characters and not contain special characters."),
         ("When did you have your surgery? (DD/MM/YYYY)", validate_date, "Date must be in DD/MM/YYYY format."),
-        ("Have you had any complications since your surgery? (Yes/No)", validate_complications, "Please answer with 'Yes' or 'No'.")
+        ("Have you had any complications since your surgery? (Yes/No)", validate_complications, "Please answer with 'Yes' or 'No'."),
+        ("On a scale from 0 to 10, how would you rate your current pain?", validate_pain_scale, "Pain level must be between 0 and 10.")
     ]
     
     for question, validator, error_message in questions:
@@ -82,7 +83,7 @@ def questions():
             
 def validate_date(date_str):
     """
-    Validates date in DD-MM-YYYY format.
+    This function validates date in DD-MM-YYYY format and prints how many days since the surgery.
     """
     try:
         surgery_date = datetime.strptime(date_str, "%d/%m/%Y")
@@ -99,12 +100,26 @@ def validate_date(date_str):
 
 def validate_complications(answer):
     """
-    Accepts only 'yes' or 'no' answers.
+    This function accepts only 'yes' or 'no' answers.
     """
     if answer.lower() in ("yes", "no"):
         return True, ""
     return False, ""
 
+def validate_pain_scale(pain):
+    try:
+        num = int(pain)
+        if 0 <= num <= 10:
+            if num == 10:
+                print("Your pain level is 10/10. That sounds very uncomfortable and would recommend consulting a healthcare professional for advice")
+                print("We recommend pausing the assessment for now. Take care.\n")
+                exit()
+            return True, f"Your pain level is {num}/10."
+        else:
+            return False, "Please enter a number between 0 and 10."
+    except ValueError:
+        return False, "Pain level must be a whole number"
+        
 def main():
     welcome_user()
     questions()
