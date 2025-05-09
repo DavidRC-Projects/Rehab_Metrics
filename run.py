@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+import re
 
 # Required Google API scopes
 SCOPE = [
@@ -22,29 +23,35 @@ SPREADSHEET = GSPREAD_CLIENT.open("rehab_metrics")
 
 worksheet = SPREADSHEET.sheet1
 
-# Welcome message
+def welcome_user():
+    """ 
+    This function displays a welcome message and requests a username.
+    """
+    print("Welcome to Rehab Metrics!\n")
+    user_name = input("Please enter your username: ")
+    print(f"\nHello, {user_name}!, please answer the questions, if you want to quit please enter 'quit'")
+
 def validate_questions():
     questions = [
         "What is your name?",
-        "When did you have your surgery?",
-        "Have you had any complications since your surgery?"
+        "When did you have your surgery? (DD--MM--YYYY)",
+        "Have you had any complications since your surgery? (Yes/No)"
     ]
-
-    print("Welcome to Rehab Metrics!\n")
-    user_name = input("Please enter your name: ")
-    print(f"\nHello, {user_name}!, please answer the questions, if you want to quit please enter 'quit'")
-
-
+    
     for question in questions:
         while True:
             answer = input(question + " ")
             if answer.lower() == "quit":
                 print("You chose to Quit and will return to the start")
                 return
+            if len(answer) < 2 or len(answer) > 10:
+                print("Name must be atleast 2-10 characters.")
+            if not str(answer):
+                print("Name must be characters.")
             elif not answer.strip():
                 print("Please provide a valid answer.")
             else:
                 print(f"Your answer: {answer}\n")
                 break
 
-validate_questions()
+questions()
