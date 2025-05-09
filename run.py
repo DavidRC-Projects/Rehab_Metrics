@@ -1,6 +1,5 @@
 import gspread
 from google.oauth2.service_account import Credentials
-import re
 
 # Required Google API scopes
 SCOPE = [
@@ -22,12 +21,14 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SPREADSHEET = GSPREAD_CLIENT.open("rehab_metrics")
 
 worksheet = SPREADSHEET.sheet1
+
 SPACE = "\n"
 DASH = "-" * 50
+NOT_VALID = ('!', '?', '@', '*', '^', '.', '£', '$', '%', ',', '~', '`')
 
 def welcome_user():
     """ 
-    This function displays a welcome message and requests a username.
+    This function displays a welcome message and requests a username input.
     """
     print(DASH)
     print(SPACE)
@@ -35,8 +36,26 @@ def welcome_user():
     print(SPACE)
     print(DASH)
 
-    user_name = input("Please enter your username: ")
-    print(f"\nHello, user {user_name}!, please answer the questions, if you want to quit at any time please enter 'quit'")
+    while True:
+        user_name = input("Please enter your username: ")
+        user_name = user_name.strip()
+        if validate_username(user_name):
+            print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
+            break
+        else:
+            print("Invalid username, please enter a username between 2-10 characters and not contain special characters.")
+
+def validate_username(user_name):
+    """
+    This function validates the username to ensure it is 2-10 characters long and does not allow special characters.
+    """
+    if len (user_name) <2 or len(user_name) > 10:
+        return False
+    
+    for char in NOT_VALID:
+        if char in user_name:
+            return False
+    return True
 
 def validate_questions():
     questions = [
