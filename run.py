@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from datetime import datetime
 
 # Required Google API scopes
 SCOPE = [
@@ -39,49 +40,66 @@ def welcome_user():
     while True:
         user_name = input("Please enter your username: ")
         user_name = user_name.strip()
-        if validate_username(user_name):
+        is_valid, error_message = validate_user(user_name)
+        if is_valid:
             print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
             break
         else:
-            print("Invalid username, please enter a username between 2-10 characters and not contain special characters.")
+            print(error_message)
 
-def validate_username(user_name):
+def validate_user(input_str):
     """
-    This function validates the username to ensure it is 2-10 characters long and does not allow special characters.
+    This function validates the username and name inputs to ensure it is 2-10 characters long and does not allow special characters.
     """
-    if len (user_name) <2 or len(user_name) > 10:
+    if len (input_str) <2 or len(input_str) > 10:
         return False
     
     for char in NOT_VALID:
-        if char in user_name:
-            return False
-    return True
+        if char in input_str:
+            return False, "Invalid name, please enter a username between 2-10 characters and not contain special characters."
+    
+    return True, ""
 
-def validate_questions():
+def questions():
     questions = [
-        "What is your name?",
-        "When did you have your surgery? (DD--MM--YYYY)",
-        "Have you had any complications since your surgery? (Yes/No)"
+        ("What is your name?", validate_user, "Invalid name, please enter a name between 2-10 characters and not contain special characters."),
+        ("When did you have your surgery? (DD-MM-YYYY)", validate_date, "Date must be in DD/MM/YYYY format."),
+        ("Have you had any complications since your surgery? (Yes/No)", validate_complications, "Please answer with 'Yes' or 'No'.")
     ]
     
-    for question in questions:
+    for question, validator, error_message in questions:
         while True:
-            answer = input(question + " ")
+            answer = input(question + " ").strip()
             if answer.lower() == "quit":
                 print("You chose to Quit and will return to the start")
                 return
-            if len(answer) < 2 or len(answer) > 10:
-                print("Name must be atleast 2-10 characters.")
-            if not str(answer):
-                print("Name must be characters.")
-            elif not answer.strip():
-                print("Please provide a valid answer.")
-            else:
+            is_valid, validation_message = validator(answer)
+            if is_valid:
                 print(f"Your answer: {answer}\n")
                 break
+            else:
+                print(validation_message if validation_message else error_message)
+            
+def validate_date(date_str):
+    """
+    Validates date in DD-MM-YYYY format.
+    """
+    try:
+        datetime.strptime(date_str, "%d/%m/%Y")
+        return True, ""
+    except ValueError:
+        return False, ""
+
+def validate_complications(answer):
+    """
+    Accepts only 'yes' or 'no' answers.
+    """
+    if answer.lower() in ("yes", "no"):
+        return True, ""
+    return False, ""
 
 def main():
     welcome_user()
-    validate_questions()
+    questions()
 
 main()
