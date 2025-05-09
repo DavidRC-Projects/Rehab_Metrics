@@ -22,14 +22,21 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SPREADSHEET = GSPREAD_CLIENT.open("rehab_metrics")
 
 worksheet = SPREADSHEET.sheet1
+SPACE = "\n"
+DASH = "-" * 50
 
 def welcome_user():
     """ 
     This function displays a welcome message and requests a username.
     """
-    print("Welcome to Rehab Metrics!\n")
+    print(DASH)
+    print(SPACE)
+    print("Welcome to Rehab Metrics!".center(50))
+    print(SPACE)
+    print(DASH)
+
     user_name = input("Please enter your username: ")
-    print(f"\nHello, {user_name}!, please answer the questions, if you want to quit please enter 'quit'")
+    print(f"\nHello, user {user_name}!, please answer the questions, if you want to quit at any time please enter 'quit'")
 
 def validate_questions():
     questions = [
@@ -54,4 +61,8 @@ def validate_questions():
                 print(f"Your answer: {answer}\n")
                 break
 
-questions()
+def main():
+    welcome_user()
+    validate_questions()
+
+main()
