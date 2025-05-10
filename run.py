@@ -37,7 +37,14 @@ def welcome_user():
     print("Welcome to Rehab Metrics!".center(50))
     print(SPACE)
     print(DASH)
-
+    print(
+    "\nDISCLAIMER:\n"
+    "This tool is for educational and self-tracking purposes only.\n"
+    "It does not provide medical advice, diagnosis, or treatment.\n"
+    "If you are experiencing complications or severe symptoms,\n"
+    "please consult your healthcare professional.\n"
+)
+    print(DASH)
     while True:
         user_name = input("Please enter your username: ")
         user_name = user_name.strip()
@@ -149,7 +156,7 @@ def validate_pain_scale(pain):
         num = int(pain)
         if 0 <= num <= 10:
             if num == 10:
-                print("Your pain level is 10/10. That sounds very uncomfortable and would recommend consulting a healthcare professional for advice")
+                print("Your pain level is 10/10. That sounds very uncomfortable and would recommend consulting a healthcare professional for advice.")
                 print("We recommend pausing the assessment for now. Take care.\n")
                 exit()
             return True, f"Your pain level is {num}/10."
@@ -188,7 +195,7 @@ def validate_weight_bearing(answer):
     selection = answer.lower().strip()
     if selection in weight_conversion:
         if selection == "a":
-                print("This sounds very uncomfortable and would recommend consulting a healthcare professional for advice")
+                print("This sounds very uncomfortable and would recommend consulting a healthcare professional for advice.")
                 print("We recommend pausing the assessment for now. Take care.\n")
                 exit()
         return True, f"Weight bearing status: {weight_conversion[selection]}"
