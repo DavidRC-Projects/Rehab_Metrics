@@ -90,16 +90,16 @@ def questions():
         "A: I struggle to bend it and have minimal movement\n"
         "B: I can bend it a little but my heel is still in front of my knee\n"
         "C: I can bend it so my heel is roughly in line with my knee\n"
-        "D: I can bend it well as my heel goes behind my knee",
+        "D: I can bend it well as my heel goes behind my knee\n",
         validate_rom,
         "Please choose A, B, C or D."
     ),
     (
         "Are you currently able to put weight on your operated leg when standing or walking?\n"
-        "A: Not at all\n"
-        "B: Partial weight bearing with a walking aid\n"
-        "C: Full weight bearing with a walking aid\n"
-        "D: Full weight bearing independently",
+        "A: I struggle to put any weight on my operated leg\n"
+        "B: I can partially weight bear with a walking aid\n"
+        "C: I can put most of my weight with a walking aid but still have a slight limp\n"
+        "D: I can fully weight bear independently without any aids\n",
         validate_weight_bearing,
         "Please choose A, B, C or D."
     )
@@ -173,6 +173,21 @@ def validate_rom(answer):
     if choice in rom_conversion:
         return True, f"Knee bend: {rom_conversion[choice]}"
     return False, "Please choose A, B, C or D."
+
+
+def validate_weight_bearing(answer):
+    """
+    This function validates the weight bearing status using multiple choice questions. 
+    """
+    weight_conversion = {
+        "a": "0-25% weight-bearing",
+        "b": "50-75% weight-bearing",
+        "c": "75%+ weight-bearing",
+        "d": "100% weight-bearing"
+    }
+    selection = answer.lower().strip()
+    if selection in weight_conversion:
+        return True, f"Weight bearing status: {weight_conversion[selection]}"
 
 
 def main():
