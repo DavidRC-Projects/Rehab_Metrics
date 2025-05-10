@@ -60,9 +60,10 @@ def validate_user(input_str):
     
     return True, ""
 
+
 def questions():
     questions = [
-        ("What is your name?", validate_user, "Invalid name, please enter a name between 2-10 characters and not contain special characters."),
+        ("What is your name?", validate_user, "Invalid name, " "please enter a name between 2-10 characters and does not contain special characters."),
         ("When did you have your surgery? (DD/MM/YYYY)", validate_date, "Date must be in DD/MM/YYYY format."),
         ("Have you had any complications since your surgery? (Yes/No)", validate_complications, "Please answer with 'Yes' or 'No'."),
         ("On a scale from 0 to 10, how would you rate your current pain?", validate_pain_scale, "Pain level must be between 0 and 10.")
@@ -80,6 +81,9 @@ def questions():
                 break
             else:
                 print(validation_message if validation_message else error_message)
+    
+    if answer.lower() in ("yes", "y", 'yep'):
+        print("Please be aware that any serious complications should be addressed by a healthcare professional.")
             
 def validate_date(date_str):
     """
@@ -102,7 +106,7 @@ def validate_complications(answer):
     """
     This function accepts only 'yes' or 'no' answers.
     """
-    if answer.lower() in ("yes", "no"):
+    if answer.lower() in ("yes", "no", 'y', 'n', 'yep', 'nope'):
         return True, ""
     return False, ""
 
