@@ -27,8 +27,9 @@ SPACE = "\n"
 DASH = "-" * 50
 NOT_VALID = ('!', '?', '@', '*', '^', '.', '£', '$', '%', ',', '~', '`')
 
+
 def welcome_user():
-    """ 
+    """
     This function displays a welcome message and requests a username input.
     """
     print(DASH)
@@ -47,28 +48,62 @@ def welcome_user():
         else:
             print(error_message)
 
+
 def validate_user(input_str):
     """
     This function validates the username and name inputs to ensure it is 2-10 characters long and does not allow special characters.
     """
-    if len (input_str) <2 or len(input_str) > 10:
+    if len (input_str) < 2 or len(input_str) > 10:
         return False, "Username must be between 2 and 10 characters."
-    
     for char in NOT_VALID:
         if char in input_str:
             return False, "Invalid name, please enter a username that does not contain special characters."
-    
     return True, ""
 
 
 def questions():
     questions = [
-        ("What is your name?", validate_user, "Invalid name, " "please enter a name between 2-10 characters and does not contain special characters."),
-        ("When did you have your surgery? (DD/MM/YYYY)", validate_date, "Date must be in DD/MM/YYYY format."),
-        ("Have you had any complications since your surgery? (Yes/No)", validate_complications, "Please answer with 'Yes' or 'No'."),
-        ("On a scale from 0 to 10, how would you rate your current pain?", validate_pain_scale, "Pain level must be between 0 and 10.")
-    ]
-    
+    (
+        "What is your name?",
+        validate_user,
+        "Invalid name, please enter a name between 2-10 characters and not "
+        "contain special characters."
+    ),
+    (
+        "When did you have your surgery? (DD-MM-YYYY)",
+        validate_date,
+        "Date must be in DD/MM/YYYY format."
+    ),
+    (
+        "Have you had any complications since your surgery? (Yes/No)",
+        validate_complications,
+        "Please answer with 'Yes' or 'No'."
+    ),
+    (
+        "On a scale of 0-10, what is your current pain level?\n"
+        "0 = No pain, 10 = Worst imaginable pain",
+        validate_pain_scale,
+        "Please enter a number between 0 and 10."
+    ),
+    (
+        "How far can you currently bend your knee?\n"
+        "A: I struggle to bend it and have minimal movement\n"
+        "B: I can bend it a little but my heel is still in front of my knee\n"
+        "C: I can bend it so my heel is roughly in line with my knee\n"
+        "D: I can bend it well as my heel goes behind my knee",
+        validate_rom,
+        "Please choose A, B, C or D."
+    ),
+    (
+        "Are you currently able to put weight on your operated leg when standing or walking?\n"
+        "A: Not at all\n"
+        "B: Partial weight bearing with a walking aid\n"
+        "C: Full weight bearing with a walking aid\n"
+        "D: Full weight bearing independently",
+        validate_weight_bearing,
+        "Please choose A, B, C or D."
+    )
+]
     for question, validator, error_message in questions:
         while True:
             answer = input(question + " ").strip()
@@ -81,10 +116,10 @@ def questions():
                 break
             else:
                 print(validation_message if validation_message else error_message)
-    
     if answer.lower() in ("yes", "y", 'yep'):
         print("Please be aware that any serious complications should be addressed by a healthcare professional.")
-            
+
+
 def validate_date(date_str):
     """
     This function validates date in DD-MM-YYYY format and prints how many days since the surgery.
@@ -97,7 +132,6 @@ def validate_date(date_str):
         if days_ago < 0:
             return False, "The surgery date can't be in the future. Please check and try again."
         datetime.strptime(date_str, "%d/%m/%Y")
-        
         return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
     except ValueError:
         return False, ""
@@ -123,7 +157,24 @@ def validate_pain_scale(pain):
             return False, "Please enter a number between 0 and 10."
     except ValueError:
         return False, "Pain level must be a whole number"
-        
+
+
+def validate_rom(answer):
+    """
+    This function validates range of motion (ROM) input using multiple choice questions. 
+    """
+    rom_conversion = {
+        "a": "Less than 45°",
+        "b": "Less than 90°",
+        "c": "Approximately 90°",
+        "d": "Greater than 100°"
+    }
+    choice = answer.lower().strip()
+    if choice in rom_conversion:
+        return True, f"Knee bend: {rom_conversion[choice]}"
+    return False, "Please choose A, B, C or D."
+
+
 def main():
     welcome_user()
     questions()
