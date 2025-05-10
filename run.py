@@ -187,8 +187,12 @@ def validate_weight_bearing(answer):
     }
     selection = answer.lower().strip()
     if selection in weight_conversion:
+        if selection == "a":
+                print("This sounds very uncomfortable and would recommend consulting a healthcare professional for advice")
+                print("We recommend pausing the assessment for now. Take care.\n")
+                exit()
         return True, f"Weight bearing status: {weight_conversion[selection]}"
-
+    return False, "Please choose A, B, C or D."
 
 def main():
     welcome_user()
