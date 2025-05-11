@@ -21,8 +21,6 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 # Open the spreadsheet by name
 SPREADSHEET = GSPREAD_CLIENT.open("rehab_metrics")
 
-worksheet = SPREADSHEET.sheet1
-
 SPACE = "\n"
 DASH = "-" * 50
 NOT_VALID = ('!', '?', '@', '*', '^', '.', '£', '$', '%', ',', '~', '`')
@@ -69,7 +67,8 @@ def validate_user(input_str):
 
 
 def questions():
-    questions = [
+    responses = {}
+    question_set = [
     (
         "What is your name?",
         validate_user,
@@ -77,7 +76,7 @@ def questions():
         "contain special characters."
     ),
     (
-        "When did you have your surgery? (DD-MM-YYYY)",
+        "When did you have your surgery? (DD/MM/YYYY)",
         validate_date,
         "Date must be in DD/MM/YYYY format."
     ),
@@ -110,8 +109,9 @@ def questions():
         validate_weight_bearing,
         "Please choose A, B, C or D."
     )
-]
-    for question, validator, error_message in questions:
+    ]
+    
+    for question, validator, error_message in question_set:
         while True:
             answer = input(question + " ").strip()
             if answer.lower() == "quit":
@@ -120,11 +120,13 @@ def questions():
             is_valid, validation_message = validator(answer)
             if is_valid:
                 print(f"{validation_message}\n" if validation_message else f"Your answer: {answer}\n")
+                responses[question] = answer
                 break
             else:
                 print(validation_message if validation_message else error_message)
     if answer.lower() in ("yes", "y", 'yep'):
         print("Please be aware that any serious complications should be addressed by a healthcare professional.")
+    return responses
 
 
 def validate_date(date_str):
@@ -201,8 +203,20 @@ def validate_weight_bearing(answer):
         return True, f"Weight bearing status: {weight_conversion[selection]}"
     return False, "Please choose A, B, C or D."
 
+
+def update_rehab_metrics_worksheet(data):
+    """
+    This function updates the worksheet.
+    """
+    metric_worksheet = SPREADSHEET.worksheet("userdata")
+    metric_worksheet.append_row(data)
+    print("Updating your details...\n")
+    print("Your details have been updated successfully!\n")
+    update_rehab_metrics_worksheet(data)
+
+
 def main():
     welcome_user()
     questions()
-
+    
 main()
