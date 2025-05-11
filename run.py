@@ -235,9 +235,12 @@ def main():
     current_date = datetime.today().date()
     days_since_surgery = (current_date - surgery_date).days
     data = [
-            responses.get("What is your name?", ""),
-            surgery_date_str,
-            days_since_surgery
+        responses.get("What is your name?", ""),
+        surgery_date_str,
+        days_since_surgery,
+        responses.get("Have you had any complications since your surgery? (Yes/No)", ""),
+        responses.get("On a scale of 0-10, what is your current pain level?\n"
+                      "0 = No pain, 10 = Worst imaginable pain", ""),
         ]
     update_rehab_metrics_worksheet(data)
 
