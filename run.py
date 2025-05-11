@@ -128,22 +128,26 @@ def questions():
         print("Please be aware that any serious complications should be addressed by a healthcare professional.")
     return responses
 
+def calculate_days_since_surgery(date_str):
+    try:
+        surgery_date = datetime.strptime(date_str, "%d/%m/%Y")
+        today = datetime.today()
+        days_ago = (today - surgery_date).days
+        return True, days_ago
+    except ValueError:
+        return False
+
 
 def validate_date(date_str):
     """
     This function validates date in DD-MM-YYYY format and prints how many days since the surgery.
     """
-    try:
-        surgery_date = datetime.strptime(date_str, "%d/%m/%Y")
-        today = datetime.today()
-        days_ago = (today - surgery_date).days
-
-        if days_ago < 0:
-            return False, "The surgery date can't be in the future. Please check and try again."
-        datetime.strptime(date_str, "%d/%m/%Y")
-        return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
-    except ValueError:
+    success, days_ago = calculate_days_since_surgery(date_str)
+    if not success:
         return False, "Date must be in DD/MM/YYYY format and must be a valid date."
+    if days_ago < 0:
+        return False, "The surgery date can't be in the future. Please check and try again."
+    return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
 
 def validate_complications(answer):
     """
@@ -212,9 +216,8 @@ def update_rehab_metrics_worksheet(data):
         metric_worksheet = SPREADSHEET.worksheet("userdata")
         headers = [
                 "Name", "Surgery Date", "Days Since Surgery",
-                "Complications", "Pain Level", "Pain Interpretation",
-                "Knee Bend Answer", "ROM Interpretation",
-                "Weight Bearing Answer", "Weight Bearing Interpretation",
+                "Complications", "Pain Level", "Range of motion",
+                "Weight Bearing"
             ]
         metric_worksheet.append_row(headers)
         metric_worksheet.append_row(data)
@@ -227,9 +230,14 @@ def update_rehab_metrics_worksheet(data):
 def main():
     welcome_user()
     responses = questions()
+    surgery_date_str = responses.get("When did you have your surgery? (DD/MM/YYYY)", "")
+    surgery_date = datetime.strptime(surgery_date_str, "%d/%m/%Y").date()
+    current_date = datetime.today().date()
+    days_since_surgery = (current_date - surgery_date).days
     data = [
             responses.get("What is your name?", ""),
-            responses.get("When did you have your surgery? (DD-MM-YYYY)", ""),
+            surgery_date_str,
+            days_since_surgery
         ]
     update_rehab_metrics_worksheet(data)
 
