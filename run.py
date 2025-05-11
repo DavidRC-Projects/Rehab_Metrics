@@ -146,11 +146,15 @@ def validate_date(date_str):
         days_ago = (today - surgery_date).days
 
         if days_ago < 0:
-            return False, "The surgery date can't be in the future. Please check and try again."
-        datetime.strptime(date_str, "%d/%m/%Y")
-        return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
+            return {"valid": False, "message": "Date can't be in future"}
+        return {
+            "valid": True,
+            "message": f"Your surgery was {days_ago} days ago",
+            "days": days_ago
+        }
     except ValueError:
-        return False, "Date must be in DD/MM/YYYY format and must be a valid date."
+        return {"valid": False, "message": "Use DD/MM/YYYY format"}
+
 
 def validate_complications(answer):
     """
