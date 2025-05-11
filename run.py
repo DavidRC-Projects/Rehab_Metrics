@@ -78,7 +78,7 @@ def questions():
     (
         "When did you have your surgery? (DD/MM/YYYY)",
         validate_date,
-        "Date must be in DD/MM/YYYY format."
+        "Date must be in DD/MM/YYYY format and must be a valid date."
     ),
     (
         "Have you had any complications since your surgery? (Yes/No)",
@@ -121,6 +121,8 @@ def questions():
             if is_valid:
                 print(f"{validation_message}\n" if validation_message else f"Your answer: {answer}\n")
                 responses[question] = answer
+                if "surgery" in question.lower():
+                    responses['days_since_surgery'] = validation_message
                 break
             else:
                 print(validation_message if validation_message else error_message)
@@ -143,7 +145,7 @@ def validate_date(date_str):
         datetime.strptime(date_str, "%d/%m/%Y")
         return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
     except ValueError:
-        return False, ""
+        return False, "Date must be in DD/MM/YYYY format and must be a valid date."
 
 def validate_complications(answer):
     """
@@ -208,15 +210,30 @@ def update_rehab_metrics_worksheet(data):
     """
     This function updates the worksheet.
     """
-    metric_worksheet = SPREADSHEET.worksheet("userdata")
-    metric_worksheet.append_row(data)
-    print("Updating your details...\n")
-    print("Your details have been updated successfully!\n")
-    update_rehab_metrics_worksheet(data)
+    try:
+        metric_worksheet = SPREADSHEET.worksheet("userdata")
+        headers = [
+                "Name", "Surgery Date", "Days Since Surgery",
+                "Complications", "Pain Level", "Pain Interpretation",
+                "Knee Bend Answer", "ROM Interpretation",
+                "Weight Bearing Answer", "Weight Bearing Interpretation",
+            ]
+        metric_worksheet.append_row(headers)
+        metric_worksheet.append_row(data)
+        print("Updating your details...\n")
+        print("Your details have been updated successfully!\n")
+    except Exception as e:
+        print(f"An error occurred while updating the worksheet: {e}")
 
 
 def main():
     welcome_user()
-    questions()
-    
+    responses = questions()
+    data = [
+            responses.get("What is your name?", ""),
+            responses.get("When did you have your surgery? (DD-MM-YYYY)", ""),
+            responses.get('days_since_surgery', "")
+        ]
+    update_rehab_metrics_worksheet(data)
+
 main()
