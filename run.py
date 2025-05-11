@@ -67,56 +67,49 @@ def validate_user(input_str):
 
 
 def questions():
-    questions = {
-    "name": {
-        "question": "What is your name?",
-        "validator": lambda ans: {
-            "valid": (2 <= len(ans) <= 10) and not any(char in NOT_VALID for char in ans),
-            "message": "Name must be 2-10 characters with no special symbols"
-        }
-    },
-    "surgery_date": {
-        "question": "When did you have your surgery? (DD/MM/YYYY)",
-        "validator": lambda ans: {
-            "valid": ans.lower() in ("yes", "no", "y", "n"),
-            "message": "Please answer Yes or No"
-    },
-    "complications": {
-        "question": "Have you had any complications since your surgery? (Yes/No)",
-        "validator": validate_complications
-        }
-    },
-    "pain_level": {
-        "question": "On a scale of 0-10, what is your current pain level?\n"
-                   "0 = No pain, 10 = Worst imaginable pain",
-        "validator": lambda ans: {
-            "valid": ans.isdigit() and 0 <= int(ans) <= 10,
-            "message": "Pain level must be between 0-10"
-        }
-    },
-    "knee_bend": {
-        "question": "How far can you currently bend your knee?\n"
-                   "A: I struggle to bend it and have minimal movement\n"
-                   "B: I can bend it a little but my heel is still in front of my knee\n"
-                   "C: I can bend it so my heel is roughly in line with my knee\n"
-                   "D: I can bend it well as my heel goes behind my knee",
-        "validator": lambda ans: {
-            "valid": ans.lower() in ("a", "b", "c", "d"),
-            "message": "Please choose A, B, C or D"
-        }
-    },
-    "weight_bearing": {
-        "question": "Are you currently able to put weight on your operated leg when standing or walking?\n"
-                   "A: I struggle to put any weight on my operated leg\n"
-                   "B: I can partially weight bear with a walking aid\n"
-                   "C: I can put most of my weight with a walking aid but still have a slight limp\n"
-                   "D: I can fully weight bear independently without any aids",
-        "validator": lambda ans: {
-            "valid": ans.lower() in ("a", "b", "c", "d"),
-            "message": "Please choose A, B, C or D"
-        }
-    }
-}
+    responses = {}
+    question_set = [
+    (
+        "What is your name?",
+        validate_user,
+        "Invalid name, please enter a name between 2-10 characters and not "
+        "contain special characters."
+    ),
+    (
+        "When did you have your surgery? (DD/MM/YYYY)",
+        validate_date,
+        "Date must be in DD/MM/YYYY format and must be a valid date."
+    ),
+    (
+        "Have you had any complications since your surgery? (Yes/No)",
+        validate_complications,
+        "Please answer with 'Yes' or 'No'."
+    ),
+    (
+        "On a scale of 0-10, what is your current pain level?\n"
+        "0 = No pain, 10 = Worst imaginable pain",
+        validate_pain_scale,
+        "Please enter a number between 0 and 10."
+    ),
+    (
+        "How far can you currently bend your knee?\n"
+        "A: I struggle to bend it and have minimal movement\n"
+        "B: I can bend it a little but my heel is still in front of my knee\n"
+        "C: I can bend it so my heel is roughly in line with my knee\n"
+        "D: I can bend it well as my heel goes behind my knee\n",
+        validate_rom,
+        "Please choose A, B, C or D."
+    ),
+    (
+        "Are you currently able to put weight on your operated leg when standing or walking?\n"
+        "A: I struggle to put any weight on my operated leg\n"
+        "B: I can partially weight bear with a walking aid\n"
+        "C: I can put most of my weight with a walking aid but still have a slight limp\n"
+        "D: I can fully weight bear independently without any aids\n",
+        validate_weight_bearing,
+        "Please choose A, B, C or D."
+    )
+    ]
     
     for question, validator, error_message in question_set:
         while True:
@@ -146,15 +139,11 @@ def validate_date(date_str):
         days_ago = (today - surgery_date).days
 
         if days_ago < 0:
-            return {"valid": False, "message": "Date can't be in future"}
-        return {
-            "valid": True,
-            "message": f"Your surgery was {days_ago} days ago",
-            "days": days_ago
-        }
+            return False, "The surgery date can't be in the future. Please check and try again."
+        datetime.strptime(date_str, "%d/%m/%Y")
+        return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
     except ValueError:
-        return {"valid": False, "message": "Use DD/MM/YYYY format"}
-
+        return False, "Date must be in DD/MM/YYYY format and must be a valid date."
 
 def validate_complications(answer):
     """
@@ -241,7 +230,6 @@ def main():
     data = [
             responses.get("What is your name?", ""),
             responses.get("When did you have your surgery? (DD-MM-YYYY)", ""),
-            responses.get("days_since_surgery", "")
         ]
     update_rehab_metrics_worksheet(data)
 
