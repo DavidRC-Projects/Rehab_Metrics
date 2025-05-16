@@ -48,6 +48,7 @@ def welcome_user():
         user_name = user_name.strip()
         is_valid, error_message = validate_user(user_name)
         if is_valid:
+            update_user_worksheet(user_name)
             print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
             break
         else:
@@ -230,6 +231,15 @@ def update_rehab_metrics_worksheet(data):
         print("Your details have been updated successfully!\n")
     except Exception as e:
         print(f"An error occurred while updating the worksheet: {e}")
+
+
+def update_user_worksheet(username):
+    try:
+        user_worksheet = SPREADSHEET.worksheet("users")
+        user_worksheet.append_row([username])
+        print("Username added successfully!\n")
+    except Exception as e:
+        print(f"An error occurred while updating the users worksheet: {e}")
 
 
 def main():
