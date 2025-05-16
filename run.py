@@ -234,9 +234,11 @@ def update_rehab_metrics_worksheet(data):
 
 
 def update_user_worksheet(username):
-    try:
+        try:
         user_worksheet = SPREADSHEET.worksheet("users")
-        user_worksheet.append_row([username])
+        headers = ["Username", "Password"]
+        user_worksheet.append_row(headers)
+        user_worksheet.append_row([username, ""])  # Empty password field for now
         print("Username added successfully!\n")
     except Exception as e:
         print(f"An error occurred while updating the users worksheet: {e}")
