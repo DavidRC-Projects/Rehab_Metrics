@@ -131,18 +131,18 @@ def questions():
     (
         "How far can you currently bend your knee?\n"
         "A: I struggle to bend it and have minimal movement\n"
-        "B: I can bend it a little but my heel is in front of my knee\n"
-        "C: I can bend it so my heel is roughly in line with my knee\n"
-        "D: I can bend it well as my heel goes behind my knee\n",
+        "B: I can bend it a little but my heel is in front\n"
+        "C: I can bend it so my heel is roughly in line\n"
+        "D: I can bend it well as my heel goes behind\n",
         validate_rom,
         "Please choose A, B, C or D."
     ),
     (
-        "Are you currently able to put weight on your operated leg?\n"
-        "A: I struggle to put any weight on my operated leg\n"
-        "B: I can partially weight bear with a walking aid\n"
-        "C: I can put most of my weight with a walking aid but have a limp\n"
-        "D: I can fully weight bear independently without any aids\n",
+        "Weight bearing on operated leg?\n"
+        "A: I struggle to put any weight\n"
+        "B: I can partially weight bear with aid\n"
+        "C: Most weight with aid but have limp\n"
+        "D: Full weight bearing without aids\n",
         validate_weight_bearing,
         "Please choose A, B, C or D."
     )
