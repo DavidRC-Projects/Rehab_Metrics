@@ -135,18 +135,23 @@ def calculate_days_since_surgery(date_str):
         days_ago = (today - surgery_date).days
         return True, days_ago
     except ValueError:
-        return False
+        return False, 0
 
 
 def validate_date(date_str):
     """
-    This function validates date in DD-MM-YYYY format and prints how many days since the surgery.
+    This function validates the surgery date ensuring it:
+    1. Is in DD/MM/YYYY format
+    2. Is not in the future
+    3. Is within the last 2 years
     """
     success, days_ago = calculate_days_since_surgery(date_str)
     if not success:
-        return False, "Date must be in DD/MM/YYYY format and must be a valid date."
+        return False, "Please enter your surgery date in DD/MM/YYYY format."
     if days_ago < 0:
-        return False, "The surgery date can't be in the future. Please check and try again."
+        return False, "The surgery date cannot be in the future. Please check and try again."
+    if days_ago > 730: 
+        return False, "We recommend entering a surgery date within the last 2 years for more relevant tracking. If you had your surgery more than 2 years ago, you might want to consult with your healthcare provider for a current assessment."
     return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
 
 def validate_complications(answer):
@@ -236,7 +241,6 @@ def main():
         current_date = datetime.today().date()
         days_since_surgery = (current_date - surgery_date).days
 
-        # Get the correct questions from the responses dictionary
         rom_question = "How far can you currently bend your knee?\nA: I struggle to bend it and have minimal movement\nB: I can bend it a little but my heel is still in front of my knee\nC: I can bend it so my heel is roughly in line with my knee\nD: I can bend it well as my heel goes behind my knee\n"
         wb_question = "Are you currently able to put weight on your operated leg when standing or walking?\nA: I struggle to put any weight on my operated leg\nB: I can partially weight bear with a walking aid\nC: I can put most of my weight with a walking aid but still have a slight limp\nD: I can fully weight bear independently without any aids\n"
 
