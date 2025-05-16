@@ -83,9 +83,12 @@ def user_password():
 def validate_password(password):
     """
     This function validates the password to ensure it is at least 6 characters long.
+    This will also check for white spaces
     """
     if len(password) < 6:
         return False, "Password must be at least 6 characters long."
+    if ' ' in password:
+        return False, "Password cannot contain spaces."
     return True, ""
 
 
