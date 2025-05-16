@@ -244,18 +244,24 @@ def validate_weight_bearing(answer):
     return False, "Please choose A, B, C or D."
 
 
-def update_rehab_metrics_worksheet(data):
+def update_rehab_metrics_worksheet(data, username):
     """
-    This function updates the worksheet.
+    This function updates the worksheet with user data.
+    The username parameter is used to ensure consistent user identification across worksheets.
     """
     try:
         metric_worksheet = SPREADSHEET.worksheet("userdata")
-        headers = [
-                "Name", "Surgery Date", "Days Since Surgery",
-                "Complications", "Pain Level", "Range of motion",
-                "Weight Bearing"
-            ]
-        metric_worksheet.append_row(headers)
+        if not metric_worksheet.get_all_values():
+            headers = [
+                    "Username", "Surgery Date", "Days Since Surgery",
+                    "Complications", "Pain Level", "Range of motion",
+                    "Weight Bearing"
+                ]
+            metric_worksheet.append_row(headers)
+        
+        # Replace name with username in data
+        data[0] = username
+        
         metric_worksheet.append_row(data)
         print("Updating your details...\n")
         print("Your details have been updated successfully!\n")
@@ -298,6 +304,83 @@ def check_existing_username(username):
         return False
 
 
+def get_user_data(username):
+    """
+    Retrieve and display user data from both users and userdata worksheets.
+    """
+    try:
+        # Get user data from users worksheet
+        user_worksheet = SPREADSHEET.worksheet("users")
+        usernames = user_worksheet.col_values(1)
+        
+        if len(usernames) <= 1:  # Check if worksheet is empty or only has header
+            print("No user data found in the system.")
+            return False
+            
+        # Find the row index for the username (case-sensitive match)
+        username_row = None
+        for idx, name in enumerate(usernames[1:], start=2):
+            if name == username:
+                username_row = idx
+                break
+                
+        if username_row is None:
+            print(f"Username '{username}' not found.")
+            return False
+            
+        user_data = user_worksheet.row_values(username_row)
+        
+        # Get user metrics from userdata worksheet
+        metric_worksheet = SPREADSHEET.worksheet("userdata")
+        all_metric_data = metric_worksheet.get_all_values()
+        
+        if len(all_metric_data) <= 1:  # Check if worksheet is empty or only has header
+            print("No rehabilitation data found in the system.")
+            return False
+            
+        # Calculate the correct row in userdata worksheet
+        # If username is in row 2 of users, data is in row 2 of userdata
+        # If username is in row 3 of users, data is in row 4 of userdata (skipping header in row 3)
+        metric_row = username_row if username_row <= 2 else username_row + 1
+        
+        try:
+            metric_data = metric_worksheet.row_values(metric_row)
+        except:
+            print("No rehabilitation data found for this user.")
+            return False
+
+        # Display user data for existing users
+        print("\nYour Profile and Rehabilitation Data:")
+        print("-" * 50)
+        print(f"Username: {user_data[0]}")
+        print(f"Name: {metric_data[0]}")
+        print(f"Surgery Date: {metric_data[1]}")
+        print(f"Days Since Surgery: {metric_data[2]}")
+        print(f"Complications Reported: {metric_data[3]}")
+        print(f"Pain Level (0-10): {metric_data[4]}")
+        print(f"Knee Range of Motion: {metric_data[5]}")
+        print(f"Weight Bearing Status: {metric_data[6]}")
+        print("-" * 50)
+        return True
+    except Exception as e:
+        print(f"Error retrieving user data: {e}")
+        return False
+        
+
+def handle_returning_user():
+    """
+    Handle the login process for returning users.
+    """
+    print("\nWelcome back! Please login to view your data.")
+    while True:
+        username = input("\nPlease enter your username: ").strip()
+        if get_user_data(username):
+            break
+        retry = input("\nWould you like to try again? (Y/N): ").lower()
+        if retry != 'y':
+            break
+
+
 def main():
     is_new_user = check_user_status()
     if is_new_user:
@@ -325,10 +408,10 @@ def main():
                     rom,
                     wb
                 ]
-                update_rehab_metrics_worksheet(data)
+                update_rehab_metrics_worksheet(data, responses.get("What is your name?", ""))
             else:
                 print("Error: Invalid responses for ROM or weight bearing. Please try again.")
     else:
-        print("Welcome back!")
+        handle_returning_user()
 
 main()
