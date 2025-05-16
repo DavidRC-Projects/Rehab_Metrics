@@ -234,10 +234,12 @@ def update_rehab_metrics_worksheet(data):
 
 
 def update_user_worksheet(username):
-        try:
+    try:
         user_worksheet = SPREADSHEET.worksheet("users")
-        headers = ["Username", "Password"]
-        user_worksheet.append_row(headers)
+        # Check if headers exist
+        if not user_worksheet.row_values(1):  # Check if first row is empty
+            headers = ["Username", "Password"]
+            user_worksheet.append_row(headers)
         user_worksheet.append_row([username, ""])  # Empty password field for now
         print("Username added successfully!\n")
     except Exception as e:
