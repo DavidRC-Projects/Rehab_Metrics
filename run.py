@@ -52,25 +52,29 @@ def welcome_user():
             continue
             
         if check_existing_username(user_name):
-            print("This username already exists. Please choose a different username.")
+            print("This username already exists. Please choose another.")
             continue
             
         password = user_password()
         update_user_worksheet(user_name, password)
-        print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
+        print(f"\nHello, {user_name}! Please answer the following questions "
+              f"so we can find out more about your recovery.")
         break
 
 
 def validate_user(input_str):
     """
-    This function validates the username and name inputs to ensure it is 2-10 characters long and does not allow special characters.
+    Validates username and name inputs:
+    - Must be 2-10 characters long
+    - Must not contain special characters
     """
     if len (input_str) < 2 or len(input_str) > 10:
         return False, "Username must be between 2 and 10 characters."
     for char in NOT_VALID:
         if char in input_str:
-            return False, "Invalid name, please enter a username that does not contain special characters."
+            return False, "Invalid name. Please avoid special characters."
     return True, ""
+
 
 def user_password():
     """
@@ -103,8 +107,7 @@ def questions():
     (
         "What is your name?",
         validate_user,
-        "Invalid name, please enter a name between 2-10 characters and not "
-        "contain special characters."
+        "Invalid name, please enter a name between 2-10 characters."
     ),
     (
         "When did you have your surgery? (DD/MM/YYYY)",
@@ -125,17 +128,17 @@ def questions():
     (
         "How far can you currently bend your knee?\n"
         "A: I struggle to bend it and have minimal movement\n"
-        "B: I can bend it a little but my heel is still in front of my knee\n"
+        "B: I can bend it a little but my heel is in front of my knee\n"
         "C: I can bend it so my heel is roughly in line with my knee\n"
         "D: I can bend it well as my heel goes behind my knee\n",
         validate_rom,
         "Please choose A, B, C or D."
     ),
     (
-        "Are you currently able to put weight on your operated leg when standing or walking?\n"
+        "Are you currently able to put weight on your operated leg?\n"
         "A: I struggle to put any weight on my operated leg\n"
         "B: I can partially weight bear with a walking aid\n"
-        "C: I can put most of my weight with a walking aid but still have a slight limp\n"
+        "C: I can put most of my weight with a walking aid but have a limp\n"
         "D: I can fully weight bear independently without any aids\n",
         validate_weight_bearing,
         "Please choose A, B, C or D."
@@ -150,14 +153,17 @@ def questions():
                 return
             is_valid, validation_message = validator(answer)
             if is_valid:
-                print(f"{validation_message}\n" if validation_message else f"Your answer: {answer}\n")
+                msg = validation_message if validation_message else f"Your answer: {answer}"
+                print(f"{msg}\n")
                 responses[question] = answer
                 break
             else:
-                print(validation_message if validation_message else error_message)
+                msg = validation_message if validation_message else error_message
+                print(msg)
     if answer.lower() in ("yes", "y", 'yep'):
-        print("Please be aware that any serious complications should be addressed by a healthcare professional.")
+        print("Please consult a healthcare professional about your complications.")
     return responses
+
 
 def calculate_days_since_surgery(date_str):
     try:
@@ -182,8 +188,10 @@ def validate_date(date_str):
     if days_ago < 0:
         return False, "The surgery date cannot be in the future. Please check and try again."
     if days_ago > 730: 
-        return False, "We recommend entering a surgery date within the last 2 years for more relevant tracking. If you had your surgery more than 2 years ago, you might want to consult with your healthcare provider for a current assessment."
-    return True, f"Your surgery was on {date_str}, which was {days_ago} days ago."
+        return False, ("Surgery date should be within 2 years for tracking. "
+                      "Please consult your healthcare provider.")
+    return True, f"Surgery was {days_ago} days ago on {date_str}."
+
 
 def validate_complications(answer):
     """
@@ -192,6 +200,7 @@ def validate_complications(answer):
     if answer.lower() in ("yes", "no", 'y', 'n', 'yep', 'nope'):
         return True, ""
     return False, ""
+
 
 def validate_pain_scale(pain):
     try:
@@ -247,7 +256,6 @@ def validate_weight_bearing(answer):
 def update_rehab_metrics_worksheet(data, username):
     """
     This function updates the worksheet with user data.
-    The username parameter is used to ensure consistent user identification across worksheets.
     """
     try:
         metric_worksheet = SPREADSHEET.worksheet("userdata")
@@ -259,9 +267,7 @@ def update_rehab_metrics_worksheet(data, username):
                 ]
             metric_worksheet.append_row(headers)
         
-        # Replace name with username in data
         data[0] = username
-        
         metric_worksheet.append_row(data)
         print("Updating your details...\n")
         print("Your details have been updated successfully!\n")
@@ -313,7 +319,7 @@ def get_user_data(username):
         user_worksheet = SPREADSHEET.worksheet("users")
         usernames = user_worksheet.col_values(1)
         
-        if len(usernames) <= 1:  # Check if worksheet is empty or only has header
+        if len(usernames) <= 1:
             print("No user data found in the system.")
             return False
             
@@ -334,13 +340,11 @@ def get_user_data(username):
         metric_worksheet = SPREADSHEET.worksheet("userdata")
         all_metric_data = metric_worksheet.get_all_values()
         
-        if len(all_metric_data) <= 1:  # Check if worksheet is empty or only has header
+        if len(all_metric_data) <= 1:
             print("No rehabilitation data found in the system.")
             return False
             
-        # Calculate the correct row in userdata worksheet
-        # If username is in row 2 of users, data is in row 2 of userdata
-        # If username is in row 3 of users, data is in row 4 of userdata (skipping header in row 3)
+        # Calculate correct row in userdata worksheet (accounting for headers)
         metric_row = username_row if username_row <= 2 else username_row + 1
         
         try:
@@ -387,30 +391,47 @@ def main():
         welcome_user()
         responses = questions()
         if responses:
-            surgery_date_str = responses.get("When did you have your surgery? (DD/MM/YYYY)", "")
+            surgery_date_str = responses.get(
+                "When did you have your surgery? (DD/MM/YYYY)", ""
+            )
             surgery_date = datetime.strptime(surgery_date_str, "%d/%m/%Y").date()
             current_date = datetime.today().date()
             days_since_surgery = (current_date - surgery_date).days
 
-            rom_question = "How far can you currently bend your knee?\nA: I struggle to bend it and have minimal movement\nB: I can bend it a little but my heel is still in front of my knee\nC: I can bend it so my heel is roughly in line with my knee\nD: I can bend it well as my heel goes behind my knee\n"
-            wb_question = "Are you currently able to put weight on your operated leg when standing or walking?\nA: I struggle to put any weight on my operated leg\nB: I can partially weight bear with a walking aid\nC: I can put most of my weight with a walking aid but still have a slight limp\nD: I can fully weight bear independently without any aids\n"
+            rom_q = ("How far can you currently bend your knee?\n"
+                    "A: I struggle to bend it and have minimal movement\n"
+                    "B: I can bend it a little but my heel is in front\n"
+                    "C: I can bend it so my heel is roughly in line\n"
+                    "D: I can bend it well as my heel goes behind\n")
+                    
+            wb_q = ("Weight bearing on operated leg?\n"
+                   "A: I struggle to put any weight\n"
+                   "B: I can partially weight bear with aid\n"
+                   "C: Most weight with aid but have limp\n"
+                   "D: Full weight bearing without aids\n")
 
-            rom_valid, rom = validate_rom(responses[rom_question])
-            wb_valid, wb = validate_weight_bearing(responses[wb_question])
+            rom_valid, rom = validate_rom(responses[rom_q])
+            wb_valid, wb = validate_weight_bearing(responses[wb_q])
 
             if rom_valid and wb_valid:
                 data = [
                     responses.get("What is your name?", ""),
                     surgery_date_str,
                     days_since_surgery,
-                    responses.get("Have you had any complications since your surgery? (Yes/No)", ""),
-                    responses.get("On a scale of 0-10, what is your current pain level?\n0 = No pain, 10 = Worst imaginable pain", ""),
+                    responses.get(
+                        "Have you had any complications since surgery? (Yes/No)",
+                        ""
+                    ),
+                    responses.get(
+                        "Pain level (0-10)?\n0 = No pain, 10 = Worst pain",
+                        ""
+                    ),
                     rom,
                     wb
                 ]
                 update_rehab_metrics_worksheet(data, responses.get("What is your name?", ""))
             else:
-                print("Error: Invalid responses for ROM or weight bearing. Please try again.")
+                print("Error: Invalid ROM or weight bearing responses. Try again.")
     else:
         handle_returning_user()
 
