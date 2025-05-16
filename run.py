@@ -47,13 +47,18 @@ def welcome_user():
         user_name = input("Please enter your username: ")
         user_name = user_name.strip()
         is_valid, error_message = validate_user(user_name)
-        if is_valid:
-            password = user_password()
-            update_user_worksheet(user_name, password)
-            print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
-            break
-        else:
+        if not is_valid:
             print(error_message)
+            continue
+            
+        if check_existing_username(user_name):
+            print("This username already exists. Please choose a different username.")
+            continue
+            
+        password = user_password()
+        update_user_worksheet(user_name, password)
+        print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
+        break
 
 
 def validate_user(input_str):
@@ -277,6 +282,20 @@ def check_user_status():
     print("\nAre you a new user?")
     status = input("Please enter (Y) for Yes or (N) for No: ")
     return status.lower() == 'y'
+
+
+def check_existing_username(username):
+    """
+    Check if a username already exists in the users worksheet.
+    Returns True if username exists, False otherwise.
+    """
+    try:
+        user_worksheet = SPREADSHEET.worksheet("users")
+        usernames = user_worksheet.col_values(1)[1:]
+        return username in usernames
+    except Exception as e:
+        print(f"Error checking username: {e}")
+        return False
 
 
 def main():
