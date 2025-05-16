@@ -48,7 +48,8 @@ def welcome_user():
         user_name = user_name.strip()
         is_valid, error_message = validate_user(user_name)
         if is_valid:
-            update_user_worksheet(user_name)
+            password = user_password()
+            update_user_worksheet(user_name, password)
             print(f"\nHello, user {user_name}!, please answer the following questions so we can find out more about you")
             break
         else:
@@ -64,6 +65,27 @@ def validate_user(input_str):
     for char in NOT_VALID:
         if char in input_str:
             return False, "Invalid name, please enter a username that does not contain special characters."
+    return True, ""
+
+def user_password():
+    """
+    This function handles password input and validation.
+    """
+    while True:
+        password = input("Please enter a password (minimum 6 characters): ")
+        is_valid_pass, pass_error = validate_password(password)
+        if is_valid_pass:
+            return password
+        else:
+            print(pass_error)
+
+
+def validate_password(password):
+    """
+    This function validates the password to ensure it is at least 6 characters long.
+    """
+    if len(password) < 6:
+        return False, "Password must be at least 6 characters long."
     return True, ""
 
 
@@ -233,15 +255,14 @@ def update_rehab_metrics_worksheet(data):
         print(f"An error occurred while updating the worksheet: {e}")
 
 
-def update_user_worksheet(username):
+def update_user_worksheet(username, password):
     try:
         user_worksheet = SPREADSHEET.worksheet("users")
-        # Check if headers exist
-        if not user_worksheet.row_values(1):  # Check if first row is empty
+        if not user_worksheet.row_values(1):
             headers = ["Username", "Password"]
             user_worksheet.append_row(headers)
-        user_worksheet.append_row([username, ""])  # Empty password field for now
-        print("Username added successfully!\n")
+        user_worksheet.append_row([username, password])
+        print("Username and password added successfully!\n")
     except Exception as e:
         print(f"An error occurred while updating the users worksheet: {e}")
 
