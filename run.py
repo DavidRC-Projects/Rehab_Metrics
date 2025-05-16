@@ -267,33 +267,46 @@ def update_user_worksheet(username, password):
         print(f"An error occurred while updating the users worksheet: {e}")
 
 
+def check_user_status():
+    """
+    This function asks if the user is new or returning.
+    """
+    print("\nAre you a new user?")
+    status = input("Please enter (Y) for Yes or (N) for No: ")
+    return status.lower() == 'y'
+
+
 def main():
-    welcome_user()
-    responses = questions()
-    if responses:
-        surgery_date_str = responses.get("When did you have your surgery? (DD/MM/YYYY)", "")
-        surgery_date = datetime.strptime(surgery_date_str, "%d/%m/%Y").date()
-        current_date = datetime.today().date()
-        days_since_surgery = (current_date - surgery_date).days
+    is_new_user = check_user_status()
+    if is_new_user:
+        welcome_user()
+        responses = questions()
+        if responses:
+            surgery_date_str = responses.get("When did you have your surgery? (DD/MM/YYYY)", "")
+            surgery_date = datetime.strptime(surgery_date_str, "%d/%m/%Y").date()
+            current_date = datetime.today().date()
+            days_since_surgery = (current_date - surgery_date).days
 
-        rom_question = "How far can you currently bend your knee?\nA: I struggle to bend it and have minimal movement\nB: I can bend it a little but my heel is still in front of my knee\nC: I can bend it so my heel is roughly in line with my knee\nD: I can bend it well as my heel goes behind my knee\n"
-        wb_question = "Are you currently able to put weight on your operated leg when standing or walking?\nA: I struggle to put any weight on my operated leg\nB: I can partially weight bear with a walking aid\nC: I can put most of my weight with a walking aid but still have a slight limp\nD: I can fully weight bear independently without any aids\n"
+            rom_question = "How far can you currently bend your knee?\nA: I struggle to bend it and have minimal movement\nB: I can bend it a little but my heel is still in front of my knee\nC: I can bend it so my heel is roughly in line with my knee\nD: I can bend it well as my heel goes behind my knee\n"
+            wb_question = "Are you currently able to put weight on your operated leg when standing or walking?\nA: I struggle to put any weight on my operated leg\nB: I can partially weight bear with a walking aid\nC: I can put most of my weight with a walking aid but still have a slight limp\nD: I can fully weight bear independently without any aids\n"
 
-        rom_valid, rom = validate_rom(responses[rom_question])
-        wb_valid, wb = validate_weight_bearing(responses[wb_question])
+            rom_valid, rom = validate_rom(responses[rom_question])
+            wb_valid, wb = validate_weight_bearing(responses[wb_question])
 
-        if rom_valid and wb_valid:
-            data = [
-                responses.get("What is your name?", ""),
-                surgery_date_str,
-                days_since_surgery,
-                responses.get("Have you had any complications since your surgery? (Yes/No)", ""),
-                responses.get("On a scale of 0-10, what is your current pain level?\n0 = No pain, 10 = Worst imaginable pain", ""),
-                rom,
-                wb
-            ]
-            update_rehab_metrics_worksheet(data)
-        else:
-            print("Error: Invalid responses for ROM or weight bearing. Please try again.")
+            if rom_valid and wb_valid:
+                data = [
+                    responses.get("What is your name?", ""),
+                    surgery_date_str,
+                    days_since_surgery,
+                    responses.get("Have you had any complications since your surgery? (Yes/No)", ""),
+                    responses.get("On a scale of 0-10, what is your current pain level?\n0 = No pain, 10 = Worst imaginable pain", ""),
+                    rom,
+                    wb
+                ]
+                update_rehab_metrics_worksheet(data)
+            else:
+                print("Error: Invalid responses for ROM or weight bearing. Please try again.")
+    else:
+        print("Welcome back!")
 
 main()
