@@ -220,9 +220,10 @@ def validate_pain_scale(pain):
         return False, "Pain level must be a whole number"
 
 
-def validate_rom(answer):
+def validate_rom(answer, days_since_surgery=None):
     """
-    This function validates range of motion (ROM) input using multiple choice questions. 
+    This function validates range of motion (ROM) input using multiple choice questions
+    and provides basic assessment.
     """
     rom_conversion = {
         "a": "Less than 45°",
@@ -230,9 +231,25 @@ def validate_rom(answer):
         "c": "Approximately 90°",
         "d": "Greater than 100°"
     }
+    
+    rom_degrees = {
+        "a": 45,    # "Less than 45°"
+        "b": 90,    # "Less than 90°"
+        "c": 90,    # "Approximately 90°"
+        "d": 100    # "Greater than 100°"
+    }
+    
     choice = answer.lower().strip()
     if choice in rom_conversion:
-        return True, f"Knee bend: {rom_conversion[choice]}"
+        base_message = f"Knee bend: {rom_conversion[choice]}"
+        if days_since_surgery is not None:
+            if choice in ["a", "b"]:
+                base_message += "\nYour ROM is below the recommended range. Consider consulting your healthcare provider."
+            elif choice == "c":
+                base_message += "\nYour ROM is within the normal range."
+            else:
+                base_message += "\nExcellent progress! Your ROM is above the expected range."
+        return True, base_message
     return False, "Please choose A, B, C or D."
 
 
@@ -413,7 +430,7 @@ def main():
                    "C: Most weight with aid but have limp\n"
                    "D: Full weight bearing without aids\n")
 
-            rom_valid, rom = validate_rom(responses[rom_q])
+            rom_valid, rom = validate_rom(responses[rom_q], days_since_surgery)
             wb_valid, wb = validate_weight_bearing(responses[wb_q])
 
             if rom_valid and wb_valid:
