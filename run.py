@@ -107,6 +107,7 @@ def validate_password(password):
 
 def questions():
     responses = {}
+    surgery_info = {'days': None}
     question_set = [
     (
         "What is your name?",
@@ -135,7 +136,7 @@ def questions():
         "B: I can bend it a little but my heel is in front\n"
         "C: I can bend it so my heel is roughly in line\n"
         "D: I can bend it well as my heel goes behind\n",
-        validate_rom,
+        lambda x: validate_rom(x, surgery_info['days']),
         "Please choose A, B, C or D."
     ),
     (
@@ -160,6 +161,12 @@ def questions():
                 msg = validation_message if validation_message else f"Your answer: {answer}"
                 print(f"{msg}\n")
                 responses[question] = answer
+                
+                # Update days_since_surgery after getting the surgery date
+                if "surgery?" in question:
+                    success, days = calculate_days_since_surgery(answer)
+                    if success:
+                        surgery_info['days'] = days
                 break
             else:
                 msg = validation_message if validation_message else error_message
