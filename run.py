@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+from guide import get_rom_timeline_assessment
 
 # Required Google API scopes
 SCOPE = [
@@ -243,12 +244,8 @@ def validate_rom(answer, days_since_surgery=None):
     if choice in rom_conversion:
         base_message = f"Knee bend: {rom_conversion[choice]}"
         if days_since_surgery is not None:
-            if choice in ["a", "b"]:
-                base_message += "\nYour ROM is below the recommended range. Consider consulting your healthcare provider."
-            elif choice == "c":
-                base_message += "\nYour ROM is within the normal range."
-            else:
-                base_message += "\nExcellent progress! Your ROM is above the expected range."
+            assessment = get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery)
+            base_message += f"\n{assessment}"
         return True, base_message
     return False, "Please choose A, B, C or D."
 
