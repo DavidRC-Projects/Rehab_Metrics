@@ -404,18 +404,15 @@ def get_user_data(username):
         metric_worksheet = SPREADSHEET.worksheet("userdata")
         all_metric_data = metric_worksheet.get_all_values()
         
-        if len(all_metric_data) <= 1:
-            print("No rehabilitation data found in the system.")
-            return False
-            
-        # Calculate correct row in userdata worksheet (accounting for headers)
-        metric_row = username_row if username_row <= 2 else username_row + 1
+        # Find user entries by matching username in first column
+        user_entries = [row for row in all_metric_data[1:] if row and row[0] == username]
         
-        try:
-            metric_data = metric_worksheet.row_values(metric_row)
-        except:
+        if not user_entries:
             print("No rehabilitation data found for this user.")
             return False
+            
+        # Use the most recent entry (last in the list)
+        metric_data = user_entries[-1]
 
         # Display user data for existing users
         print("\nYour Profile and Rehabilitation Data:")
