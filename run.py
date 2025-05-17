@@ -417,14 +417,14 @@ def get_user_data(username):
         # Display user data for existing users
         print("\nYour Profile and Rehabilitation Data:")
         print("-" * 50)
-        print(f"Username: {user_data[0]}")
-        print(f"Name: {metric_data[0]}")
-        print(f"Surgery Date: {metric_data[1]}")
-        print(f"Days Since Surgery: {metric_data[2]}")
-        print(f"Complications Reported: {metric_data[3]}")
-        print(f"Pain Level (0-10): {metric_data[4]}")
-        print(f"Knee Range of Motion: {metric_data[5]}")
-        print(f"Weight Bearing Status: {metric_data[6]}")
+        print(f"Username: {metric_data[0]}")
+        print(f"Name: {metric_data[1]}")
+        print(f"Surgery Date: {metric_data[2]}")
+        print(f"Days Since Surgery: {metric_data[3]}")
+        print(f"Complications Reported: {metric_data[4]}")
+        print(f"Pain Level (0-10): {metric_data[5]}")
+        print(f"Knee Range of Motion: {metric_data[6]}")
+        print(f"Weight Bearing Status: {metric_data[7]}")
         print("-" * 50)
         
         # Add assessment after displaying user data
