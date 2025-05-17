@@ -277,6 +277,46 @@ def validate_weight_bearing(answer):
     return False, "Please choose A, B, C or D."
 
 
+def assess_rom_progress(metric_data):
+    """
+    Assesses user's Range of Motion (ROM) progress using their metric data.
+    """
+    try:
+        # Extract required data for assessment
+        days_since_surgery = int(metric_data[2])
+        rom_data = metric_data[5]  # Range of motion data
+        
+        # Parse the ROM choice from the data
+        rom_choice = None
+        if "Less than 45°" in rom_data:
+            rom_choice = "a"
+        elif "Less than 90°" in rom_data:
+            rom_choice = "b"
+        elif "Approximately 90°" in rom_data:
+            rom_choice = "c"
+        elif "Greater than 100°" in rom_data:
+            rom_choice = "d"
+            
+        # ROM degrees mapping for assessment
+        rom_degrees = {
+            "a": 45,    
+            "b": 90,    
+            "c": 90,    
+            "d": 100    
+        }
+        
+        if rom_choice:
+            assessment = get_rom_timeline_assessment(rom_degrees, rom_choice, days_since_surgery)
+            print("\nROM Assessment:")
+            print("-" * 50)
+            print(assessment)
+            print("-" * 50)
+            return True
+    except Exception as e:
+        print(f"Error performing ROM assessment: {e}")
+        return False
+
+
 def update_rehab_metrics_worksheet(data, username):
     """
     This function updates the worksheet with user data.
@@ -389,6 +429,9 @@ def get_user_data(username):
         print(f"Knee Range of Motion: {metric_data[5]}")
         print(f"Weight Bearing Status: {metric_data[6]}")
         print("-" * 50)
+        
+        # Add assessment after displaying user data
+        assess_rom_progress(metric_data)
         return True
     except Exception as e:
         print(f"Error retrieving user data: {e}")
@@ -453,6 +496,7 @@ def main():
                     rom,
                     wb
                 ]
+                assess_rom_progress(data)
                 update_rehab_metrics_worksheet(data, responses.get("What is your name?", ""))
             else:
                 print("Error: Invalid ROM or weight bearing responses. Try again.")
