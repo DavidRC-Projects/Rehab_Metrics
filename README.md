@@ -1,32 +1,75 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Rehab Metrics
 
-Welcome,
+A comprehensive rehabilitation tracking application that helps patients monitor their recovery progress after surgery. The application integrates with Google Sheets to store patient data and provide clinical guidelines based on recovery timeline.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **May 14, 2024**
+## Features
 
-## Reminders
+- User registration and authentication
+- Surgery date validation (within 2 years)
+- Progress tracking for:
+  - Pain levels
+  - Range of motion
+  - Complications
+  - Weight bearing status
+- Clinical guidelines based on recovery timeline
+- Data persistence using Google Sheets
+- Comprehensive error handling and input validation
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+## Setup
 
-## Creating the Heroku app
+1. Clone the repository
+2. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Set up Google Sheets API:
+   - Create a project in Google Cloud Console
+   - Enable Google Sheets API
+   - Create service account credentials
+   - Download credentials as `creds.json`
+   - Share your Google Sheet with the service account email
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+## Usage
 
-1. `heroku/python`
-2. `heroku/nodejs`
+Run the application:
+```
+python run.py
+```
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+Follow the prompts to:
+1. Register or log in
+2. Enter your surgery date
+3. Track your rehabilitation progress
+4. View clinical guidelines
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+## Important Notes
 
-Connect your GitHub repository and deploy as normal.
+- This tool is for educational and self-tracking purposes only
+- It does not provide medical advice, diagnosis, or treatment
+- Consult healthcare professionals for medical concerns
+- Data is stored in Google Sheets for easy access and sharing
 
-## Constraints
+## Technical Details
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+- Python 3.8+
+- Google Sheets API integration via `gspread`
+- Command-line interface
+- Data validation and sanitization
+- Error handling for API operations
 
----
+## Deployment
 
-Happy coding!
+The application can be deployed to Heroku:
+
+1. Create a new Heroku app
+2. Add buildpacks:
+   - `heroku/python`
+   - `heroku/nodejs`
+3. Set config vars:
+   - `PORT`: 8000
+   - `CREDS`: Contents of your `creds.json`
+4. Deploy from GitHub repository
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
