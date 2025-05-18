@@ -496,19 +496,16 @@ def main():
                     username = usernames[-1]  # Get the most recently added username
                 
                 if username:
+                    complications_q = "Have you had any complications since your surgery? (Yes/No)"
+                    pain_q = "On a scale of 0-10, what is your current pain level?\n0 = No pain, 10 = Worst imaginable pain"
+                    
                     data = [
                         username,  # Username in first column
                         responses.get("What is your name?", ""),  # Name in second column
                         surgery_date_str,
                         days_since_surgery,
-                        responses.get(
-                            "Have you had any complications since surgery? (Yes/No)",
-                            ""
-                        ),
-                        responses.get(
-                            "Pain level (0-10)?\n0 = No pain, 10 = Worst pain",
-                            ""
-                        ),
+                        responses.get(complications_q, ""),
+                        responses.get(pain_q, ""),
                         rom,
                         wb
                     ]
