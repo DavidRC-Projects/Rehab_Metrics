@@ -507,6 +507,22 @@ def get_user_data(username):
         return False
 
 
+def verify_password(username, password):
+    """
+    Verify the password for a given username.
+    """
+    user_worksheet = SPREADSHEET.worksheet("users")
+    usernames = user_worksheet.col_values(1)
+    
+    if username not in usernames:
+        return False
+        
+    row_idx = usernames.index(username) + 1
+    stored_password = user_worksheet.cell(row_idx, 2).value
+    
+    return password == stored_password
+
+
 def handle_returning_user():
     """
     Handle the login process for returning users.
@@ -515,8 +531,11 @@ def handle_returning_user():
     while True:
         username = input("\nPlease enter your username: ").strip()
         password = input("Please enter your password: ").strip()
-        if get_user_data(username):
-            break
+        if verify_password(username, password):
+            if get_user_data(username):
+                break
+        else:
+            print("\nIncorrect username or password.")
         retry = input("\nWould you like to try again? (Y/N): ").lower()
         if retry != 'y':
             break
