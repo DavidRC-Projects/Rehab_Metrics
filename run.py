@@ -282,7 +282,7 @@ def assess_rom_progress(metric_data):
     Assesses user's Range of Motion (ROM) progress using their metric data.
     """
     try:
-        if not metric_data[3]:  # Check if days_since_surgery is empty
+        if not metric_data[3]:
             print("\nCannot perform ROM assessment: Days since surgery not available")
             return False
             
@@ -426,8 +426,16 @@ def get_user_data(username):
         print(f"Days Since Surgery: {metric_data[3]}")
         print(f"Complications Reported: {metric_data[4]}")
         print(f"Pain Level (0-10): {metric_data[5]}")
-        print(f"Knee Range of Motion: {metric_data[6]}")
-        print(f"Weight Bearing Status: {metric_data[7]}")
+        if "Knee bend:" in metric_data[5]: 
+            rom_value = metric_data[5].split('\n')[0].replace("Knee bend: ", "")
+            wb_value = metric_data[6].replace("Weight bearing status: ", "")
+            print(f"Knee Range of Motion: {rom_value}")
+            print(f"Weight Bearing Status: {wb_value}")
+        else:
+            rom_value = metric_data[6].split('\n')[0].replace("Knee bend: ", "")
+            wb_value = metric_data[7].replace("Weight bearing status: ", "")
+            print(f"Knee Range of Motion: {rom_value}")
+            print(f"Weight Bearing Status: {wb_value}")
         print("-" * 50)
         
         # Add assessment after displaying user data
