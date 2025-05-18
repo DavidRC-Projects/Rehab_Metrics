@@ -63,7 +63,17 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
         weeks = days_since_surgery // 7
         pain = int(pain_level)
         
-        if weeks <= 2:  # Week 0-2
+        if weeks > 12:  # Week 12+
+            if pain >= 5:
+                return "Your pain level is significantly elevated for Week 12+. Please consult your healthcare provider."
+            elif pain == 4:
+                return "Your pain level is elevated for Week 12+. Consider consulting your healthcare provider."
+            elif 2 <= pain <= 3:
+                return "Your pain level is typical for this stage. Continue monitoring and exercising as prescribed."
+            else:
+                return "Excellent pain management! Continue your maintenance exercises."
+        
+        elif weeks <= 2:  # Week 0-2
             if pain >= 7:
                 return "Your pain level is high for Week 0-2. This is normal but monitor closely and consult your healthcare provider if it worsens."
             elif 4 <= pain <= 6:
@@ -79,21 +89,64 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
             else:
                 return "Your pain is well managed for Week 2-6. Keep up the good work!"
         
-        elif weeks <= 12:  # Week 6-12
+        else:  # Week 6-12
             if pain >= 5:
                 return "Your pain level is concerning for Week 6-12. Please consult your healthcare provider."
             elif 2 <= pain <= 4:
                 return "Your pain level is typical for Week 6-12. Continue your rehabilitation program."
             else:
                 return "Excellent pain management for Week 6-12. Keep up with your exercises!"
-        
-        else:  # Week 12+
-            if pain >= 4:
-                return "Your pain level is higher than expected after Week 12. Consider consulting your healthcare provider."
-            elif pain == 2 or pain == 3:
-                return "Your pain level is typical for this stage. Continue monitoring and exercising as prescribed."
-            else:
-                return "Excellent pain management! Continue your maintenance exercises."
     
     except Exception as e:
         return "Unable to assess pain level against timeline."
+
+def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
+    """
+    This function evaluates weight bearing status based on recovery timeline.
+    """
+    try:
+        weeks = days_since_surgery // 7
+        
+        wb_levels = {
+            "0-25% weight-bearing": 1,
+            "50-75% weight-bearing": 2,
+            "75%+ weight-bearing": 3,
+            "100% weight-bearing": 4
+        }
+        
+        wb_level = wb_levels.get(wb_status)
+        if wb_level is None:
+            return "Unable to assess weight bearing status: Invalid data format"
+        
+        if weeks <= 2:  # Week 0-2
+            if wb_level == 1:
+                return "Your weight bearing is appropriate for Week 0-2. Follow your healthcare provider's guidance for progression."
+            elif wb_level == 2:
+                return "Your weight bearing is progressing well for Week 0-2. Continue following your prescribed protocol."
+            else:
+                return "Your weight bearing may be advancing too quickly for Week 0-2. Consult your healthcare provider."
+        
+        elif weeks <= 6:  # Week 2-6
+            if wb_level <= 2:
+                return "Your weight bearing may be progressing slower than expected for Week 2-6. Consult your healthcare provider."
+            elif wb_level == 3:
+                return "Your weight bearing is progressing appropriately for Week 2-6. Continue your exercises as prescribed."
+            else:
+                return "Excellent progress! Your weight bearing is advancing well for Week 2-6."
+        
+        elif weeks <= 12:  # Week 6-12
+            if wb_level <= 2:
+                return "Your weight bearing is lower than expected for Week 6-12. Consider consulting your healthcare provider."
+            elif wb_level == 3:
+                return "Your weight bearing is progressing, but there may be room for improvement in Week 6-12."
+            else:
+                return "Excellent! Your weight bearing status is appropriate for Week 6-12."
+        
+        else:  # Week 12+
+            if wb_level <= 3:
+                return "Your weight bearing is lower than expected after Week 12. Consider consulting your healthcare provider."
+            else:
+                return "Excellent! You have achieved full weight bearing status."
+    
+    except Exception as e:
+        return "Unable to assess weight bearing status against timeline."

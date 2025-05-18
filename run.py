@@ -1,7 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
-from guide import get_rom_timeline_assessment, get_pain_timeline_assessment
+from guide import get_rom_timeline_assessment, get_pain_timeline_assessment, get_weight_bearing_timeline_assessment
 
 # Required Google API scopes
 SCOPE = [
@@ -470,11 +470,12 @@ def get_user_data(username):
         # Add assessment after displaying user data
         assess_rom_progress(metric_data)
         assess_pain_progress(metric_data)
+        assess_weight_bearing_progress(metric_data)
         return True
     except Exception as e:
         print(f"Error retrieving user data: {e}")
         return False
-        
+
 
 def handle_returning_user():
     """
@@ -541,6 +542,7 @@ def main():
                     ]
                     assess_rom_progress(data)
                     assess_pain_progress(data)
+                    assess_weight_bearing_progress(data)
                     update_rehab_metrics_worksheet(data)
                 else:
                     print("Error: Could not retrieve username. Please try again.")
