@@ -425,7 +425,8 @@ def get_user_data(username):
         print(f"Surgery Date: {metric_data[2]}")
         print(f"Days Since Surgery: {metric_data[3]}")
         print(f"Complications Reported: {metric_data[4]}")
-        print(f"Pain Level (0-10): {metric_data[5]}")
+        if not "Knee bend:" in metric_data[5]:
+            print(f"Pain Level (0-10): {metric_data[5]}")
         if "Knee bend:" in metric_data[5]: 
             rom_value = metric_data[5].split('\n')[0].replace("Knee bend: ", "")
             wb_value = metric_data[6].replace("Weight bearing status: ", "")
