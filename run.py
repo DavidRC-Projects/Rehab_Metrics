@@ -320,7 +320,7 @@ def assess_rom_progress(metric_data):
         return False
 
 
-def update_rehab_metrics_worksheet(data, username):
+def update_rehab_metrics_worksheet(data):
     """
     This function updates the worksheet with user data.
     """
@@ -328,13 +328,12 @@ def update_rehab_metrics_worksheet(data, username):
         metric_worksheet = SPREADSHEET.worksheet("userdata")
         if not metric_worksheet.get_all_values():
             headers = [
-                    "Username", "Surgery Date", "Days Since Surgery",
+                    "Username", "Name", "Surgery Date", "Days Since Surgery",
                     "Complications", "Pain Level", "Range of motion",
                     "Weight Bearing"
                 ]
             metric_worksheet.append_row(headers)
         
-        data[0] = username
         metric_worksheet.append_row(data)
         print("Updating your details...\n")
         print("Your details have been updated successfully!\n")
@@ -490,23 +489,33 @@ def main():
             wb_valid, wb = validate_weight_bearing(responses[wb_q])
 
             if rom_valid and wb_valid:
-                data = [
-                    responses.get("What is your name?", ""),
-                    surgery_date_str,
-                    days_since_surgery,
-                    responses.get(
-                        "Have you had any complications since surgery? (Yes/No)",
-                        ""
-                    ),
-                    responses.get(
-                        "Pain level (0-10)?\n0 = No pain, 10 = Worst pain",
-                        ""
-                    ),
-                    rom,
-                    wb
-                ]
-                assess_rom_progress(data)
-                update_rehab_metrics_worksheet(data, responses.get("What is your name?", ""))
+                username = None
+                user_worksheet = SPREADSHEET.worksheet("users")
+                usernames = user_worksheet.col_values(1)
+                if len(usernames) > 1:
+                    username = usernames[-1]  # Get the most recently added username
+                
+                if username:
+                    data = [
+                        username,  # Username in first column
+                        responses.get("What is your name?", ""),  # Name in second column
+                        surgery_date_str,
+                        days_since_surgery,
+                        responses.get(
+                            "Have you had any complications since surgery? (Yes/No)",
+                            ""
+                        ),
+                        responses.get(
+                            "Pain level (0-10)?\n0 = No pain, 10 = Worst pain",
+                            ""
+                        ),
+                        rom,
+                        wb
+                    ]
+                    assess_rom_progress(data)
+                    update_rehab_metrics_worksheet(data)
+                else:
+                    print("Error: Could not retrieve username. Please try again.")
             else:
                 print("Error: Invalid ROM or weight bearing responses. Try again.")
     else:
