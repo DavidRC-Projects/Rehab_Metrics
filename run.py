@@ -282,7 +282,10 @@ def assess_rom_progress(metric_data):
     Assesses user's Range of Motion (ROM) progress using their metric data.
     """
     try:
-        # Extract required data for assessment
+        if not metric_data[3]:  # Check if days_since_surgery is empty
+            print("\nCannot perform ROM assessment: Days since surgery not available")
+            return False
+            
         days_since_surgery = int(metric_data[3])  
         rom_data = metric_data[6].split('\n')[0]
         
