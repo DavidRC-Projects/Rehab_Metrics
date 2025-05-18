@@ -1,7 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
-from guide import get_rom_timeline_assessment
+from guide import get_rom_timeline_assessment, get_pain_timeline_assessment
 
 # Required Google API scopes
 SCOPE = [
@@ -286,7 +286,7 @@ def assess_rom_progress(metric_data):
             print("\nCannot perform ROM assessment: Days since surgery not available")
             return False
             
-        days_since_surgery = int(metric_data[3])  
+        days_since_surgery = int(metric_data[3])
         rom_data = metric_data[6].split('\n')[0]
         
         # Parse the ROM choice from the data
@@ -317,6 +317,35 @@ def assess_rom_progress(metric_data):
             return True
     except Exception as e:
         print(f"Error performing ROM assessment: {e}")
+        return False
+
+
+def assess_pain_progress(metric_data):
+    """
+    Assesses user's pain level progress using their metric data.
+    """
+    try:
+        if not metric_data[3]:
+            print("\nCannot perform pain assessment: Days since surgery not available")
+            return False
+            
+        days_since_surgery = int(metric_data[3])
+        
+        pain_level = metric_data[5]
+        if not pain_level:
+            print("\nCannot perform pain assessment: Pain level data not available")
+            return False
+            
+        # Get and display assessment
+        assessment = get_pain_timeline_assessment(pain_level, days_since_surgery)
+        print("\nPain Level Assessment:")
+        print("-" * 50)
+        print(assessment)
+        print("-" * 50)
+        return True
+        
+    except Exception as e:
+        print(f"Error performing pain assessment: {e}")
         return False
 
 
@@ -440,6 +469,7 @@ def get_user_data(username):
         
         # Add assessment after displaying user data
         assess_rom_progress(metric_data)
+        assess_pain_progress(metric_data)
         return True
     except Exception as e:
         print(f"Error retrieving user data: {e}")
@@ -493,15 +523,15 @@ def main():
                 user_worksheet = SPREADSHEET.worksheet("users")
                 usernames = user_worksheet.col_values(1)
                 if len(usernames) > 1:
-                    username = usernames[-1]  # Get the most recently added username
+                    username = usernames[-1]
                 
                 if username:
                     complications_q = "Have you had any complications since your surgery? (Yes/No)"
                     pain_q = "On a scale of 0-10, what is your current pain level?\n0 = No pain, 10 = Worst imaginable pain"
                     
                     data = [
-                        username,  # Username in first column
-                        responses.get("What is your name?", ""),  # Name in second column
+                        username,
+                        responses.get("What is your name?", ""),
                         surgery_date_str,
                         days_since_surgery,
                         responses.get(complications_q, ""),
@@ -510,6 +540,7 @@ def main():
                         wb
                     ]
                     assess_rom_progress(data)
+                    assess_pain_progress(data)
                     update_rehab_metrics_worksheet(data)
                 else:
                     print("Error: Could not retrieve username. Please try again.")

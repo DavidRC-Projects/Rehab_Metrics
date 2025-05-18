@@ -54,3 +54,46 @@ def get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery):
     
     except Exception as e:
         return "Unable to assess ROM against timeline."
+
+def get_pain_timeline_assessment(pain_level, days_since_surgery):
+    """
+    This function evaluates pain levels based on recovery timeline.
+    """
+    try:
+        weeks = days_since_surgery // 7
+        pain = int(pain_level)
+        
+        if weeks <= 2:  # Week 0-2
+            if pain >= 7:
+                return "Your pain level is high for Week 0-2. This is normal but monitor closely and consult your healthcare provider if it worsens."
+            elif 4 <= pain <= 6:
+                return "Your pain level is typical for Week 0-2. Continue following your pain management plan."
+            else:
+                return "Your pain level is well controlled for Week 0-2. Excellent progress!"
+        
+        elif weeks <= 6:  # Week 2-6
+            if pain >= 6:
+                return "Your pain level is higher than expected for Week 2-6. Consider consulting your healthcare provider."
+            elif 3 <= pain <= 5:
+                return "Your pain level is typical for Week 2-6. Continue your prescribed exercises and pain management."
+            else:
+                return "Your pain is well managed for Week 2-6. Keep up the good work!"
+        
+        elif weeks <= 12:  # Week 6-12
+            if pain >= 5:
+                return "Your pain level is concerning for Week 6-12. Please consult your healthcare provider."
+            elif 2 <= pain <= 4:
+                return "Your pain level is typical for Week 6-12. Continue your rehabilitation program."
+            else:
+                return "Excellent pain management for Week 6-12. Keep up with your exercises!"
+        
+        else:  # Week 12+
+            if pain >= 4:
+                return "Your pain level is higher than expected after Week 12. Consider consulting your healthcare provider."
+            elif pain == 2 or pain == 3:
+                return "Your pain level is typical for this stage. Continue monitoring and exercising as prescribed."
+            else:
+                return "Excellent pain management! Continue your maintenance exercises."
+    
+    except Exception as e:
+        return "Unable to assess pain level against timeline."
