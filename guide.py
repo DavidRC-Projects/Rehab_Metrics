@@ -105,7 +105,13 @@ def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
     This function evaluates weight bearing status based on recovery timeline.
     """
     try:
+        if days_since_surgery < 0:
+            days_since_surgery = 0
+            
         weeks = days_since_surgery // 7
+        
+        if "Weight bearing status: " in wb_status:
+            wb_status = wb_status.replace("Weight bearing status: ", "")
         
         wb_levels = {
             "0-25% weight-bearing": 1,
@@ -118,35 +124,35 @@ def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
         if wb_level is None:
             return "Unable to assess weight bearing status: Invalid data format"
         
-        if weeks <= 2:  # Week 0-2
+        if weeks < 2:  # Week 0-2
             if wb_level == 1:
-                return "Your weight bearing is appropriate for Week 0-2. Follow your healthcare provider's guidance for progression."
+                return "[Week 0-2] Your weight bearing is appropriate. Follow your healthcare provider's guidance for progression."
             elif wb_level == 2:
-                return "Your weight bearing is progressing well for Week 0-2. Continue following your prescribed protocol."
+                return "[Week 0-2] Your weight bearing is progressing well. Continue following your prescribed protocol."
             else:
-                return "Your weight bearing may be advancing too quickly for Week 0-2. Consult your healthcare provider."
+                return "[Week 0-2] Your weight bearing may be advancing too quickly. Consult your healthcare provider."
         
-        elif weeks <= 6:  # Week 2-6
+        elif weeks < 6:  # Week 2-6
             if wb_level <= 2:
-                return "Your weight bearing may be progressing slower than expected for Week 2-6. Consult your healthcare provider."
+                return "[Week 2-6] Your weight bearing may be progressing slower than expected. Consult your healthcare provider."
             elif wb_level == 3:
-                return "Your weight bearing is progressing appropriately for Week 2-6. Continue your exercises as prescribed."
+                return "[Week 2-6] Your weight bearing is progressing appropriately. Continue your exercises as prescribed."
             else:
-                return "Excellent progress! Your weight bearing is advancing well for Week 2-6."
+                return "[Week 2-6] Excellent progress! Your weight bearing is advancing well."
         
-        elif weeks <= 12:  # Week 6-12
+        elif weeks < 12:  # Week 6-12
             if wb_level <= 2:
-                return "Your weight bearing is lower than expected for Week 6-12. Consider consulting your healthcare provider."
+                return "[Week 6-12] Your weight bearing is lower than expected. Consider consulting your healthcare provider."
             elif wb_level == 3:
-                return "Your weight bearing is progressing, but there may be room for improvement in Week 6-12."
+                return "[Week 6-12] Your weight bearing is progressing, but there may be room for improvement."
             else:
-                return "Excellent! Your weight bearing status is appropriate for Week 6-12."
+                return "[Week 6-12] Excellent! Your weight bearing status is appropriate."
         
         else:  # Week 12+
             if wb_level <= 3:
-                return "Your weight bearing is lower than expected after Week 12. Consider consulting your healthcare provider."
+                return "[Week 12+] Your weight bearing is lower than expected. Consider consulting your healthcare provider."
             else:
-                return "Excellent! You have achieved full weight bearing status."
+                return "[Week 12+] Excellent! You have achieved full weight bearing status."
     
     except Exception as e:
-        return "Unable to assess weight bearing status against timeline."
+        return "Unable to assess weight bearing status: Invalid data format"

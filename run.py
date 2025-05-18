@@ -261,6 +261,9 @@ def validate_weight_bearing(answer):
     """
     This function validates the weight bearing status using multiple choice questions.
     """
+    if answer is None:
+        return False, "Please choose A, B, C or D."
+        
     weight_conversion = {
         "a": "0-25% weight-bearing",
         "b": "50-75% weight-bearing",
@@ -346,6 +349,33 @@ def assess_pain_progress(metric_data):
         
     except Exception as e:
         print(f"Error performing pain assessment: {e}")
+        return False
+    
+
+def assess_weight_bearing_progress(metric_data):
+    """
+    Assesses user's weight bearing progress using their metric data.
+    """
+    try:
+        if not metric_data[3]:
+            print("\nCannot perform weight bearing assessment: Days since surgery not available")
+            return False
+        
+        days_since_surgery = int(metric_data[3])
+        wb_status = metric_data[7]
+        if not wb_status:
+            print("\nCannot perform weight bearing assessment: Weight bearing status not available")
+            return False
+        
+        assessment = get_weight_bearing_timeline_assessment(wb_status, days_since_surgery)
+        print("\nWeight Bearing Assessment:")
+        print("-" * 50)
+        print(assessment)
+        print("-" * 50)
+        return True
+    
+    except Exception as e:
+        print(f"Error performing weight bearing assessment: {e}")
         return False
 
 
