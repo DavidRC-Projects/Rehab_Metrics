@@ -1,75 +1,56 @@
-# Rehab Metrics
+# Rebab Metrics
 
-A comprehensive rehabilitation tracking application that helps patients monitor their recovery progress after surgery. The application integrates with Google Sheets to store patient data and provide clinical guidelines based on recovery timeline.
+Rehab Metrics is a post-surgery rehabilitation tracking tool that helps patients monitor their recovery progress, with a particular focus on knee rehabilitation. Built in Python and deployed via Code Institute's Heroku terminal, the app features secure user registration and login with validation for usernames and passwords. Users enter their details, and the app calculates their stage in the rehabilitation journey, providing feedback on pain levels, knee range of motion, and weight bearing status. All data is securely stored using Google Sheets integration. Rehab Metrics is intended as a supportive self-monitoring tool and includes prompts to consult a healthcare professional when needed, as it does not provide medical advice.
+
+## Project Plan
+
+### Project Goals
+I developed Rehab Metrics inspired by a close relative who recently underwent a knee replacement. They had many questions about their recovery, particularly around the expected timeline and what level of movement and activity they should be achieving in the first few months. This app aims to provide clear, stage appropriate guidance to help patients monitor their progress and feel more confident during their recovery. From this experience, I realised I could create a project that collects user data and provides advice on key areas of recovery, helping patients understand their progress and what to expect during rehabilitation.
+
+## User Stories
+
+### Target Audience
+
+The target audience for Rehab Metrics is people who have recently undergone knee surgery and want to track their recovery progress.
+
+### First Time Visitor Goals
+
+As a first-time user, I want to:
+
+* Easily navigate the application and understand its purpose
+* Enter my personal and surgery details
+* Have a record of my details that provides feedback on my rehabilitation progress
+
+### Returning Visitor Goals
+
+As a returning user, I want to:
+
+* Log in securely with my username
+* Enter my password to protect my information
+* Review my previously entered details and progress
+
+### Strucutre of the program
 
 ## Features
 
-- User registration and authentication
-- Surgery date validation (within 2 years)
-- Progress tracking for:
-  - Pain levels
-  - Range of motion
-  - Complications
-  - Weight bearing status
-- Clinical guidelines based on recovery timeline
-- Data persistence using Google Sheets
-- Comprehensive error handling and input validation
+## Future Features
 
-## Setup
+## Technologies Used
 
-1. Clone the repository
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Set up Google Sheets API:
-   - Create a project in Google Cloud Console
-   - Enable Google Sheets API
-   - Create service account credentials
-   - Download credentials as `creds.json`
-   - Share your Google Sheet with the service account email
+## Python Version and Packages
 
-## Usage
+## Bugs and Fixes
 
-Run the application:
-```
-python run.py
-```
-
-Follow the prompts to:
-1. Register or log in
-2. Enter your surgery date
-3. Track your rehabilitation progress
-4. View clinical guidelines
-
-## Important Notes
-
-- This tool is for educational and self-tracking purposes only
-- It does not provide medical advice, diagnosis, or treatment
-- Consult healthcare professionals for medical concerns
-- Data is stored in Google Sheets for easy access and sharing
-
-## Technical Details
-
-- Python 3.8+
-- Google Sheets API integration via `gspread`
-- Command-line interface
-- Data validation and sanitization
-- Error handling for API operations
+## Testing
 
 ## Deployment
 
-The application can be deployed to Heroku:
+## Forking and Cloning
 
-1. Create a new Heroku app
-2. Add buildpacks:
-   - `heroku/python`
-   - `heroku/nodejs`
-3. Set config vars:
-   - `PORT`: 8000
-   - `CREDS`: Contents of your `creds.json`
-4. Deploy from GitHub repository
+## Credits
 
-## Contributing
+## Acknowledgements
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+
+
+
