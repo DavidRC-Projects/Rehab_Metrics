@@ -514,6 +514,7 @@ def handle_returning_user():
     print("\nWelcome back! Please login to view your data.")
     while True:
         username = input("\nPlease enter your username: ").strip()
+        password = input("Please enter your password: ").strip()
         if get_user_data(username):
             break
         retry = input("\nWould you like to try again? (Y/N): ").lower()
