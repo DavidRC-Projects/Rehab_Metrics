@@ -284,7 +284,7 @@ def assess_rom_progress(metric_data):
     try:
         # Extract required data for assessment
         days_since_surgery = int(metric_data[3])  
-        rom_data = metric_data[6]
+        rom_data = metric_data[6].split('\n')[0]
         
         # Parse the ROM choice from the data
         rom_choice = None
