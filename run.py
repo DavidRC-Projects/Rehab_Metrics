@@ -22,6 +22,10 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 # Open the spreadsheet by name
 SPREADSHEET = GSPREAD_CLIENT.open("rehab_metrics")
 
+# Worksheet names
+WORKSHEET_USERS = "users"
+WORKSHEET_USERDATA = "userdata"
+
 SPACE = "\n"
 DASH = "-" * 50
 NOT_VALID = (
@@ -399,7 +403,7 @@ def update_rehab_metrics_worksheet(data):
     This function updates the worksheet with user data.
     """
     try:
-        metric_worksheet = SPREADSHEET.worksheet("userdata")
+        metric_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERDATA)
         if not metric_worksheet.get_all_values():
             headers = [
                     "Username", "Name", "Surgery Date", "Days Since Surgery",
@@ -417,7 +421,7 @@ def update_rehab_metrics_worksheet(data):
 
 def update_user_worksheet(username, password):
     try:
-        user_worksheet = SPREADSHEET.worksheet("users")
+        user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
         if not user_worksheet.row_values(1):
             headers = ["Username", "Password"]
             user_worksheet.append_row(headers)
@@ -447,7 +451,7 @@ def check_existing_username(username):
     Returns True if username exists, False otherwise.
     """
     try:
-        user_worksheet = SPREADSHEET.worksheet("users")
+        user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
         usernames = user_worksheet.col_values(1)[1:]
         return username in usernames
     except Exception as e:
@@ -461,7 +465,7 @@ def get_user_data(username):
     """
     try:
         # Get user data from users worksheet
-        user_worksheet = SPREADSHEET.worksheet("users")
+        user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
         usernames = user_worksheet.col_values(1)
         
         if len(usernames) <= 1:
@@ -482,7 +486,7 @@ def get_user_data(username):
         user_data = user_worksheet.row_values(username_row)
         
         # Get user metrics from userdata worksheet
-        metric_worksheet = SPREADSHEET.worksheet("userdata")
+        metric_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERDATA)
         all_metric_data = metric_worksheet.get_all_values()
         
         # Find user entries by matching username in first column
@@ -531,7 +535,7 @@ def verify_password(username, password):
     """
     Verify the password for a given username.
     """
-    user_worksheet = SPREADSHEET.worksheet("users")
+    user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
     usernames = user_worksheet.col_values(1)
     
     if username not in usernames:
@@ -609,7 +613,7 @@ def main():
 
             if rom_valid and wb_valid:
                 username = None
-                user_worksheet = SPREADSHEET.worksheet("users")
+                user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
                 usernames = user_worksheet.col_values(1)
                 if len(usernames) > 1:
                     username = usernames[-1]
