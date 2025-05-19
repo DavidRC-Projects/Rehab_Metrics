@@ -28,6 +28,7 @@ WORKSHEET_USERDATA = "userdata"
 
 SPACE = "\n"
 DASH = "-" * 50
+CENTER_WIDTH = 50
 NOT_VALID = (
     '!', '?', '@', '*', '^', '.', '£', '$', '%', ',', '~', '`',
     '+', '=', '<', '>', '|', '\\', '/', '[', ']', '{', '}', '#'
@@ -56,17 +57,17 @@ def welcome_user():
     """
     print(DASH)
     print(SPACE)
-    print("Welcome, new user!".center(50))
-    print("This tool has been developed to help you track".center(50))
-    print("your recovery after a knee replacement.".center(50))
-    print("".center(50))
-    print("Please enter a username to begin your journey.".center(50))
-    print("You'll be guided through a few short questions.".center(50))
-    print("Each answer will be saved to help monitor your progress.".center(50))
-    print("You can type 'quit' at any time to exit the program.".center(50))
-    print("To review your recovery progress in the future,".center(50))
-    print("you can log in using your username and password.".center(50))
-    print("".center(50))
+    print("Welcome, new user!".center(CENTER_WIDTH))
+    print("This tool has been developed to help you track".center(CENTER_WIDTH))
+    print("your recovery after a knee replacement.".center(CENTER_WIDTH))
+    print("".center(CENTER_WIDTH))
+    print("Please enter a username to begin your journey.".center(CENTER_WIDTH))
+    print("You'll be guided through a few short questions.".center(CENTER_WIDTH))
+    print("Each answer will be saved to help monitor your progress.".center(CENTER_WIDTH))
+    print("You can type 'quit' at any time to exit the program.".center(CENTER_WIDTH))
+    print("To review your recovery progress in the future,".center(CENTER_WIDTH))
+    print("you can log in using your username and password.".center(CENTER_WIDTH))
+    print("".center(CENTER_WIDTH))
     print(SPACE)
     print(DASH)
     print(
@@ -433,7 +434,7 @@ def check_user_status():
     """
     print(DASH)
     print(SPACE)
-    print("Welcome to Rehab Metrics!".center(50))
+    print("Welcome to Rehab Metrics!".center(CENTER_WIDTH))
     print(SPACE)
     print(DASH)
     print("\nAre you a new user?")
