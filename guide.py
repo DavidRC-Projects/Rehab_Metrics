@@ -27,31 +27,31 @@ def get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery):
                 return "Your ROM is poor for Week 0-2. Consider consulting your healthcare provider."
             elif user_rom == 90:
                 return "Your ROM is good for Week 0-2."
-            else:
+            elif user_rom >=100:
                 return "Excellent progress! Your ROM is above expected for Week 0-2."
         
         elif weeks <= 6:  # Week 2-6
             if user_rom <= 90:
                 return "Your ROM is poor for Week 2-6. Consider consulting your healthcare provider."
-            elif 91 <= user_rom <= 99:
-                return "Your ROM is good for Week 2-6."
-            else:
+            elif user_rom == 90:
+                return "Your ROM is functional but still needs work for Week 2-6."
+            elif user_rom >= 100:
                 return "Excellent progress! Your ROM is above expected for Week 2-6."
         
         elif weeks <= 12:  # Week 6-12
-            if user_rom <= 95:
+            if user_rom <= 90:
                 return "Your ROM is poor for Week 6-12. Consider consulting your healthcare provider."
-            elif 95 <= user_rom <= 99:
-                return "Your ROM is good for Week 6-12."
-            else:
+            elif user_rom == 90:
+                return "Your ROM is functional but still needs work for Week 6-12."
+            elif user_rom >= 100:
                 return "Excellent progress! Your ROM is above expected for Week 6-12."
         
         else:  # Week 12+
-            if user_rom <= 100:
+            if user_rom <= 99:
                 return "Your ROM is poor for Week 12+. Consider consulting your healthcare provider."
-            elif 101 <= user_rom <= 119:
-                return "Your ROM is good for Week 12+."
-            else:
+            elif user_rom == 100:
+                return "Your ROM is good but can still improve for Week 12+."
+            elif user_rom == 120:
                 return "Excellent progress! Your ROM has reached optimal levels."
     
     except Exception as e:

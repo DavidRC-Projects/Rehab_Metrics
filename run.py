@@ -45,7 +45,7 @@ ROM_CONVERSION = {
 
 ROM_DEGREES = {
     "a": 45,    
-    "b": 90,    
+    "b": 89,    
     "c": 90,
     "d": 100,
     "e": 120
