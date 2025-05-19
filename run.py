@@ -89,7 +89,7 @@ def welcome_user():
         update_user_worksheet(user_name, password)
         print(f"\nHello, {user_name}! Please answer the following questions "
               f"so we can find out more about your recovery.")
-        break
+        return user_name
 
 
 def validate_user(input_str):
@@ -576,8 +576,8 @@ def user_quit(input_str):
 def main():
     is_new_user = check_user_status()
     if is_new_user:
-        result = welcome_user()
-        if result is None:
+        username = welcome_user() 
+        if username is None:  
             return
         responses = questions()
         if responses is None: 
