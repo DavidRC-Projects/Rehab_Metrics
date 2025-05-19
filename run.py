@@ -60,6 +60,8 @@ def welcome_user():
     while True:
         user_name = input("Please enter your username: ")
         user_name = user_name.strip()
+        if user_quit(user_name):
+            return None
         is_valid, error_message = validate_user(user_name)
         if not is_valid:
             print(error_message)
@@ -70,6 +72,8 @@ def welcome_user():
             continue
             
         password = user_password()
+        if password == "quit":
+            return None
         update_user_worksheet(user_name, password)
         print(f"\nHello, {user_name}! Please answer the following questions "
               f"so we can find out more about your recovery.")
@@ -96,6 +100,8 @@ def user_password():
     """
     while True:
         password = input("Please enter a password (minimum 6 characters): ")
+        if user_quit(password):
+            return "quit"
         is_valid_pass, pass_error = validate_password(password)
         if is_valid_pass:
             return password
@@ -163,9 +169,8 @@ def questions():
     for question, validator, error_message in question_set:
         while True:
             answer = input(question + " ").strip()
-            if answer.lower() == "quit":
-                print("You chose to Quit and will return to the start")
-                return
+            if user_quit(answer):
+                return None
             is_valid, validation_message = validator(answer)
             if is_valid:
                 msg = validation_message if validation_message else f"Your answer: {answer}"
@@ -545,7 +550,11 @@ def handle_returning_user():
     print("\nWelcome back! Please login to view your data.")
     while True:
         username = input("\nPlease enter your username: ").strip()
+        if user_quit(username):
+            return
         password = input("Please enter your password: ").strip()
+        if user_quit(password):
+            return
         if verify_password(username, password):
             if get_user_data(username):
                 break
@@ -556,12 +565,26 @@ def handle_returning_user():
             break
 
 
+def user_quit(input_str):
+    """
+    Checks if the user wants to quit the program.
+    Returns True if user wants to quit, False otherwise.
+    """
+    if input_str.lower() == "quit":
+        print("You chose to Quit and will return to the start")
+        return True
+    return False
+
 def main():
     is_new_user = check_user_status()
     if is_new_user:
-        welcome_user()
+        result = welcome_user()
+        if result is None:
+            return
         responses = questions()
-        if responses:
+        if responses is None: 
+            return
+        if responses: 
             surgery_date_str = responses.get(
                 "When did you have your surgery? (DD/MM/YYYY)", ""
             )
