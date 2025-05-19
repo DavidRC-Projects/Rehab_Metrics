@@ -36,7 +36,17 @@ def welcome_user():
     """
     print(DASH)
     print(SPACE)
-    print("Welcome to Rehab Metrics!".center(50))
+    print("Welcome, new user!".center(50))
+    print("This tool has been developed to help you track".center(50))
+    print("your recovery after a knee replacement.".center(50))
+    print("".center(50))
+    print("Please enter a username to begin your journey.".center(50))
+    print("You'll be guided through a few short questions.".center(50))
+    print("Each answer will be saved to help monitor your progress.".center(50))
+    print("You can type 'quit' at any time to exit the program.".center(50))
+    print("To review your recovery progress in the future,".center(50))
+    print("you can log in using your username and password.".center(50))
+    print("".center(50))
     print(SPACE)
     print(DASH)
     print(
@@ -416,6 +426,11 @@ def check_user_status():
     """
     This function asks if the user is new or returning.
     """
+    print(DASH)
+    print(SPACE)
+    print("Welcome to Rehab Metrics!".center(50))
+    print(SPACE)
+    print(DASH)
     print("\nAre you a new user?")
     status = input("Please enter (Y) for Yes or (N) for No: ")
     return status.lower() == 'y'
