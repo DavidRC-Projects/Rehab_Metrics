@@ -30,7 +30,8 @@ As a returning user, I want to:
 * Review my previously entered details and progress
 
 ### Strucutre of the program
-
+![Draft algorithm](assets/draftalgorithm.png)
+![Algorithm](assets/algorithm.png)
 ## Features
 
 ## Future Features
