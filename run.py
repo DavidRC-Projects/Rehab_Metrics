@@ -39,14 +39,16 @@ ROM_CONVERSION = {
     "a": "Less than 45°",
     "b": "Less than 90°",
     "c": "Approximately 90°",
-    "d": "Greater than 100°"
+    "d": "Greater than 100°",
+    "e": "Greater than 120",
 }
 
 ROM_DEGREES = {
     "a": 45,    
     "b": 90,    
     "c": 90,
-    "d": 100    
+    "d": 100,
+    "e": 120
 }
 
 # Weight Bearing conversion
@@ -179,9 +181,10 @@ def questions():
         "A: I struggle to bend it and have minimal movement\n"
         "B: I can bend it a little but my heel is in front\n"
         "C: I can bend it so my heel is roughly in line\n"
-        "D: I can bend it well as my heel goes behind\n",
+        "D: I can bend it well as my heel goes behind\n"
+        "E: I can bend my knee so the heel is a few inches behind the knee",
         lambda x: validate_rom(x, surgery_info['days']),
-        "Please choose A, B, C or D."
+        "Please choose A, B, C, D or E."
     ),
     (
         "Weight bearing on operated leg?\n"
@@ -283,7 +286,7 @@ def validate_rom(answer, days_since_surgery=None):
             assessment = get_rom_timeline_assessment(ROM_DEGREES, choice, days_since_surgery)
             base_message += f"\n{assessment}"
         return True, base_message
-    return False, "Please choose A, B, C or D."
+    return False, "Please choose A, B, C, D or E."
 
 
 def validate_weight_bearing(answer):
@@ -600,11 +603,14 @@ def main():
             current_date = datetime.today().date()
             days_since_surgery = (current_date - surgery_date).days
 
-            rom_q = ("How far can you currently bend your knee?\n"
-                    "A: I struggle to bend it and have minimal movement\n"
-                    "B: I can bend it a little but my heel is in front\n"
-                    "C: I can bend it so my heel is roughly in line\n"
-                    "D: I can bend it well as my heel goes behind\n")
+            rom_q = (
+                "How far can you currently bend your knee?\n"
+                "A: I struggle to bend it and have minimal movement\n"
+                "B: I can bend it a little but my heel is in front\n"
+                "C: I can bend it so my heel is roughly in line\n"
+                "D: I can bend it well as my heel goes behind\n"
+                "E: I can bend my knee so the heel is a few inches behind the knee"
+            )
                     
             wb_q = ("Weight bearing on operated leg?\n"
                    "A: I struggle to put any weight\n"
