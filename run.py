@@ -33,6 +33,14 @@ NOT_VALID = (
     '+', '=', '<', '>', '|', '\\', '/', '[', ']', '{', '}', '#'
 )
 
+# ROM (Range of Motion) conversion
+ROM_CONVERSION = {
+    "a": "Less than 45°",
+    "b": "Less than 90°",
+    "c": "Approximately 90°",
+    "d": "Greater than 100°"
+}
+
 
 def welcome_user():
     """
@@ -252,23 +260,9 @@ def validate_rom(answer, days_since_surgery=None):
     This function validates range of motion (ROM) input using multiple choice questions
     and provides basic assessment.
     """
-    rom_conversion = {
-        "a": "Less than 45°",
-        "b": "Less than 90°",
-        "c": "Approximately 90°",
-        "d": "Greater than 100°"
-    }
-    
-    rom_degrees = {
-        "a": 45,    # "Less than 45°"
-        "b": 90,    # "Less than 90°"
-        "c": 90,    # "Approximately 90°"
-        "d": 100    # "Greater than 100°"
-    }
-    
     choice = answer.lower().strip()
-    if choice in rom_conversion:
-        base_message = f"Knee bend: {rom_conversion[choice]}"
+    if choice in ROM_CONVERSION:
+        base_message = f"Knee bend: {ROM_CONVERSION[choice]}"
         if days_since_surgery is not None:
             assessment = get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery)
             base_message += f"\n{assessment}"
