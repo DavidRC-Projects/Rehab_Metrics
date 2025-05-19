@@ -41,6 +41,14 @@ ROM_CONVERSION = {
     "d": "Greater than 100°"
 }
 
+# Weight Bearing conversion
+WEIGHT_BEARING_CONVERSION = {
+    "a": "0-25% weight-bearing",
+    "b": "50-75% weight-bearing",
+    "c": "75%+ weight-bearing",
+    "d": "100% weight-bearing"
+}
+
 
 def welcome_user():
     """
@@ -277,19 +285,13 @@ def validate_weight_bearing(answer):
     if answer is None:
         return False, "Please choose A, B, C or D."
         
-    weight_conversion = {
-        "a": "0-25% weight-bearing",
-        "b": "50-75% weight-bearing",
-        "c": "75%+ weight-bearing",
-        "d": "100% weight-bearing"
-    }
     selection = answer.lower().strip()
-    if selection in weight_conversion:
+    if selection in WEIGHT_BEARING_CONVERSION:
         if selection == "a":
-                print("This sounds very uncomfortable and would recommend consulting a healthcare professional for advice.")
-                print("We recommend pausing the assessment for now. Take care.\n")
-                exit()
-        return True, f"Weight bearing status: {weight_conversion[selection]}"
+            print("This sounds very uncomfortable and would recommend consulting a healthcare professional for advice.")
+            print("We recommend pausing the assessment for now. Take care.\n")
+            exit()
+        return True, f"Weight bearing status: {WEIGHT_BEARING_CONVERSION[selection]}"
     return False, "Please choose A, B, C or D."
 
 
