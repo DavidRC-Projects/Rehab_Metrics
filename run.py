@@ -42,6 +42,13 @@ ROM_CONVERSION = {
     "d": "Greater than 100°"
 }
 
+ROM_DEGREES = {
+    "a": 45,    
+    "b": 90,    
+    "c": 90,
+    "d": 100    
+}
+
 # Weight Bearing conversion
 WEIGHT_BEARING_CONVERSION = {
     "a": "0-25% weight-bearing",
@@ -273,7 +280,7 @@ def validate_rom(answer, days_since_surgery=None):
     if choice in ROM_CONVERSION:
         base_message = f"Knee bend: {ROM_CONVERSION[choice]}"
         if days_since_surgery is not None:
-            assessment = get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery)
+            assessment = get_rom_timeline_assessment(ROM_DEGREES, choice, days_since_surgery)
             base_message += f"\n{assessment}"
         return True, base_message
     return False, "Please choose A, B, C or D."
@@ -328,7 +335,7 @@ def assess_rom_progress(metric_data):
         }
         
         if rom_choice:
-            assessment = get_rom_timeline_assessment(rom_degrees, rom_choice, days_since_surgery)
+            assessment = get_rom_timeline_assessment(ROM_DEGREES, rom_choice, days_since_surgery)
             print("\nROM Assessment:")
             print("-" * 50)
             print(assessment)
