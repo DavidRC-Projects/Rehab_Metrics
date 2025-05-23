@@ -49,9 +49,121 @@ The early flow focused on capturing user information and guiding them through re
 As the project progressed, I refined the flow to include input validation and safety checks to improve the user experience. The final algorithm shows the outcome for new and existing users:
 
 ![Algorithm](assets/algorithm.png)
+
 ## Features
 
+1. Program Start
+The application launches via python3 run.py. A welcome message with a disclaimer will appear and will ask the user if they are a new user. At this point the application will follow two paths. Both paths will display another welcome message with additonal information on how to use the app and the disclaimer. This is all handled via the welcome_user function.
+
+Welcome user function:
+
+Image
+
+This function uses a while loop that will continue to ask the question unless the user inputs 'quit', which will exit the program. There are 2 inputs in this function to obtain the username and password. Conditional statements validate if the correct username and password have been entered.
+
+When the user enters 'No' the program will request their username followed by their password. There are 2 functions called 'check_existing_user and get_user_data. The main function will call check_existing_user where it will review the google sheets work sheet named 'users' and interate through the user names to find a match. If an existing user is found the get user data function will retrieve the data from Google Sheets. 
+
+3. New User Journey
+User provides a username (validated to avoid duplicates).
+
+Then creates a password (validated for security).
+
+Credentials are stored in the "users" worksheet in Google Sheets.
+Functions:
+
+validate_user()
+
+check_existing_username()
+
+user_password()
+
+validate_password()
+
+update_user_worksheet()
+
+
+b) Assessment Questions
+The user is guided through 6 simple questions:
+
+First name
+
+Surgery date
+
+Complications (Yes/No)
+
+Pain level (scale of 0–10)
+
+Knee bend assessment (options A–D)
+
+Weight bearing status (options A–D)
+Function: questions()
+
+c) Data Processing
+Calculates days since surgery.
+
+Validates all responses.
+
+Stores all responses in the "userdata" worksheet.
+Function: update_rehab_metrics_worksheet()
+
+4. Returning User Journey
+a) Login
+The user logs in with their username and password.
+
+Credentials are verified.
+Functions:
+
+handle_returning_user()
+
+verify_password()
+
+b) Data Retrieval
+The user's previous responses are retrieved from Google Sheets.
+Function: get_user_data()
+
+5. Assessment Feedback
+Using the data collected, the app provides recovery feedback:
+
+get_rom_timeline_assessment() – Assesses range of motion
+
+get_pain_timeline_assessment() – Assesses pain levels
+
+get_weight_bearing_timeline_assessment() – Assesses weight bearing
+
+These are handled in guide.py.
+
+6. Data Storage
+All data is stored in Google Sheets using gspread.
+
+Two worksheets:
+
+"users" – stores login info.
+
+"userdata" – stores recovery responses.
+
+7. Safety Features
+If pain level is 10, the program exits and advises medical review.
+
+If weight bearing is severely impaired, the same applies.
+
+Strong input validation prevents invalid data from being accepted.
+
+8. Program Controls & Error Handling
+Users can quit anytime by typing "quit".
+
+All inputs are automatically validated.
+
+Invalid entries trigger error messages and retry prompts.
+
+The user receives clear feedback after each step.
+
 ## Future Features
+* Provide assessment advice on all metrics 
+* Questions on walking and climbing stairs to idetify any functional problems
+* Provide advice and compare their walking and ability to climb stairs with expected data within a 12 week timelime
+* Provide questions on swelling, fever and sudden worsening of symptoms to clear any red flags and to advise ther user to seek advice
+* Returning users can input new data and then compare any changes from their previous data. This would be good for user experience.
+* Provide more tailored advice for stage of recovery by asking more detailed questions 
 
 ## Technologies Used
 
@@ -68,7 +180,5 @@ As the project progressed, I refined the flow to include input validation and sa
 ## Credits
 
 ## Acknowledgements
-
-
 
 

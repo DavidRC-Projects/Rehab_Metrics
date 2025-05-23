@@ -37,7 +37,6 @@ NOT_VALID = (
 # ROM (Range of Motion) conversion
 ROM_CONVERSION = {
     "a": "Less than 45°",
-    "b": "Less than 90°",
     "c": "Approximately 90°",
     "d": "Greater than 100°",
     "e": "Greater than 120",
@@ -59,6 +58,14 @@ WEIGHT_BEARING_CONVERSION = {
     "d": "100% weight-bearing"
 }
 
+DISCLAIMER = (
+    "\nDISCLAIMER:\n"
+    "This tool is for educational and self-tracking purposes only.\n"
+    "It does not provide medical advice, diagnosis, or treatment.\n"
+    "If you are experiencing complications or severe symptoms,\n"
+    "please consult your healthcare professional.\n"
+)
+
 
 def welcome_user():
     """
@@ -79,13 +86,8 @@ def welcome_user():
     print("".center(CENTER_WIDTH))
     print(SPACE)
     print(DASH)
-    print(
-    "\nDISCLAIMER:\n"
-    "This tool is for educational and self-tracking purposes only.\n"
-    "It does not provide medical advice, diagnosis, or treatment.\n"
-    "If you are experiencing complications or severe symptoms,\n"
-    "please consult your healthcare professional.\n"
-)
+    print(DISCLAIMER)
+
     print(DASH)
     while True:
         user_name = input("Please enter your username: ")
@@ -329,13 +331,13 @@ def assess_rom_progress(metric_data):
         elif "Greater than 100°" in rom_data:
             rom_choice = "d"
             
-        # ROM degrees mapping for assessment
+        """ ROM degrees mapping for assessment
         rom_degrees = {
             "a": 45,    
             "b": 90,    
             "c": 90,    
             "d": 100    
-        }
+        }"""
         
         if rom_choice:
             assessment = get_rom_timeline_assessment(ROM_DEGREES, rom_choice, days_since_surgery)
@@ -447,6 +449,7 @@ def check_user_status():
     print("Welcome to Rehab Metrics!".center(CENTER_WIDTH))
     print(SPACE)
     print(DASH)
+    print(DISCLAIMER)
     print("\nAre you a new user?")
     status = input("Please enter (Y) for Yes or (N) for No: ")
     return status.lower() == 'y'
@@ -468,7 +471,7 @@ def check_existing_username(username):
 
 def get_user_data(username):
     """
-    Retrieve and display user data from both users and userdata worksheets.
+    Retrieve and display user data from users and userdata worksheets.
     """
     try:
         # Get user data from users worksheet
