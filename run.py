@@ -37,6 +37,7 @@ NOT_VALID = (
 # ROM (Range of Motion) conversion
 ROM_CONVERSION = {
     "a": "Less than 45°",
+    "b": "Less than 90°",
     "c": "Approximately 90°",
     "d": "Greater than 100°",
     "e": "Greater than 120",
@@ -330,14 +331,8 @@ def assess_rom_progress(metric_data):
             rom_choice = "c"
         elif "Greater than 100°" in rom_data:
             rom_choice = "d"
-            
-        """ ROM degrees mapping for assessment
-        rom_degrees = {
-            "a": 45,    
-            "b": 90,    
-            "c": 90,    
-            "d": 100    
-        }"""
+        elif "Greater than 120°" in rom_data:
+            rom_choice = "e"    
         
         if rom_choice:
             assessment = get_rom_timeline_assessment(ROM_DEGREES, rom_choice, days_since_surgery)
@@ -469,7 +464,36 @@ def check_existing_username(username):
         return False
 
 
-def get_user_data(username):
+def get user_row(username, worksheet):
+    """
+    Find the row index for a given username in a worksheet.
+    Returns the row index from Google Sheets.
+    """
+ usernames = worksheet.col_values(1)
+    if len(usernames) <= 1:
+        Print("No user data found.")
+        return None
+
+for index in range(1, len(usernames)):
+    if usernames[index] == username:
+        return index  + 1
+return None
+
+def get_user_metric_data(username, metric_worksheet):
+    """
+    Retrieve the most recent metric data for a given username. This will skip the header row.
+    If row values match it will return most recent entry.
+    """
+    all_metric_data = metric_worksheet.get_all_values()
+    user_entries = [row for row in all_metric_data[1:] if row and row[0] == username]
+
+    if not user_entries:
+        print(f"No data found for {username}.")
+        return None
+    return user_entries[-1]
+
+
+"""def get_user_data(username):
     """
     Retrieve and display user data from users and userdata worksheets.
     """
@@ -539,7 +563,7 @@ def get_user_data(username):
     except Exception as e:
         print(f"Error retrieving user data: {e}")
         return False
-
+"""
 
 def verify_password(username, password):
     """
