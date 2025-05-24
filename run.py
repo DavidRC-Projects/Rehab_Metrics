@@ -512,6 +512,7 @@ def format_user_data(metric_data):
     }
     return metrics
 
+
 def display_user_metrics(metrics):
     """
     Display the formatted user metrics.
@@ -529,6 +530,7 @@ def display_user_metrics(metrics):
     print(f"Knee Range of Motion: {metrics['rom']}")
     print(f"Weight Bearing Status: {metrics['weight_bearing']}")
     print("-" * 50)
+
 
 def get_user_data(username):
     """
@@ -562,6 +564,7 @@ def get_user_data(username):
     except Exception as e:
         print(f"Error retrieving user data: {e}")
         return False
+
 
 def verify_password(username, password):
     """
@@ -610,6 +613,7 @@ def user_quit(input_str):
         print("You chose to Quit and will return to the start")
         return True
     return False
+
 
 def main():
     is_new_user = check_user_status()

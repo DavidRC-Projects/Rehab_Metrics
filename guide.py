@@ -1,19 +1,3 @@
-import gspread
-from google.oauth2.service_account import Credentials
-
-# Define the scope
-SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-]
-
-# Get credentials and authorize
-CREDS = Credentials.from_service_account_file("creds.json")
-SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SPREADSHEET = GSPREAD_CLIENT.open("rehab_metrics")
-
 def get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery):
     """
     This function evaluates ROM based on recovery timeline.
