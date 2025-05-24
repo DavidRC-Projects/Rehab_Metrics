@@ -469,15 +469,15 @@ def get_user_row(username, worksheet):
     Find the row index for a given username in a worksheet.
     Returns the row index from Google Sheets.
     """
- usernames = worksheet.col_values(1)
+    usernames = worksheet.col_values(1)
     if len(usernames) <= 1:
-        Print("No user data found.")
+        print("No user data found.")
         return None
-
-for index in range(1, len(usernames)):
-    if usernames[index] == username:
-        return index  + 1
-return None
+        
+    for index in range(1, len(usernames)):
+        if usernames[index] == username:
+            return index + 1
+    return None
 
 
 def get_user_metric_data(username, metric_worksheet):
@@ -512,78 +512,56 @@ def format_user_data(metric_data):
     }
     return metrics
 
+def display_user_metrics(metrics):
+    """
+    Display the formatted user metrics.
+    """
+    print("\nYour Profile and Rehabilitation Data:")
+    print("-" * 50)
+    print(f"Username: {metrics['username']}")
+    print(f"Name: {metrics['name']}")
+    print(f"Surgery Date: {metrics['surgery_date']}")
+    print(f"Days Since Surgery: {metrics['days_since_surgery']}")
+    print(f"Complications Reported: {metrics['complications']}")
+    
+    if metrics['pain_level']:
+        print(f"Pain Level (0-10): {metrics['pain_level']}")
+    print(f"Knee Range of Motion: {metrics['rom']}")
+    print(f"Weight Bearing Status: {metrics['weight_bearing']}")
+    print("-" * 50)
 
-"""def get_user_data(username):
+def get_user_data(username):
     """
     Retrieve and display user data from users and userdata worksheets.
     """
     try:
         # Get user data from users worksheet
         user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
-        usernames = user_worksheet.col_values(1)
+        username_row = get_user_row(username, user_worksheet)
         
-        if len(usernames) <= 1:
-            print("No user data found in the system.")
-            return False
-            
-        # Find the row index for the username (case-sensitive match)
-        username_row = None
-        for idx, name in enumerate(usernames[1:], start=2):
-            if name == username:
-                username_row = idx
-                break
-                
         if username_row is None:
             print(f"Username '{username}' not found.")
             return False
             
-        user_data = user_worksheet.row_values(username_row)
-        
         # Get user metrics from userdata worksheet
         metric_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERDATA)
-        all_metric_data = metric_worksheet.get_all_values()
+        metric_data = get_user_metric_data(username, metric_worksheet)
         
-        # Find user entries by matching username in first column
-        user_entries = [row for row in all_metric_data[1:] if row and row[0] == username]
-        
-        if not user_entries:
+        if metric_data is None:
             print("No rehabilitation data found for this user.")
             return False
             
-        # Use the most recent entry (last in the list)
-        metric_data = user_entries[-1]
-
-        # Display user data for existing users
-        print("\nYour Profile and Rehabilitation Data:")
-        print("-" * 50)
-        print(f"Username: {metric_data[0]}")
-        print(f"Name: {metric_data[1]}")
-        print(f"Surgery Date: {metric_data[2]}")
-        print(f"Days Since Surgery: {metric_data[3]}")
-        print(f"Complications Reported: {metric_data[4]}")
-        if not "Knee bend:" in metric_data[5]:
-            print(f"Pain Level (0-10): {metric_data[5]}")
-        if "Knee bend:" in metric_data[5]: 
-            rom_value = metric_data[5].split('\n')[0].replace("Knee bend: ", "")
-            wb_value = metric_data[6].replace("Weight bearing status: ", "")
-            print(f"Knee Range of Motion: {rom_value}")
-            print(f"Weight Bearing Status: {wb_value}")
-        else:
-            rom_value = metric_data[6].split('\n')[0].replace("Knee bend: ", "")
-            wb_value = metric_data[7].replace("Weight bearing status: ", "")
-            print(f"Knee Range of Motion: {rom_value}")
-            print(f"Weight Bearing Status: {wb_value}")
-        print("-" * 50)
-        
-        # Add assessment after displaying user data
+        metrics = format_user_data(metric_data)
+        display_user_metrics(metrics)
         assess_rom_progress(metric_data)
         assess_pain_progress(metric_data)
         assess_weight_bearing_progress(metric_data)
+        
         return True
+        
     except Exception as e:
         print(f"Error retrieving user data: {e}")
         return False
-"""
 
 def verify_password(username, password):
     """
