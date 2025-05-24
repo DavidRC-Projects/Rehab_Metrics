@@ -464,7 +464,7 @@ def check_existing_username(username):
         return False
 
 
-def get user_row(username, worksheet):
+def get_user_row(username, worksheet):
     """
     Find the row index for a given username in a worksheet.
     Returns the row index from Google Sheets.
@@ -479,6 +479,7 @@ for index in range(1, len(usernames)):
         return index  + 1
 return None
 
+
 def get_user_metric_data(username, metric_worksheet):
     """
     Retrieve the most recent metric data for a given username. This will skip the header row.
@@ -491,6 +492,25 @@ def get_user_metric_data(username, metric_worksheet):
         print(f"No data found for {username}.")
         return None
     return user_entries[-1]
+
+
+def format_user_data(metric_data):
+    """
+    Format the metric data for display. 
+    This function takes a row of metric data from the userdata worksheet..
+    Returns a structured dictionary.
+    """
+    metrics = {
+        "username": metric_data[0],
+        "name": metric_data[1],
+        "surgery_date": metric_data[2],
+        "days_since_surgery": metric_data[3],
+        "complications": metric_data[4],
+        "pain_level": metric_data[5].strip(),
+        "rom": metric_data[6].replace("Knee bend: ", "").strip(),
+        "weight_bearing": metric_data[7].replace("Weight bearing status: ", "").strip()
+    }
+    return metrics
 
 
 """def get_user_data(username):
