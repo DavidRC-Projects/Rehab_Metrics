@@ -131,10 +131,14 @@ def validate_user(input_str):
     - Must not contain special characters
     """
     if len(input_str) < 2 or len(input_str) > 10:
-        return False, Fore.RED + "Username must be between 2 and 10 characters." + Style.RESET_ALL
+        return False, (Fore.RED +
+                      "Username must be between 2 and 10 characters." + 
+                      Style.RESET_ALL)
     for char in NOT_VALID:
         if char in input_str:
-            return False, Fore.RED + "Invalid name. Please avoid special characters." + Style.RESET_ALL
+            return False, (Fore.RED +
+                          "Invalid name. Please avoid special characters." + 
+                          Style.RESET_ALL)
     return True, ""
 
 
@@ -150,18 +154,23 @@ def user_password():
         if is_valid_pass:
             return password
         else:
-            print (Fore.RED + pass_error + Style.RESET_ALL)
+            print(Fore.RED + pass_error + Style.RESET_ALL)
 
 
 def validate_password(password):
     """
-    This function validates the password to ensure it is at least 6 characters long.
-    This will also check for white spaces
+    This function validates the password.
+    It ensures it is at least 6 characters long.
+    This will also check for white spaces.
     """
     if len(password) < 6:
-        return False, Fore.RED + "Password must be at least 6 characters long." + + Style.RESET_ALL
+        return False, (Fore.RED + 
+                      "Password must be at least 6 characters long." + 
+                      Style.RESET_ALL)
     if ' ' in password:
-        return False, Fore.RED + "Password cannot contain spaces." + Style.RESET_ALL
+        return False, (Fore.RED + 
+                      "Password cannot contain spaces." + 
+                      Style.RESET_ALL)
     return True, ""
 
 
