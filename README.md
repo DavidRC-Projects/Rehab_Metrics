@@ -157,6 +157,8 @@ Each assessment question has tailored validation to ensure data is appropriate.
 The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
 * If a user reports a pain level of 10 (the maximum on the 0–10 scale), the program immediately terminates the session and advises the user to consult a healthcare professional. This serves as a safeguard against potentially serious complications.
 * If the user's input indicates severely limited weight-bearing ability (e.g., unable to place any weight on the operated leg), the program also exits and directs the user to consult a healthcare professional for further assessment.
+* There are warning messages for concerning symptoms.
+* There are screening for any complications during the questions. 
 
 Images for safety features************************************
 
@@ -164,6 +166,71 @@ Images for safety features************************************
 * Users can exit the program at any point by typing 'quit'. This allows for a user-friendly and accommodating interruptions or changes of mind without causing errors or data loss.
 * After each input or action, the user receives immediate, clear feedback. This includes confirmation of successful entries, detailed error messages for invalid inputs, and instructions on how to proceed or correct mistakes.
 * All inputs are monitored for validity. Invalid entries prompt user-friendly error messages and re-prompt the user to try again.
+
+### Timeline Based Assessment
+The program evaluates recovery progress across four key timeframes following knee replacement surgery:
+
+* 0-2 weeks: Initial recovery phase
+* 2-6 weeks: Early recovery phase
+* 6-12 weeks: Mid-term recovery
+* 12+ weeks: Long-term recovery
+
+#### Week 0-2 (Initial Recovery)
+* Range of Motion (ROM):
+  - Poor: Less than 90° knee flexion
+  - Good: Approximately 90° knee flexion
+  - Excellent: Greater than 100° knee flexion
+* Pain Levels:
+  - High (8-10): Normal but requires close monitoring
+  - Typical (6-7): Expected for this stage
+  - Well Controlled (0-5): Excellent progress
+* Weight Bearing:
+  - Appropriate: 0-25% weight-bearing
+  - Progressing Well: 50-75% weight-bearing
+  - Excellent: 75%+ weight-bearing
+
+#### Week 2-6 (Early Recovery)
+* Range of Motion (ROM):
+  - Poor: Less than 90° knee flexion
+  - Functional: Approximately 90° knee flexion
+  - Excellent: Greater than 100° knee flexion
+* Pain Levels:
+  - Concerning: 6 or higher
+  - Typical: 3-4
+  - Well Managed: 2 or lower
+* Weight Bearing:
+  - Slow Progress: 50% or less weight-bearing
+  - Appropriate: 75%+ weight-bearing
+  - Excellent: Full weight-bearing
+
+#### Week 6-12 (Mid-term Recovery)
+* Range of Motion (ROM):
+  - Poor: Less than 90° knee flexion
+  - Functional: Approximately 90° knee flexion
+  - Excellent: Greater than 100° knee flexion
+* Pain Levels:
+  - Concerning: 6 or higher
+  - Typical: 4-5
+  - Excellent: 3 or lower
+* Weight Bearing:
+  - Below Expected: 50% or less weight-bearing
+  - Progressing: 75%+ weight-bearing
+  - Appropriate: Full weight-bearing
+
+#### Week 12+ (Long-term Recovery)
+* Range of Motion (ROM):
+  - Poor: Less than 100° knee flexion
+  - Good: Approximately 100° knee flexion
+  - Optimal: 120° knee flexion
+* Pain Levels:
+  - Elevated: 5 or higher
+  - Typical: 3-4
+  - Excellent: 2 or lower
+* Weight Bearing:
+  - Below Expected: Less than 100% weight-bearing
+  - Excellent: Full weight-bearing
+
+The program automatically calculates the user's recovery stage based on their surgery date and provides stage-appropriate feedback for each metric. This timeline-based assessment helps users understand their progress in context and identify areas that may require attention or healthcare professional consultation.
 
 ## Future Features
 * Provide assessment advice on all metrics 
