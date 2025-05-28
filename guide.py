@@ -54,33 +54,33 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
                 return "Your pain level is significantly elevated for Week 12+. Please consult your healthcare provider."
             elif pain == 4:
                 return "Your pain level is elevated for Week 12+. Consider consulting your healthcare provider."
-            elif 2 <= pain <= 3:
+            elif pain <= 3:
                 return "Your pain level is typical for this stage. Continue monitoring and exercising as prescribed."
             else:
                 return "Excellent pain management! Continue your maintenance exercises."
         
         elif weeks <= 2:  # Week 0-2
-            if pain >= 7:
+            if pain >= 8:
                 return "Your pain level is high for Week 0-2. This is normal but monitor closely and consult your healthcare provider if it worsens."
-            elif 4 <= pain <= 6:
-                return "Your pain level is typical for Week 0-2. Continue following your pain management plan."
-            else:
+            elif 6 == pain == 7:
+                return "Your pain level is typical for Week 0-2. Continue following your exercise plan."
+            elif pain >=5:
                 return "Your pain level is well controlled for Week 0-2. Excellent progress!"
         
         elif weeks <= 6:  # Week 2-6
             if pain >= 6:
                 return "Your pain level is higher than expected for Week 2-6. Consider consulting your healthcare provider."
-            elif 3 <= pain <= 5:
+            elif 3 == pain == 4:
                 return "Your pain level is typical for Week 2-6. Continue your prescribed exercises and pain management."
-            else:
+            elif pain >= 2:
                 return "Your pain is well managed for Week 2-6. Keep up the good work!"
         
         else:  # Week 6-12
-            if pain >= 5:
+            if pain >= 6:
                 return "Your pain level is concerning for Week 6-12. Please consult your healthcare provider."
-            elif 2 <= pain <= 4:
+            elif 4 == pain == 5:
                 return "Your pain level is typical for Week 6-12. Continue your rehabilitation program."
-            else:
+            elif pain <=3:
                 return "Excellent pain management for Week 6-12. Keep up with your exercises!"
     
     except Exception as e:
@@ -116,7 +116,7 @@ def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
             elif wb_level == 2:
                 return "[Week 0-2] Your weight bearing is progressing well. Continue following your prescribed protocol."
             else:
-                return "[Week 0-2] Your weight bearing may be advancing too quickly. Consult your healthcare provider."
+                return "[Week 0-2] Your weight bearing status is excellent for this stage!"
         
         elif weeks < 6:  # Week 2-6
             if wb_level <= 2:

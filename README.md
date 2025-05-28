@@ -52,6 +52,8 @@ As the project progressed, I refined the flow to include input validation and sa
 
 ## Features
 
+### Welcome Message and User Status Check
+
 The application launches via python3 run.py. A welcome message with a disclaimer will appear and will ask the user if they are a new user. The main function will be called first and will use the check_user_status function before calling the welcome_user function.
 
 The check_user_status function will ask if the user is a new or an existing user.  
@@ -64,11 +66,30 @@ The welcome_user function works together with the functions validate_user, check
 
 From the image above you can see there is a welcome message displayed with instructions and a disclaimer. If the user enters 'yes' for a new user then the program will then prompt the user to enter their username and validate this. Validation also includes checking the google sheet for usernames that already exist. After entering the username a prompt will appear to input a password. Both the username and password will be saved in Google sheets if the credentials are valid.
 
-Image of Google sheets users worksheet.
+![Google worksheet users](assets/googleusers.png)
+
+
+### Assessment Questions
 
 ![Questions and assessment](assets/questions.png)
 
+The questions() function guides the user through a structured assessment consisting of six simple questions. These questions are designed to collect relevant post-operative information following a knee replacement surgery. The collected data contributes to a personalised rehabilitation log of their data.
 
+The six questions include:
+1. First Name
+The user is prompted to enter their first name and make the tool more personalised.
+2. Surgery Date
+The user inputs the date of their knee replacement surgery. This information is used to calculate how many days have passed since the procedure.
+3. Complications
+The User will answer 'yes' or 'no' to indicate if they had any complications. If "yes" is selected, the assessment ends immediately with advice to consult a healthcare professional, ensuring a safety-first approach as using the tool.
+4. Pain Level
+A numeric pain rating is collected on a scale of 0-10 to help gauge their discomfort level. While this value is subjective and can vary significantly between users, it remains a critical data point. A high pain score may indicate underlying issues that could require attention from a healthcare professional.
+5. Knee Bend Assessment
+The user selects from one of the four options that best describes their ability to bend their knee. This selection is internally converted to an estimated knee flexion value and displayed back to the user.
+6. Weight Bearing Status
+The user selects one of four options to describe their current weight bearing status. This input is also converted into a descriptive status and shown back to the user.
+
+The answers provided by the user are stored for later display and progress tracking.
 
 ### Validation
 
@@ -104,46 +125,6 @@ Repeats until a valid password is entered or the user types "quit".
 validate_password(password)
 Checks that the password is at least 6 characters long and contains no spaces.
 
-
-
-def welcome_user():
-  – Displays a welcome message (and prints a “Rehab Metrics” banner) to the user.
-
-
-3. New User Journey
-User provides a username (validated to avoid duplicates).
-
-Then creates a password (validated for security).
-
-Credentials are stored in the "users" worksheet in Google Sheets.
-Functions:
-
-validate_user()
-
-check_existing_username()
-
-user_password()
-
-validate_password()
-
-update_user_worksheet()
-
-
-b) Assessment Questions
-The user is guided through 6 simple questions:
-
-First name
-
-Surgery date
-
-Complications (Yes/No)
-
-Pain level (scale of 0–10)
-
-Knee bend assessment (options A–D)
-
-Weight bearing status (options A–D)
-Function: questions()
 
 c) Data Processing
 Calculates days since surgery.
