@@ -601,16 +601,16 @@ def get_user_row(username, worksheet):
 
 def get_user_metric_data(username, metric_worksheet):
     """
-    Retrieve the most recent metric data for a given username. This will skip the header row.
-    If row values match it will return most recent entry.
+    Retrieves the metric data for a given username.
+    Skips the header row and returns the matching entry.
+    Returns None if data is not found.
     """
     all_metric_data = metric_worksheet.get_all_values()
-    user_entries = [row for row in all_metric_data[1:] if row and row[0] == username]
-
-    if not user_entries:
-        print(f"No data found for {username}.")
-        return None
-    return user_entries[-1]
+    for row in all_metric_data[1:]:
+        if row and row[0] == username:
+            return row
+    print(f"No data found for {username}.")
+    return None
 
 
 def format_user_data(metric_data):
