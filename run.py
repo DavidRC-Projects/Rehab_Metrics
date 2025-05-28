@@ -286,9 +286,6 @@ def validate_rom(answer, days_since_surgery=None):
     choice = answer.lower().strip()
     if choice in ROM_CONVERSION:
         base_message = f"Knee bend: {ROM_CONVERSION[choice]}"
-        if days_since_surgery is not None:
-            assessment = get_rom_timeline_assessment(ROM_DEGREES, choice, days_since_surgery)
-            base_message += f"\n{assessment}"
         return True, base_message
     return False, "Please choose A, B, C, D or E."
 
@@ -498,7 +495,7 @@ def get_user_metric_data(username, metric_worksheet):
 def format_user_data(metric_data):
     """
     Format the metric data for display. 
-    This function takes a row of metric data from the userdata worksheet..
+    This function takes a row of metric data from the userdata worksheet.
     Returns a structured dictionary.
     """
     metrics = {
@@ -508,7 +505,7 @@ def format_user_data(metric_data):
         "days_since_surgery": metric_data[3],
         "complications": metric_data[4],
         "pain_level": metric_data[5].strip(),
-        "rom": metric_data[6].replace("Knee bend: ", "").strip(),
+        "rom": metric_data[6].split('\n')[0].replace("Knee bend: ", "").strip(),  # Only take the first line
         "weight_bearing": metric_data[7].replace("Weight bearing status: ", "").strip()
     }
     return metrics
