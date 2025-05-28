@@ -476,25 +476,37 @@ def assess_pain_progress(metric_data):
 def assess_weight_bearing_progress(metric_data):
     """
     Assesses user's weight bearing progress using their metric data.
+    It returns True if it successfully provides an assessment.
+    It checks if the days since surgery is availiable.
+    It checks if the weight bearing status is availiable.
+    A try block is used to catch any unexpected errors.
+    It uses the get_weight_bearing_timeline_assessment function
+    to get the assessment.
     """
     try:
         if not metric_data[3]:
-            print("\nCannot perform weight bearing assessment: Days since surgery not available")
+            print(
+                "\nCannot perform weight bearing assessment: "
+                "Days since surgery not available"
+            )
             return False
-        
         days_since_surgery = int(metric_data[3])
         wb_status = metric_data[7]
         if not wb_status:
-            print("\nCannot perform weight bearing assessment: Weight bearing status not available")
+            print(
+                "\nCannot perform weight bearing assessment: "
+                "Weight bearing status not available"
+            )
             return False
-        
-        assessment = get_weight_bearing_timeline_assessment(wb_status, days_since_surgery)
+        assessment = get_weight_bearing_timeline_assessment(
+            wb_status,
+            days_since_surgery
+        )
         print(Fore.YELLOW + "\nWeight Bearing Assessment:")
         print("-" * 50)
         print(Fore.BLUE + assessment)
         print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
         return True
-    
     except Exception as e:
         print(f"Error performing weight bearing assessment: {e}")
         return False
@@ -503,6 +515,10 @@ def assess_weight_bearing_progress(metric_data):
 def update_rehab_metrics_worksheet(data):
     """
     This function updates the worksheet with user data.
+    It checks if the worksheet is empty.
+    If it is, it will add the headers.
+    It then appends the data to the worksheet.
+    A try block is used to catch any unexpected errors.
     """
     try:
         metric_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERDATA)
@@ -513,7 +529,6 @@ def update_rehab_metrics_worksheet(data):
                     "Weight Bearing"
                 ]
             metric_worksheet.append_row(headers)
-        
         metric_worksheet.append_row(data)
         print("Updating your details...\n")
         print("Your details have been updated successfully!\n")
@@ -544,7 +559,7 @@ def check_user_status():
     print(DASH)
     print(DISCLAIMER)
     print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
-    status = input ("Please enter (Y) for Yes or (N) for No: ")
+    status = input("Please enter (Y) for Yes or (N) for No: ")
     return status.lower() == 'y'
 
 
@@ -552,6 +567,7 @@ def check_existing_username(username):
     """
     Check if a username already exists in the users worksheet.
     Returns True if username exists, False otherwise.
+    A try block is used to catch any unexpected errors.
     """
     try:
         user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
@@ -564,19 +580,24 @@ def check_existing_username(username):
 
 def get_user_row(username, worksheet):
     """
-    Find the row index for a given username in a worksheet.
-    Returns the row index from Google Sheets.
+    This finds the row number in Google Sheets
+    where the username is stored in 'userdata'.
+    This will skip the header row and start at
+    row 1 where it loops through the usernames.
+    It returns None if the username is not found.
     """
-    usernames = worksheet.col_values(1)
-    if len(usernames) <= 1:
-        print("No user data found.")
+    try:
+        usernames = worksheet.col_values(1)
+        if len(usernames) <= 1:
+            print("No user data found.")
+            return None
+        for index in range(1, len(usernames)):
+            if usernames[index] == username:
+                return index + 1
         return None
-        
-    for index in range(1, len(usernames)):
-        if usernames[index] == username:
-            return index + 1
-    return None
-
+    except Exception as e:
+        print(f"Error getting user row: {e}")
+        return None
 
 def get_user_metric_data(username, metric_worksheet):
     """
