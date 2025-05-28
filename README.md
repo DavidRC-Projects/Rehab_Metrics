@@ -52,16 +52,59 @@ As the project progressed, I refined the flow to include input validation and sa
 
 ## Features
 
-1. Program Start
-The application launches via python3 run.py. A welcome message with a disclaimer will appear and will ask the user if they are a new user. At this point the application will follow two paths. Both paths will display another welcome message with additonal information on how to use the app and the disclaimer. This is all handled via the welcome_user function.
+The application launches via python3 run.py. A welcome message with a disclaimer will appear and will ask the user if they are a new user. The main function will be called first and will use the check_user_status function before calling the welcome_user function.
 
-Welcome user function:
+The check_user_status function will ask if the user is a new or an existing user.  
 
-Image
+image of check user status function
 
-This function uses a while loop that will continue to ask the question unless the user inputs 'quit', which will exit the program. There are 2 inputs in this function to obtain the username and password. Conditional statements validate if the correct username and password have been entered.
+The welcome_user function works together with the functions validate_user, check_existing_username, user_password and update_user_worksheet to guide the new user through the sign-up process.  save new user data to a Google Sheet. 
 
-When the user enters 'No' the program will request their username followed by their password. There are 2 functions called 'check_existing_user and get_user_data. The main function will call check_existing_user where it will review the google sheets work sheet named 'users' and interate through the user names to find a match. If an existing user is found the get user data function will retrieve the data from Google Sheets. 
+Image of welcome user function.
+
+From the image above you can see there is a welcome message displayed with instructions and a disclaimer. If the user enters 'yes' for a new user then the program will then prompt the user to enter their username and validate this. Validation also includes checking the google sheet for usernames that already exist. After entering the username a prompt will appear to input a password. Both the username and password will be saved in Google sheets if the credentials are valid.
+
+Image of Google sheets users worksheet.
+
+### Validation
+
+All inputs are automatically validated.
+
+Invalid entries trigger error messages and retry prompts.
+
+validate_user, validate passsword
+This displays instruction to validate the username and password, check for existing usernames, and
+The goal is to ensure secure and valid user entry before taking data from the user.
+
+validate_date
+validate_complications
+validate_pain_scale
+validate_rom
+validate_weight_bearing
+
+
+Returns the new username if all steps succeed.
+
+validate_user(input_str)
+Ensures the username is between 2 and 10 characters.
+
+Disallows special characters defined in the NOT_VALID list.
+
+user_password()
+Prompts the user to enter a password.
+
+Validates it using validate_password().
+
+Repeats until a valid password is entered or the user types "quit".
+
+validate_password(password)
+Checks that the password is at least 6 characters long and contains no spaces.
+
+
+
+def welcome_user():
+  – Displays a welcome message (and prints a “Rehab Metrics” banner) to the user.
+
 
 3. New User Journey
 User provides a username (validated to avoid duplicates).
@@ -151,9 +194,7 @@ Strong input validation prevents invalid data from being accepted.
 8. Program Controls & Error Handling
 Users can quit anytime by typing "quit".
 
-All inputs are automatically validated.
 
-Invalid entries trigger error messages and retry prompts.
 
 The user receives clear feedback after each step.
 

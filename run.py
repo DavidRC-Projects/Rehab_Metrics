@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 from guide import get_rom_timeline_assessment, get_pain_timeline_assessment, get_weight_bearing_timeline_assessment
+from colorama import Fore, Back, Style
 
 # Required Google API scopes
 SCOPE = [
@@ -27,7 +28,7 @@ WORKSHEET_USERS = "users"
 WORKSHEET_USERDATA = "userdata"
 
 SPACE = "\n"
-DASH = "-" * 50
+DASH = Fore.BLUE + "-" * 50
 CENTER_WIDTH = 50
 NOT_VALID = (
     '!', '?', '@', '*', '^', '.', '£', '$', '%', ',', '~', '`',
@@ -59,13 +60,13 @@ WEIGHT_BEARING_CONVERSION = {
     "d": "100% weight-bearing"
 }
 
-DISCLAIMER = (
+DISCLAIMER = Fore.YELLOW + (
     "\nDISCLAIMER:\n"
     "This tool is for educational and self-tracking purposes only.\n"
     "It does not provide medical advice, diagnosis, or treatment.\n"
     "If you are experiencing complications or severe symptoms,\n"
     "please consult your healthcare professional.\n"
-)
+) + Style.RESET_ALL
 
 
 def welcome_user():
