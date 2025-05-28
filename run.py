@@ -76,6 +76,9 @@ DISCLAIMER = Fore.YELLOW + (
 def welcome_user():
     """
     This function displays a welcome message and requests a username input.
+    It also checks if the username is valid and if it already exists.
+    It then asks for a password and updates the users worksheet.
+    A try block is used to catch any unexpected errors.
     """
     welcome_messages = [
         "Welcome, new user!",
@@ -149,6 +152,8 @@ def validate_user(input_str):
 def user_password():
     """
     This function handles password input and validation.
+    It checks if the password is at least 6 characters long.
+    It checks if the password contains spaces.
     """
     while True:
         password = input("Please enter a password (minimum 6 characters): ")
@@ -186,9 +191,9 @@ def questions():
     """
     This function asks the user a series of questions.
     It validates the answers and updates the worksheet.
+    Returns the valid answer or None if the user quits.
     """
     responses = {}
-    surgery_info = {'days': None}
     question_set = [
         (
             "What is your name?",
@@ -309,6 +314,9 @@ def validate_date(date_str):
 def validate_complications(answer):
     """
     This function accepts only 'yes' or 'no' answers.
+    It removes whitespace and converts to lowercase.
+    Uses a conditional statement to allow similar responses
+    to yes and no.
     """
     if answer.lower() in ("yes", "no", 'y', 'n', 'yep', 'nope'):
         return True, ""
@@ -316,6 +324,11 @@ def validate_complications(answer):
 
 
 def validate_pain_scale(pain):
+    """
+    This function validates the pain scale.
+    It checks if the input is a number between 0 and 10.
+    If the input is 10, it will print a message and exit.
+    """
     try:
         num = int(pain)
         if 0 <= num <= 10:
@@ -537,6 +550,11 @@ def update_rehab_metrics_worksheet(data):
 
 
 def update_user_worksheet(username, password):
+    """
+    This function updates the users worksheet with the
+    username and password.
+    A try block is used to catch any unexpected errors.
+    """
     try:
         user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
         if not user_worksheet.row_values(1):
@@ -716,6 +734,10 @@ def verify_password(username, password):
 def handle_returning_user():
     """
     Handle the login process for returning users.
+    It checks if the username and password are valid.
+    Also checks if the worksheet is empty.
+    This uses a while loop to allow the user to try again.
+    It also checks if the user wants to quit the program.
     """
     print(
         Fore.BLUE +
@@ -760,6 +782,10 @@ def user_quit(input_str):
 def process_new_user():
     """
     Handle the registration and data collection for a new user.
+    It checks if the username is valid and if it already exists.
+    It converts the surgery date to a date object.
+    It works out the number of days since surgery.
+    It then updates the worksheet.
     """
     username = welcome_user()
     if username is None:
