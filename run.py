@@ -1,7 +1,11 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
-from guide import get_rom_timeline_assessment, get_pain_timeline_assessment, get_weight_bearing_timeline_assessment
+from guide import (
+    get_rom_timeline_assessment,
+    get_pain_timeline_assessment,
+    get_weight_bearing_timeline_assessment
+)
 from colorama import Fore, Back, Style
 
 # Required Google API scopes
@@ -45,8 +49,8 @@ ROM_CONVERSION = {
 }
 
 ROM_DEGREES = {
-    "a": 45,    
-    "b": 89,    
+    "a": 45,
+    "b": 89,
     "c": 90,
     "d": 100,
     "e": 120
