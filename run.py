@@ -92,7 +92,7 @@ def welcome_user():
 
     print(DASH)
     while True:
-        user_name = input("Please enter your username: ")
+        user_name = input(Style.RESET_ALL + "Please enter your username: ")
         user_name = user_name.strip()
         if user_quit(user_name):
             return None
@@ -446,8 +446,8 @@ def check_user_status():
     print(SPACE)
     print(DASH)
     print(DISCLAIMER)
-    print(Fore.BLUE + "\nAre you a new user?")
-    status = input ("Please enter (Y) for Yes or (N) for No: " + Style.RESET_ALL)
+    print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
+    status = input ("Please enter (Y) for Yes or (N) for No: ")
     return status.lower() == 'y'
 
 
@@ -587,7 +587,7 @@ def handle_returning_user():
     """
     Handle the login process for returning users.
     """
-    print(Fore.BLUE + "\nWelcome back! Please login to view your data.")
+    print(Fore.BLUE + "\nWelcome back! Please login to view your data." + Style.RESET_ALL)
     while True:
         username = input("\nPlease enter your username: ").strip()
         if user_quit(username):

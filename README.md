@@ -45,7 +45,7 @@ At the start of the project, I created a draft flowchart to visualise the progra
 The early flow focused on capturing user information and guiding them through recover related questions:
 
 ![Draft algorithm](assets/draftalgorithm.png)
-
+     
 As the project progressed, I refined the flow to include input validation and safety checks to improve the user experience. The final algorithm shows the outcome for new and existing users:
 
 ![Algorithm](assets/algorithm.png)
@@ -56,15 +56,19 @@ The application launches via python3 run.py. A welcome message with a disclaimer
 
 The check_user_status function will ask if the user is a new or an existing user.  
 
-image of check user status function
+![User check](assets/welcome.png)
 
-The welcome_user function works together with the functions validate_user, check_existing_username, user_password and update_user_worksheet to guide the new user through the sign-up process.  save new user data to a Google Sheet. 
+The welcome_user function works together with the functions validate_user, check_existing_username, user_password and update_user_worksheet to guide the new user through the sign-up process. After the user inputs their data it will then be saved new to a Google Sheet (users worksheet).
 
-Image of welcome user function.
+![New user welcome](assets/welcome2.png)
 
 From the image above you can see there is a welcome message displayed with instructions and a disclaimer. If the user enters 'yes' for a new user then the program will then prompt the user to enter their username and validate this. Validation also includes checking the google sheet for usernames that already exist. After entering the username a prompt will appear to input a password. Both the username and password will be saved in Google sheets if the credentials are valid.
 
 Image of Google sheets users worksheet.
+
+![Questions and assessment](assets/questions.png)
+
+
 
 ### Validation
 
