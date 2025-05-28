@@ -183,51 +183,62 @@ def validate_password(password):
 
 
 def questions():
+    """
+    This function asks the user a series of questions.
+    It validates the answers and updates the worksheet.
+    """
     responses = {}
     surgery_info = {'days': None}
     question_set = [
-    (
-        "What is your name?",
-        validate_user,
-        Fore.RED + "Invalid name, please enter a name between 2-10 characters." + Style.RESET_ALL
-    ),
-    (
-        "When did you have your surgery? (DD/MM/YYYY)",
-        validate_date,
-        Fore.RED + "Date must be in DD/MM/YYYY format and must be a valid date." + Style.RESET_ALL
-    ),
-    (
-        "Have you had any complications since your surgery? (Yes/No)",
-        validate_complications,
-        Fore.RED + "Please answer with 'Yes' or 'No'." + Style.RESET_ALL
-    ),
-    (
-        "On a scale of 0-10, what is your current pain level?\n"
-        "0 = No pain, 10 = Worst imaginable pain",
-        validate_pain_scale,
-        Fore.RED + "Please enter a number between 0 and 10." + Style.RESET_ALL
-    ),
-    (
-        "How far can you currently bend your knee?\n"
-        "A: I struggle to bend it and have minimal movement\n"
-        "B: I can bend it a little but my heel is in front\n"
-        "C: I can bend it so my heel is roughly in line\n"
-        "D: I can bend it well as my heel goes behind\n"
-        "E: I can bend my knee so the heel is a few inches behind the knee",
-        lambda x: validate_rom(x, surgery_info['days']),
-        "Please choose A, B, C, D or E."
-    ),
-    (
-        "Weight bearing on operated leg?\n"
-        "A: I struggle to put any weight\n"
-        "B: I can partially weight bear with aid\n"
-        "C: Most weight with aid but have limp\n"
-        "D: Full weight bearing without aids\n",
-        validate_weight_bearing,
-        "Please choose A, B, C or D."
-    )
+        (
+            "What is your name?",
+            validate_user,
+            (Fore.RED +
+             "Invalid name, please enter a name between 2-10 characters." +
+             Style.RESET_ALL)
+        ),
+        (
+            "When did you have your surgery? (DD/MM/YYYY)",
+            validate_date,
+            (Fore.RED +
+             "Date must be in DD/MM/YYYY format and must be a valid date." +
+             Style.RESET_ALL)
+        ),
+        (
+            "Have you had any complications since your surgery? (Yes/No)",
+            validate_complications,
+            (Fore.RED +
+             "Please answer with 'Yes' or 'No'." +
+             Style.RESET_ALL)
+        ),
+        (
+            "On a scale of 0-10, what is your current pain level?\n"
+            "0 = No pain, 10 = Worst imaginable pain",
+            validate_pain_scale,
+            (Fore.RED +
+             "Please enter a number between 0 and 10." +
+             Style.RESET_ALL)
+        ),
+        (
+            "How far can you currently bend your knee?\n"
+            "A: I struggle to bend it and have minimal movement\n"
+            "B: I can bend it a little but my heel is in front\n"
+            "C: I can bend it so my heel is roughly in line\n"
+            "D: I can bend it well as my heel goes behind\n"
+            "E: The heel is a few inches behind the knee when i bend"/n,
+            lambda x: validate_rom(x, surgery_info['days']),
+            "Please choose A, B, C, D or E."
+        ),
+        (
+            "Weight bearing on operated leg?\n"
+            "A: I struggle to put any weight\n"
+            "B: I can partially weight bear with aid\n"
+            "C: Most weight with aid but have limp\n"
+            "D: Full weight bearing without aids\n",
+            validate_weight_bearing,
+            "Please choose A, B, C or D."
+        )
     ]
-    
     for question, validator, error_message in question_set:
         while True:
             answer = input(question + " ").strip()
@@ -235,21 +246,28 @@ def questions():
                 return None
             is_valid, validation_message = validator(answer)
             if is_valid:
-                msg = validation_message if validation_message else f"Your answer: {answer}"
+                msg = (
+                    validation_message
+                    if validation_message
+                    else f"Your answer: {answer}"
+                )
                 print(f"{msg}\n")
                 responses[question] = answer
-                
-                # Update days_since_surgery after getting the surgery date
                 if "surgery?" in question:
                     success, days = calculate_days_since_surgery(answer)
                     if success:
                         surgery_info['days'] = days
                 break
             else:
-                msg = validation_message if validation_message else error_message
+                msg = (
+                    validation_message
+                    if validation_message
+                    else error_message
+                )
                 print(msg)
     if answer.lower() in ("yes", "y", 'yep'):
-        print("Please consult a healthcare professional about your complications.")
+        print("Please consult a healthcare professional about your "
+              "complications.")
     return responses
 
 
