@@ -66,10 +66,10 @@ The welcome_user function works together with the functions validate_user, check
 
 From the image above you can see there is a welcome message displayed with instructions and a disclaimer. If the user enters 'yes' for a new user then the program will then prompt the user to enter their username and validate this. Validation also includes checking the google sheet for usernames that already exist. After entering the username a prompt will appear to input a password. Both the username and password will be saved in Google sheets if the credentials are valid.
 
-![Google worksheet users](assets/googleusers.png)
+![Google worksheet users](assets/googleusers.png)********************************
 
 
-### Assessment Questions
+### New User Journey
 
 ![Questions and assessment](assets/questions.png)
 
@@ -90,6 +90,40 @@ The user selects from one of the four options that best describes their ability 
 The user selects one of four options to describe their current weight bearing status. This input is also converted into a descriptive status and shown back to the user.
 
 The answers provided by the user are stored for later display and progress tracking.
+
+
+### Returning User Journey
+
+![Questions and assessment](assets/existing_user.png) 
+
+Returning users begin by entering their previously registered username and password. The tool then verifies the credentials to ensure the user is authenticated before proceeding. Upon successful login, users are guided through the assessment questions to update their rehabilitation progress.
+
+This uses the functions handle_returning_user(), which works by prompting the user to input their username and password. It will then check if the username exists. The tool will then call verify_password() to authenticate the user. If authentication is successful, it loads the user's existing data from 'userdata' worksheet in Google Sheets. If login fails (due to incorrect credentials or non-existent username), the user is informed and given the option to retry or return to the main menu. Please see [Validation](#validation) for further details.
+
+The verify_password function checks whether the password entered by the user matches the stored password for that username. It retrieves the password from the 'users' worksheet in Google Sheets and performs a comparison of the entered password and the stored one. It will return True if the credentials match, allowing the user to proceed; otherwise, returns False, triggering an error message and prompting for re-entry. Please see [Validation](#validation)
+
+Upon completing the assessment questions, the app evaluates recovery progress using the following functions (located in guide.py):
+* get_rom_timeline_assessment() – Evaluates range of motion progress (e.g., knee bend).
+
+* get_pain_timeline_assessment() – Evaluates reported pain levels and highlights any concerning scores.
+
+* get_weight_bearing_timeline_assessment() – Evaluates weight-bearing progress and mobility status.
+
+### Data Storage
+
+All user data is stored securely in Google Sheets using the gspread library:
+
+* "users" worksheet – Stores login credentials (usernames and passwords).
+
+* "userdata" worksheet – Stores each user's recovery progress that is from the answers to assessment questions.
+
+* update_rehab_metrics_worksheet() is responsible for storing all validated assessment data.
+
+### Data Processing and Retrival
+
+* The app determines how many days have elapsed since the user’s recorded surgery date using the calculate_days_since_surgery() function. This value is essential for placing the user's rehabilitation progress in the correct timeframe and helps tailor the feedback they receive accordingly.
+* The app retrieves the most recent user data from Google Sheets, allowing for comparison with current inputs.
+* get_user_data() – This function fetches the user's previous entries from the "userdata" worksheet based on their username.
 
 ### Validation
 
@@ -125,61 +159,15 @@ Repeats until a valid password is entered or the user types "quit".
 validate_password(password)
 Checks that the password is at least 6 characters long and contains no spaces.
 
+### Safety Feature
+The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
+* If a user reports a pain level of 10 (the maximum on the 0–10 scale), the program immediately terminates the session and advises the user to consult a healthcare professional. This serves as a safeguard against potentially serious complications.
+* If the user's input indicates severely limited weight-bearing ability (e.g., unable to place any weight on the operated leg), the program also exits and directs the user to consult a healthcare professional for further assessment.
 
-c) Data Processing
-Calculates days since surgery.
+Images for safety features************************************
 
-Validates all responses.
-
-Stores all responses in the "userdata" worksheet.
-Function: update_rehab_metrics_worksheet()
-
-4. Returning User Journey
-a) Login
-The user logs in with their username and password.
-
-Credentials are verified.
-Functions:
-
-handle_returning_user()
-
-verify_password()
-
-b) Data Retrieval
-The user's previous responses are retrieved from Google Sheets.
-Function: get_user_data()
-
-5. Assessment Feedback
-Using the data collected, the app provides recovery feedback:
-
-get_rom_timeline_assessment() – Assesses range of motion
-
-get_pain_timeline_assessment() – Assesses pain levels
-
-get_weight_bearing_timeline_assessment() – Assesses weight bearing
-
-These are handled in guide.py.
-
-6. Data Storage
-All data is stored in Google Sheets using gspread.
-
-Two worksheets:
-
-"users" – stores login info.
-
-"userdata" – stores recovery responses.
-
-7. Safety Features
-If pain level is 10, the program exits and advises medical review.
-
-If weight bearing is severely impaired, the same applies.
-
-Strong input validation prevents invalid data from being accepted.
-
-8. Program Controls & Error Handling
+### Program Controls & Error Handling
 Users can quit anytime by typing "quit".
-
-
 
 The user receives clear feedback after each step.
 
