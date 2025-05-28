@@ -127,37 +127,31 @@ All user data is stored securely in Google Sheets using the gspread library:
 
 ### Validation
 
-All inputs are automatically validated.
+All inputs are validated. Invalid entries trigger error messages in red coloured text and offer retry prompts.
 
-Invalid entries trigger error messages and retry prompts.
-
-validate_user, validate passsword
-This displays instruction to validate the username and password, check for existing usernames, and
-The goal is to ensure secure and valid user entry before taking data from the user.
-
-validate_date
-validate_complications
-validate_pain_scale
-validate_rom
-validate_weight_bearing
-
-
-Returns the new username if all steps succeed.
+The login process verifies both username and password before proceeding.
 
 validate_user(input_str)
-Ensures the username is between 2 and 10 characters.
-
-Disallows special characters defined in the NOT_VALID list.
+* Ensures that the username is between 2 and 10 characters long.
+* Disallows special characters using a predefined NOT_VALID list.
+* If the username is valid and unique (or exists for returning users), it is accepted.
 
 user_password()
-Prompts the user to enter a password.
-
-Validates it using validate_password().
-
-Repeats until a valid password is entered or the user types "quit".
+* Prompts the user to enter a password.
+* Uses validate_password() for validation.
+* Continues prompting until a valid password is entered or the user types 'quit'.
 
 validate_password(password)
-Checks that the password is at least 6 characters long and contains no spaces.
+* Ensures the password is at least 6 characters long.
+* Disallows spaces to prevent formatting issues.
+* Returns True if the password is valid; otherwise, returns False.
+
+Each assessment question has tailored validation to ensure data is appropriate.
+* validate_date() - Checks if the surgery date is in the correct YYYY-MM-DD format and ensures the date is not in the future.
+* validate_complications() - Accepts only "Yes", "No", or variations thereof (e.g., "Y", "N").
+* validate_pain_scale() - Confirms that the pain input is a number between 0 and 10.
+* validate_rom() - Accepts only choices A–E. 
+* validate_weight_bearing() - Accepts only choices A–D.
 
 ### Safety Feature
 The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
@@ -167,9 +161,9 @@ The program includes built-in safety mechanisms to help protect users by identif
 Images for safety features************************************
 
 ### Program Controls & Error Handling
-Users can quit anytime by typing "quit".
-
-The user receives clear feedback after each step.
+* Users can exit the program at any point by typing 'quit'. This allows for a user-friendly and accommodating interruptions or changes of mind without causing errors or data loss.
+* After each input or action, the user receives immediate, clear feedback. This includes confirmation of successful entries, detailed error messages for invalid inputs, and instructions on how to proceed or correct mistakes.
+* All inputs are monitored for validity. Invalid entries prompt user-friendly error messages and re-prompt the user to try again.
 
 ## Future Features
 * Provide assessment advice on all metrics 
