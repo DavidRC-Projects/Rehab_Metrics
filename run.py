@@ -73,19 +73,24 @@ def welcome_user():
     """
     This function displays a welcome message and requests a username input.
     """
+    welcome_messages = [
+        "Welcome, new user!",
+        "This tool has been developed to help you track",
+        "your recovery after a knee replacement.",
+        "",
+        "Please enter a username to begin your journey.",
+        "You'll be guided through a few short questions.",
+        "Each answer will be saved to help monitor your progress.",
+        "You can type 'quit' at any time to exit the program.",
+        "To review your recovery progress in the future,",
+        "you can log in using your username and password.",
+        ""
+    ]
+
     print(DASH)
     print(SPACE)
-    print("Welcome, new user!".center(CENTER_WIDTH))
-    print("This tool has been developed to help you track".center(CENTER_WIDTH))
-    print("your recovery after a knee replacement.".center(CENTER_WIDTH))
-    print("".center(CENTER_WIDTH))
-    print("Please enter a username to begin your journey.".center(CENTER_WIDTH))
-    print("You'll be guided through a few short questions.".center(CENTER_WIDTH))
-    print("Each answer will be saved to help monitor your progress.".center(CENTER_WIDTH))
-    print("You can type 'quit' at any time to exit the program.".center(CENTER_WIDTH))
-    print("To review your recovery progress in the future,".center(CENTER_WIDTH))
-    print("you can log in using your username and password.".center(CENTER_WIDTH))
-    print("".center(CENTER_WIDTH))
+    for message in welcome_messages:
+        print(message.center(CENTER_WIDTH))
     print(SPACE)
     print(DASH)
     print(DISCLAIMER)
