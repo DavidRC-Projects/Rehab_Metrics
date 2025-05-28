@@ -109,11 +109,12 @@ def welcome_user():
         if not is_valid:
             print(Fore.RED + error_message + Style.RESET_ALL)
             continue
-            
         if check_existing_username(user_name):
-            print (Fore.RED + "This username already exists. Please choose another." + Style.RESET_ALL)
+            print(Fore.RED +
+                  "This username already exists. " +
+                  "Please choose another." +
+                  Style.RESET_ALL)
             continue
-            
         password = user_password()
         if password == "quit":
             return None
@@ -129,7 +130,7 @@ def validate_user(input_str):
     - Must be 2-10 characters long
     - Must not contain special characters
     """
-    if len (input_str) < 2 or len(input_str) > 10:
+    if len(input_str) < 2 or len(input_str) > 10:
         return False, Fore.RED + "Username must be between 2 and 10 characters." + Style.RESET_ALL
     for char in NOT_VALID:
         if char in input_str:
