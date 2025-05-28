@@ -345,10 +345,14 @@ def validate_pain_scale(pain):
         )
 
 
-def validate_rom(answer, days_since_surgery=None):
+def validate_rom(answer):
     """
-    This function validates range of motion (ROM) input using multiple choice questions
-    and provides basic assessment.
+    This function validates range of motion (ROM) input.
+    This will remove whitespace and converts to lowercase.
+    It then checks if the input matches the valid options.
+    If valid, it returns True and prints the message.
+    If invalid, it returns False and prompts the user
+    to enter a valid choice.
     """
     choice = answer.lower().strip()
     if choice in ROM_CONVERSION:
@@ -359,34 +363,50 @@ def validate_rom(answer, days_since_surgery=None):
 
 def validate_weight_bearing(answer):
     """
-    This function validates the weight bearing status using multiple choice questions.
+    This function validates the weight bearing status.
+    Returns a tuple (is_valid, message).
+    If the input is 'a', recommends medical review and exits.
     """
     if answer is None:
         return False, "Please choose A, B, C or D."
-        
     selection = answer.lower().strip()
     if selection in WEIGHT_BEARING_CONVERSION:
         if selection == "a":
-            print("This sounds very uncomfortable and would recommend consulting a healthcare professional for advice.")
-            print("We recommend pausing the assessment for now. Take care.\n")
+            print(
+                "This sounds very uncomfortable and would recommend "
+                "consulting a healthcare professional for advice."
+            )
+            print(
+                "We recommend pausing the assessment for now. "
+                "Take care.\n"
+            )
             exit()
-        return True, f"Weight bearing status: {WEIGHT_BEARING_CONVERSION[selection]}"
+        base_message = (
+            f"Weight bearing status: "
+            f"{WEIGHT_BEARING_CONVERSION[selection]}"
+        )
+        return True, base_message
     return False, "Please choose A, B, C or D."
 
 
 def assess_rom_progress(metric_data):
     """
     Assesses user's Range of Motion (ROM) progress using their metric data.
+    It returns True if it successfully provides an assessment.
+    It checks what ROM was recorded and converts it to a choice.
+    Converts the number of days since surgery to an integer.
+    It uses conditional statements to determine the ROM choice.
+    A try block is used to catch any unexpected errors.
     """
     try:
         if not metric_data[3]:
-            print("\nCannot perform ROM assessment: Days since surgery not available")
+            print(
+                "\nCannot perform ROM assessment: "
+                "Days since surgery not available"
+            )
             return False
-            
         days_since_surgery = int(metric_data[3])
         rom_data = metric_data[6].split('\n')[0]
-        
-        # Parse the ROM choice from the data
         rom_choice = None
         if "Less than 45°" in rom_data:
             rom_choice = "a"
@@ -397,10 +417,13 @@ def assess_rom_progress(metric_data):
         elif "Greater than 100°" in rom_data:
             rom_choice = "d"
         elif "Greater than 120°" in rom_data:
-            rom_choice = "e"    
-        
+            rom_choice = "e"
         if rom_choice:
-            assessment = get_rom_timeline_assessment(ROM_DEGREES, rom_choice, days_since_surgery)
+            assessment = get_rom_timeline_assessment(
+                ROM_DEGREES,
+                rom_choice,
+                days_since_surgery
+            )
             print(Fore.YELLOW + "\nROM Assessment:")
             print("-" * 50)
             print(Fore.BLUE + assessment)
@@ -414,27 +437,37 @@ def assess_rom_progress(metric_data):
 def assess_pain_progress(metric_data):
     """
     Assesses user's pain level progress using their metric data.
+    It returns True if it successfully provides and assessment.
+    It checks if the days since surgery is availiable.
+    It checks if the pain level is availiable.
+    A try block is used to catch any unexpected errors.
+    It uses the get_pain_timeline_assessment function to
+    get the assessment.
     """
     try:
         if not metric_data[3]:
-            print("\nCannot perform pain assessment: Days since surgery not available")
+            print(
+                "\nCannot perform pain assessment: "
+                "Days since surgery not available"
+            )
             return False
-            
         days_since_surgery = int(metric_data[3])
-        
         pain_level = metric_data[5]
         if not pain_level:
-            print("\nCannot perform pain assessment: Pain level data not available")
+            print(
+                "\nCannot perform pain assessment: "
+                "Pain level data not available"
+            )
             return False
-            
-        # Get and display assessment
-        assessment = get_pain_timeline_assessment(pain_level, days_since_surgery)
+        assessment = get_pain_timeline_assessment(
+            pain_level,
+            days_since_surgery
+        )
         print(Fore.YELLOW + "\nPain Level Assessment:")
         print("-" * 50)
         print(Fore.BLUE + assessment)
-        print(Fore.YELLOW + "-" * 50+ Style.RESET_ALL)
+        print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
         return True
-        
     except Exception as e:
         print(f"Error performing pain assessment: {e}")
         return False
