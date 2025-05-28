@@ -471,7 +471,7 @@ def assess_pain_progress(metric_data):
     except Exception as e:
         print(f"Error performing pain assessment: {e}")
         return False
-    
+
 
 def assess_weight_bearing_progress(metric_data):
     """
@@ -717,7 +717,11 @@ def handle_returning_user():
     """
     Handle the login process for returning users.
     """
-    print(Fore.BLUE + "\nWelcome back! Please login to view your data." + Style.RESET_ALL)
+    print(
+        Fore.BLUE +
+        "\nWelcome back! Please login to view your data." +
+        Style.RESET_ALL
+    )
     while True:
         username = input("\nPlease enter your username: ").strip()
         if user_quit(username):
@@ -729,8 +733,15 @@ def handle_returning_user():
             if get_user_data(username):
                 break
         else:
-            print(Fore.RED + "\nIncorrect username or password." + Style.RESET_ALL)
-        retry = input (Fore.BLUE + "\nWould you like to try again? (Y/N): ").lower()
+            print(
+                Fore.RED +
+                "\nIncorrect username or password." +
+                Style.RESET_ALL
+            )
+        retry = input(
+            Fore.BLUE +
+            "\nWould you like to try again? (Y/N): "
+        ).lower()
         if retry != 'y':
             break
 
