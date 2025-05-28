@@ -292,10 +292,17 @@ def validate_date(date_str):
     if not success:
         return False, "Please enter your surgery date in DD/MM/YYYY format."
     if days_ago < 0:
-        return False, "The surgery date cannot be in the future. Please check and try again."
-    if days_ago > 730: 
-        return False, (Fore.RED + "Surgery date should be within 2 years for tracking." +
-                      "Please consult your healthcare provider." + Style.RESET_ALL)
+        return False, (
+            "The surgery date cannot be in the future. "
+            "Please check and try again."
+        )
+    if days_ago > 730:
+        return False, (
+            Fore.RED +
+            "Surgery date should be within 2 years for tracking. " +
+            "Please consult your healthcare provider." +
+            Style.RESET_ALL
+        )
     return True, f"Surgery was {days_ago} days ago on {date_str}."
 
 
