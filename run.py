@@ -599,6 +599,7 @@ def get_user_row(username, worksheet):
         print(f"Error getting user row: {e}")
         return None
 
+
 def get_user_metric_data(username, metric_worksheet):
     """
     Retrieves the metric data for a given username.
@@ -745,71 +746,85 @@ def user_quit(input_str):
     return False
 
 
+def process_new_user():
+    """
+    Handle the registration and data collection for a new user.
+    """
+    username = welcome_user()
+    if username is None:
+        return
+    responses = questions()
+    if responses is None:
+        return
+    surgery_date_str = responses.get(
+        "When did you have your surgery? (DD/MM/YYYY)",
+        ""
+    )
+    try:
+        surgery_date = datetime.strptime(
+            surgery_date_str,
+            "%d/%m/%Y"
+        ).date()
+    except ValueError:
+        print("Invalid surgery date format. Please use DD/MM/YYYY.")
+        return
+    current_date = datetime.today().date()
+    days_since_surgery = (current_date - surgery_date).days
+    rom_q = (
+        "How far can you currently bend your knee?\n"
+        "A: I struggle to bend it and have minimal movement\n"
+        "B: I can bend it a little but my heel is in front\n"
+        "C: I can bend it so my heel is roughly in line\n"
+        "D: I can bend it well as my heel goes behind\n"
+        "E: I can bend my knee so the heel is a few inches "
+        "behind the knee"
+    )
+    wb_q = (
+        "Weight bearing on operated leg?\n"
+        "A: I struggle to put any weight\n"
+        "B: I can partially weight bear with aid\n"
+        "C: Most weight with aid but have limp\n"
+        "D: Full weight bearing without aids\n"
+    )
+    rom_valid, rom = validate_rom(responses.get(rom_q, ""))
+    wb_valid, wb = validate_weight_bearing(responses.get(wb_q, ""))
+    if not (rom_valid and wb_valid):
+        print("Invalid ROM or weight-bearing input. Please try again.")
+        return
+    complications_q = (
+        "Have you had any complications since your surgery? "
+        "(Yes/No)"
+    )
+    pain_q = (
+        "On a scale of 0-10, what is your current pain level?\n"
+        "0 = No pain, 10 = Worst imaginable pain"
+    )
+    data = [
+        username,
+        responses.get("What is your name?", ""),
+        surgery_date_str,
+        days_since_surgery,
+        responses.get(complications_q, ""),
+        responses.get(pain_q, ""),
+        rom,
+        wb
+    ]
+    assess_rom_progress(data)
+    assess_pain_progress(data)
+    assess_weight_bearing_progress(data)
+    update_rehab_metrics_worksheet(data)
+
+
 def main():
+    """
+    This is the start of the program.
+    Handles both new and returning users.
+    """
     is_new_user = check_user_status()
     if is_new_user:
-        username = welcome_user() 
-        if username is None:  
-            return
-        responses = questions()
-        if responses is None: 
-            return
-        if responses: 
-            surgery_date_str = responses.get(
-                "When did you have your surgery? (DD/MM/YYYY)", ""
-            )
-            surgery_date = datetime.strptime(surgery_date_str, "%d/%m/%Y").date()
-            current_date = datetime.today().date()
-            days_since_surgery = (current_date - surgery_date).days
-
-            rom_q = (
-                "How far can you currently bend your knee?\n"
-                "A: I struggle to bend it and have minimal movement\n"
-                "B: I can bend it a little but my heel is in front\n"
-                "C: I can bend it so my heel is roughly in line\n"
-                "D: I can bend it well as my heel goes behind\n"
-                "E: I can bend my knee so the heel is a few inches behind the knee"
-            )
-                    
-            wb_q = ("Weight bearing on operated leg?\n"
-                   "A: I struggle to put any weight\n"
-                   "B: I can partially weight bear with aid\n"
-                   "C: Most weight with aid but have limp\n"
-                   "D: Full weight bearing without aids\n")
-
-            rom_valid, rom = validate_rom(responses[rom_q])
-            wb_valid, wb = validate_weight_bearing(responses[wb_q])
-
-            if rom_valid and wb_valid:
-                username = None
-                user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
-                usernames = user_worksheet.col_values(1)
-                if len(usernames) > 1:
-                    username = usernames[-1]
-                
-                if username:
-                    complications_q = "Have you had any complications since your surgery? (Yes/No)"
-                    pain_q = "On a scale of 0-10, what is your current pain level?\n0 = No pain, 10 = Worst imaginable pain"
-                    
-                    data = [
-                        username,
-                        responses.get("What is your name?", ""),
-                        surgery_date_str,
-                        days_since_surgery,
-                        responses.get(complications_q, ""),
-                        responses.get(pain_q, ""),
-                        rom,
-                        wb
-                    ]
-                    assess_rom_progress(data)
-                    assess_pain_progress(data)
-                    assess_weight_bearing_progress(data)
-                    update_rehab_metrics_worksheet(data)
-                else:
-                    print("Error: Could not retrieve username. Please try again.")
-            else:
-                print("Error: Invalid ROM or weight bearing responses. Try again.")
+        process_new_user()
     else:
         handle_returning_user()
+
 
 main()
