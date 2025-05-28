@@ -98,11 +98,11 @@ def welcome_user():
             return None
         is_valid, error_message = validate_user(user_name)
         if not is_valid:
-            print(error_message)
+            print(Fore.RED + error_message + Style.RESET_ALL)
             continue
             
         if check_existing_username(user_name):
-            print("This username already exists. Please choose another.")
+            print (Fore.RED + "This username already exists. Please choose another." + Style.RESET_ALL)
             continue
             
         password = user_password()
@@ -121,10 +121,10 @@ def validate_user(input_str):
     - Must not contain special characters
     """
     if len (input_str) < 2 or len(input_str) > 10:
-        return False, "Username must be between 2 and 10 characters."
+        return False, Fore.RED + "Username must be between 2 and 10 characters." + Style.RESET_ALL
     for char in NOT_VALID:
         if char in input_str:
-            return False, "Invalid name. Please avoid special characters."
+            return False, Fore.RED + "Invalid name. Please avoid special characters." + Style.RESET_ALL
     return True, ""
 
 
@@ -140,7 +140,7 @@ def user_password():
         if is_valid_pass:
             return password
         else:
-            print(pass_error)
+            print (Fore.RED + pass_error + Style.RESET_ALL)
 
 
 def validate_password(password):
@@ -149,9 +149,9 @@ def validate_password(password):
     This will also check for white spaces
     """
     if len(password) < 6:
-        return False, "Password must be at least 6 characters long."
+        return False, Fore.RED + "Password must be at least 6 characters long." + + Style.RESET_ALL
     if ' ' in password:
-        return False, "Password cannot contain spaces."
+        return False, Fore.RED + "Password cannot contain spaces." + Style.RESET_ALL
     return True, ""
 
 
@@ -162,23 +162,23 @@ def questions():
     (
         "What is your name?",
         validate_user,
-        "Invalid name, please enter a name between 2-10 characters."
+        Fore.RED + "Invalid name, please enter a name between 2-10 characters." + Style.RESET_ALL
     ),
     (
         "When did you have your surgery? (DD/MM/YYYY)",
         validate_date,
-        "Date must be in DD/MM/YYYY format and must be a valid date."
+        Fore.RED + "Date must be in DD/MM/YYYY format and must be a valid date." + Style.RESET_ALL
     ),
     (
         "Have you had any complications since your surgery? (Yes/No)",
         validate_complications,
-        "Please answer with 'Yes' or 'No'."
+        Fore.RED + "Please answer with 'Yes' or 'No'." + Style.RESET_ALL
     ),
     (
         "On a scale of 0-10, what is your current pain level?\n"
         "0 = No pain, 10 = Worst imaginable pain",
         validate_pain_scale,
-        "Please enter a number between 0 and 10."
+        Fore.RED + "Please enter a number between 0 and 10." + Style.RESET_ALL
     ),
     (
         "How far can you currently bend your knee?\n"
@@ -249,8 +249,8 @@ def validate_date(date_str):
     if days_ago < 0:
         return False, "The surgery date cannot be in the future. Please check and try again."
     if days_ago > 730: 
-        return False, ("Surgery date should be within 2 years for tracking. "
-                      "Please consult your healthcare provider.")
+        return False, (Fore.RED + "Surgery date should be within 2 years for tracking." +
+                      "Please consult your healthcare provider." + Style.RESET_ALL)
     return True, f"Surgery was {days_ago} days ago on {date_str}."
 
 
@@ -273,9 +273,9 @@ def validate_pain_scale(pain):
                 exit()
             return True, f"Your pain level is {num}/10."
         else:
-            return False, "Please enter a number between 0 and 10."
+            return False, Fore.RED + "Please enter a number between 0 and 10." + Style.RESET_ALL
     except ValueError:
-        return False, "Pain level must be a whole number"
+        return False, Fore.RED + "Pain level must be a whole number" + Style.RESET_ALL
 
 
 def validate_rom(answer, days_since_surgery=None):
@@ -337,10 +337,10 @@ def assess_rom_progress(metric_data):
         
         if rom_choice:
             assessment = get_rom_timeline_assessment(ROM_DEGREES, rom_choice, days_since_surgery)
-            print("\nROM Assessment:")
+            print(Fore.YELLOW + "\nROM Assessment:")
             print("-" * 50)
-            print(assessment)
-            print("-" * 50)
+            print(Fore.BLUE + assessment)
+            print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
             return True
     except Exception as e:
         print(f"Error performing ROM assessment: {e}")
@@ -365,10 +365,10 @@ def assess_pain_progress(metric_data):
             
         # Get and display assessment
         assessment = get_pain_timeline_assessment(pain_level, days_since_surgery)
-        print("\nPain Level Assessment:")
+        print(Fore.YELLOW + "\nPain Level Assessment:")
         print("-" * 50)
-        print(assessment)
-        print("-" * 50)
+        print(Fore.BLUE + assessment)
+        print(Fore.YELLOW + "-" * 50+ Style.RESET_ALL)
         return True
         
     except Exception as e:
@@ -392,10 +392,10 @@ def assess_weight_bearing_progress(metric_data):
             return False
         
         assessment = get_weight_bearing_timeline_assessment(wb_status, days_since_surgery)
-        print("\nWeight Bearing Assessment:")
+        print(Fore.YELLOW + "\nWeight Bearing Assessment:")
         print("-" * 50)
-        print(assessment)
-        print("-" * 50)
+        print(Fore.BLUE + assessment)
+        print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
         return True
     
     except Exception as e:
@@ -446,8 +446,8 @@ def check_user_status():
     print(SPACE)
     print(DASH)
     print(DISCLAIMER)
-    print("\nAre you a new user?")
-    status = input("Please enter (Y) for Yes or (N) for No: ")
+    print(Fore.BLUE + "\nAre you a new user?")
+    status = input ("Please enter (Y) for Yes or (N) for No: " + Style.RESET_ALL)
     return status.lower() == 'y'
 
 
@@ -518,8 +518,8 @@ def display_user_metrics(metrics):
     """
     Display the formatted user metrics.
     """
-    print("\nYour Profile and Rehabilitation Data:")
-    print("-" * 50)
+    print(Fore.YELLOW + "\nYour Profile and Rehabilitation Data:")
+    print("-" * 50 + Style.RESET_ALL)
     print(f"Username: {metrics['username']}")
     print(f"Name: {metrics['name']}")
     print(f"Surgery Date: {metrics['surgery_date']}")
@@ -530,7 +530,7 @@ def display_user_metrics(metrics):
         print(f"Pain Level (0-10): {metrics['pain_level']}")
     print(f"Knee Range of Motion: {metrics['rom']}")
     print(f"Weight Bearing Status: {metrics['weight_bearing']}")
-    print("-" * 50)
+    print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
 
 
 def get_user_data(username):
@@ -587,7 +587,7 @@ def handle_returning_user():
     """
     Handle the login process for returning users.
     """
-    print("\nWelcome back! Please login to view your data.")
+    print(Fore.BLUE + "\nWelcome back! Please login to view your data.")
     while True:
         username = input("\nPlease enter your username: ").strip()
         if user_quit(username):
@@ -599,8 +599,8 @@ def handle_returning_user():
             if get_user_data(username):
                 break
         else:
-            print("\nIncorrect username or password.")
-        retry = input("\nWould you like to try again? (Y/N): ").lower()
+            print(Fore.RED + "\nIncorrect username or password." + Style.RESET_ALL)
+        retry = input (Fore.BLUE + "\nWould you like to try again? (Y/N): ").lower()
         if retry != 'y':
             break
 
