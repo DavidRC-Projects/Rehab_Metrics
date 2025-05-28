@@ -225,8 +225,8 @@ def questions():
             "B: I can bend it a little but my heel is in front\n"
             "C: I can bend it so my heel is roughly in line\n"
             "D: I can bend it well as my heel goes behind\n"
-            "E: The heel is a few inches behind the knee when i bend"/n,
-            lambda x: validate_rom(x, surgery_info['days']),
+            "E: The heel is a few inches behind the knee when i bend",
+            validate_rom,
             "Please choose A, B, C, D or E."
         ),
         (
@@ -615,9 +615,11 @@ def get_user_metric_data(username, metric_worksheet):
 
 def format_user_data(metric_data):
     """
-    Format the metric data for display. 
+    Format the metric data for display.
     This function takes a row of metric data from the userdata worksheet.
-    Returns a structured dictionary.
+    It formats the data into a structured dictionary.
+    It removes whitespace and converts to lowercase.
+    Replaces the label for pain level and weightbearing status.
     """
     metrics = {
         "username": metric_data[0],
@@ -626,15 +628,25 @@ def format_user_data(metric_data):
         "days_since_surgery": metric_data[3],
         "complications": metric_data[4],
         "pain_level": metric_data[5].strip(),
-        "rom": metric_data[6].split('\n')[0].replace("Knee bend: ", "").strip(),  # Only take the first line
-        "weight_bearing": metric_data[7].replace("Weight bearing status: ", "").strip()
+        "rom": (
+            metric_data[6]
+            .split('\n')[0]
+            .replace("Knee bend: ", "")
+            .strip()
+        ),
+        "weight_bearing": (
+            metric_data[7]
+            .replace("Weight bearing status: ", "")
+            .strip()
+        )
     }
     return metrics
 
 
 def display_user_metrics(metrics):
     """
-    Display the formatted user metrics.
+    Display the formatted user metrics from the worksheet.
+    It uses the metrics dictionary to print the data.
     """
     print(Fore.YELLOW + "\nYour Profile and Rehabilitation Data:")
     print("-" * 50 + Style.RESET_ALL)
@@ -643,9 +655,7 @@ def display_user_metrics(metrics):
     print(f"Surgery Date: {metrics['surgery_date']}")
     print(f"Days Since Surgery: {metrics['days_since_surgery']}")
     print(f"Complications Reported: {metrics['complications']}")
-    
-    if metrics['pain_level']:
-        print(f"Pain Level (0-10): {metrics['pain_level']}")
+    print(f"Pain Level (0-10): {metrics['pain_level']}")
     print(f"Knee Range of Motion: {metrics['rom']}")
     print(f"Weight Bearing Status: {metrics['weight_bearing']}")
     print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
@@ -653,33 +663,30 @@ def display_user_metrics(metrics):
 
 def get_user_data(username):
     """
-    Retrieve and display user data from users and userdata worksheets.
+    Retrieve and display user data from users and userdata worksheet.
+    It checks if the username is found in the users worksheet.
+    It checks if the metric data is found in the userdata worksheet.
+    It formats the data into a dictionary and displays it.
+    It then assesses the ROM, pain and weight bearing progress.
+    A try block is used to catch any unexpected errors.
     """
     try:
-        # Get user data from users worksheet
         user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
         username_row = get_user_row(username, user_worksheet)
-        
         if username_row is None:
             print(f"Username '{username}' not found.")
             return False
-            
-        # Get user metrics from userdata worksheet
         metric_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERDATA)
         metric_data = get_user_metric_data(username, metric_worksheet)
-        
         if metric_data is None:
             print("No rehabilitation data found for this user.")
             return False
-            
         metrics = format_user_data(metric_data)
         display_user_metrics(metrics)
         assess_rom_progress(metric_data)
         assess_pain_progress(metric_data)
         assess_weight_bearing_progress(metric_data)
-        
         return True
-        
     except Exception as e:
         print(f"Error retrieving user data: {e}")
         return False
@@ -687,18 +694,22 @@ def get_user_data(username):
 
 def verify_password(username, password):
     """
-    Verify the password for a given username.
+    Connects to the users worksheet and checks if the username
+    is found in the worksheet.
+    Finds the index of the username and returns the password.
+    Returns True if password matches the stored password.
     """
-    user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
-    usernames = user_worksheet.col_values(1)
-    
-    if username not in usernames:
+    try:
+        user_worksheet = SPREADSHEET.worksheet(WORKSHEET_USERS)
+        usernames = user_worksheet.col_values(1)
+        if username not in usernames:
+            return False
+        row_idx = usernames.index(username) + 1
+        stored_password = user_worksheet.cell(row_idx, 2).value
+        return password == stored_password.strip()
+    except Exception:
+        print("Error verifying password")
         return False
-        
-    row_idx = usernames.index(username) + 1
-    stored_password = user_worksheet.cell(row_idx, 2).value
-    
-    return password == stored_password
 
 
 def handle_returning_user():
@@ -766,7 +777,7 @@ def main():
                    "C: Most weight with aid but have limp\n"
                    "D: Full weight bearing without aids\n")
 
-            rom_valid, rom = validate_rom(responses[rom_q], days_since_surgery)
+            rom_valid, rom = validate_rom(responses[rom_q])
             wb_valid, wb = validate_weight_bearing(responses[wb_q])
 
             if rom_valid and wb_valid:
