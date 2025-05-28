@@ -320,14 +320,29 @@ def validate_pain_scale(pain):
         num = int(pain)
         if 0 <= num <= 10:
             if num == 10:
-                print("Your pain level is 10/10. That sounds very uncomfortable and would recommend consulting a healthcare professional for advice.")
-                print("We recommend pausing the assessment for now. Take care.\n")
+                print(
+                    "Your pain level is 10/10. That sounds very uncomfortable "
+                    "and would recommend consulting a healthcare professional "
+                    "for advice."
+                )
+                print(
+                    "We recommend pausing the assessment for now. "
+                    "Take care.\n"
+                )
                 exit()
             return True, f"Your pain level is {num}/10."
         else:
-            return False, Fore.RED + "Please enter a number between 0 and 10." + Style.RESET_ALL
+            return False, (
+                Fore.RED +
+                "Please enter a number between 0 and 10." +
+                Style.RESET_ALL
+            )
     except ValueError:
-        return False, Fore.RED + "Pain level must be a whole number" + Style.RESET_ALL
+        return False, (
+            Fore.RED +
+            "Pain level must be a whole number" +
+            Style.RESET_ALL
+        )
 
 
 def validate_rom(answer, days_since_surgery=None):
