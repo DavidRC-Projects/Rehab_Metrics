@@ -248,6 +248,10 @@ The program automatically calculates the user's recovery stage based on their su
 
 ## Testing
 
+### Manual Testing
+
+See [TESTING.md](TESTING.md) for more details of manual testing.
+
 ## Deployment
 
 ## Forking and Cloning
