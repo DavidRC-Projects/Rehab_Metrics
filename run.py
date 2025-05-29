@@ -258,10 +258,6 @@ def questions():
                 )
                 print(f"{msg}\n")
                 responses[question] = answer
-                if "surgery?" in question:
-                    success, days = calculate_days_since_surgery(answer)
-                    if success:
-                        surgery_info['days'] = days
                 break
             else:
                 msg = (
@@ -813,8 +809,7 @@ def process_new_user():
         "B: I can bend it a little but my heel is in front\n"
         "C: I can bend it so my heel is roughly in line\n"
         "D: I can bend it well as my heel goes behind\n"
-        "E: I can bend my knee so the heel is a few inches "
-        "behind the knee"
+        "E: The heel is a few inches behind the knee when i bend"
     )
     wb_q = (
         "Weight bearing on operated leg?\n"

@@ -17,3 +17,35 @@
 | Quit During New User Registration | Entered 'quit' during new user username/password input | Program exited | Pass |
 | Quit During Returning User Login | Entered 'quit' during returning user username/password input | Program exited | Pass |
 
+## Data Input Testing
+
+### Pain Assessment
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| Pain Scale Input (0-10) | Entered various numbers within range | Correctly accepted valid inputs | Pass |
+| Invalid Pain Input | Entered numbers outside 0-10 range | Error message displayed | Pass |
+| Non-numeric Input | Entered letters/special characters | Error message displayed | Pass |
+| Pain Level 10/10 | Entered maximum pain level | Warning message displayed about pausing assessment and exits | Pass |
+
+### ROM Assessment
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| ROM Input (0-120) | Entered various numbers within range | Correctly accepted valid inputs | Pass |
+| Invalid ROM Input | Enter option F | No Error message displayed and repeated the question | Failed |
+| Non-numeric Input | Entered letters/special characters | No error message displayed and repeated the question | Failed |
+| ROM Choice Selection | Selected different ROM measurement types | Correctly recorded selected type | Pass |
+
+### Weight Bearing Assessment
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| Weight Bearing Options | Selected different weight bearing levels | Correctly recorded selection | Pass |
+| Medical Review Option | Selected 'a' for medical review | Appropriate warning displayed | Pass |
+| Invalid Selection | Entered invalid option | No error message displayed and repeated the question | Failed |
+
+## Progress Assessment Testing
+
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| Pain Progress Timeline | Entered pain levels for different weeks | Correct assessment displayed | Pass |
+| ROM Progress Timeline | Entered ROM measurements for different weeks | Correct assessment displayed | Pass |
+| Weight Bearing Progress | Entered weight bearing status option c | Displayed Unable to assess weight bearing status: Invalid data format | Failed |
