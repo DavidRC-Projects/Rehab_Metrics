@@ -391,7 +391,6 @@ def validate_weight_bearing(answer):
             )
             exit()
         base_message = (
-            f"Weight bearing status: "
             f"{WEIGHT_BEARING_CONVERSION[selection]}"
         )
         return True, base_message
