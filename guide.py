@@ -118,7 +118,7 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
                     "Your pain level is typical for Week 0-2. "
                     "Continue following your exercise plan."
                 )
-            elif pain >= 5:
+            elif pain <= 5:
                 return (
                     "Your pain level is well controlled for Week 0-2. "
                     "Excellent progress!"
@@ -182,7 +182,7 @@ def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
         if weeks < 2:  # Week 0-2
             if wb_level == 1:
                 return (
-                    "[Week 0-2] Your weight bearing status is poor "
+                    "[Week 0-2] Your weight bearing status is poor."
                     "Please consult your healthcare provider for guidance"
                 )
             elif wb_level == 2:

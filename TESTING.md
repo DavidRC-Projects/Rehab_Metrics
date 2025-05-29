@@ -49,3 +49,10 @@
 | Pain Progress Timeline | Entered pain levels for different weeks | Correct assessment displayed | Pass |
 | ROM Progress Timeline | Entered ROM measurements for different weeks | Correct assessment displayed | Pass |
 | Weight Bearing Progress | Entered weight bearing status option c | Displayed Unable to assess weight bearing status: Invalid data format | Failed |
+| Early Stage Assessment | Entered data for weeks 0-2 for pain assessment | Incorrect data displayed for week 0-2 | Failed |
+
+## Fixes
+| Feature | Fix | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| Weight Bearing Progress | Removed prefix in validate_weight_bearing function | Correct assessment displayed | Passed |
+| Early Stage Assessment | Fix logic error in get_pain_timeline_assessment | Correct assessment data displayed for weeks 0-2 | Passed |
