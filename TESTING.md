@@ -80,5 +80,6 @@
 | Weight Bearing Progress | Removed prefix in validate_weight_bearing function | Correct assessment displayed | Passed |
 | Early Stage Assessment for Pain Level | Fix logic error in get_pain_timeline_assessment | Correct assessment data displayed for weeks 0-2 | Passed |
 | Invalid ROM Input | Enter option F | No Error message displayed and repeated the question | Passed |
-| Non-numeric Input | Entered letters/special characters | No error message displayed and repeated the question | Passed |
+| Non-numeric Input for ROM | Entered letters/special characters | Error message displayed in red | Passed |
+| Invalid Selection for weight bearing question | Entered invalid option F | Error message displayed in red  | Passed |
 

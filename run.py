@@ -398,7 +398,11 @@ def validate_weight_bearing(answer):
             f"{WEIGHT_BEARING_CONVERSION[selection]}"
         )
         return True, base_message
-    return False, "Please choose A, B, C or D.\n"
+    return False, (
+        Fore.RED +
+        "Please choose A, B, C or D.\n" +
+        Style.RESET_ALL
+    )
 
 
 def assess_rom_progress(metric_data):
