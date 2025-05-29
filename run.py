@@ -6,7 +6,7 @@ from guide import (
     get_pain_timeline_assessment,
     get_weight_bearing_timeline_assessment
 )
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 # Required Google API scopes
 SCOPE = [
@@ -367,7 +367,11 @@ def validate_rom(answer):
     if choice in ROM_CONVERSION:
         base_message = f"Knee bend: {ROM_CONVERSION[choice]}"
         return True, base_message
-    return False, "Please choose A, B, C, D or E."
+    return False, (
+        Fore.RED +
+        "Please choose A, B, C, D or E." +
+        Style.RESET_ALL
+    )
 
 
 def validate_weight_bearing(answer):
@@ -394,7 +398,7 @@ def validate_weight_bearing(answer):
             f"{WEIGHT_BEARING_CONVERSION[selection]}"
         )
         return True, base_message
-    return False, "Please choose A, B, C or D."
+    return False, "Please choose A, B, C or D.\n"
 
 
 def assess_rom_progress(metric_data):

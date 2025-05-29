@@ -50,9 +50,35 @@
 | ROM Progress Timeline | Entered ROM measurements for different weeks | Correct assessment displayed | Pass |
 | Weight Bearing Progress | Entered weight bearing status option c | Displayed Unable to assess weight bearing status: Invalid data format | Failed |
 | Early Stage Assessment | Entered data for weeks 0-2 for pain assessment | Incorrect data displayed for week 0-2 | Failed |
+| Mid Stage Assessment for Pain Level | Entered data for weeks 2-6 | Appropriate mid stage feedback | Pass |
+| Late Stage Assessment for Pain Level | Entered data for weeks 6-12+ | Appropriate late stage feedback | Pass |
+| Early Stage Assessment for ROM | Entered data for weeks 0-2 | Appropriate early stage feedback | Pass |
+| Mid Stage Assessment for ROM | Entered data for weeks 2-6 | Appropriate mid stage feedback | Pass |
+| Late Stage Assessment for ROM | Entered data for weeks 6-12+ | Appropriate late stage feedback | Pass |
+| Early Stage Assessment for weight bearing | Entered data for weeks 0-2 | Appropriate early stage feedback | Pass |
+| Mid Stage Assessment for weight bearing | Entered data for weeks 2-6 | Appropriate mid stage feedback | Pass |
+| Late Stage Assessment for weight bearing | Entered data for weeks 6-12+ | Appropriate late stage feedback | Pass |
+
+## Data Storage Testing
+
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| Multiple Session Data | Entered data across multiple sessions | All data correctly stored | Pass |
+| Data Retrieval | Accessed historical data | Correct data displayed | Pass |
+| File Access | | | |
+
+## Error Handling Testing
+
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
+| Invalid Date Input | Entered date 01/01/2020 | Error message displayed | Pass |
+| Invalid Surgery Date | Entered surgery date after current date | Error message displayed | Pass |
 
 ## Fixes
 | Feature | Fix | Result | Pass/Fail |
 |---------|------------------|---------|-----------|
 | Weight Bearing Progress | Removed prefix in validate_weight_bearing function | Correct assessment displayed | Passed |
-| Early Stage Assessment | Fix logic error in get_pain_timeline_assessment | Correct assessment data displayed for weeks 0-2 | Passed |
+| Early Stage Assessment for Pain Level | Fix logic error in get_pain_timeline_assessment | Correct assessment data displayed for weeks 0-2 | Passed |
+| Invalid ROM Input | Enter option F | No Error message displayed and repeated the question | Passed |
+| Non-numeric Input | Entered letters/special characters | No error message displayed and repeated the question | Passed |
+
