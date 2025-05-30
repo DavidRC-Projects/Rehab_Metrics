@@ -58,6 +58,7 @@
 | Early Stage Assessment for weight bearing | Entered data for weeks 0-2 | Appropriate early stage feedback | Pass |
 | Mid Stage Assessment for weight bearing | Entered data for weeks 2-6 | Appropriate mid stage feedback | Pass |
 | Late Stage Assessment for weight bearing | Entered data for weeks 6-12+ | Appropriate late stage feedback | Pass |
+| Returning user Profile and Rehabilitation Data display | Entered existing username and password | Weight bearing status: Invalid data format | Failed |
 
 ## Data Storage Testing
 
@@ -82,4 +83,4 @@
 | Invalid ROM Input | Enter option F | No Error message displayed and repeated the question | Passed |
 | Non-numeric Input for ROM | Entered letters/special characters | Error message displayed in red | Passed |
 | Invalid Selection for weight bearing question | Entered invalid option F | Error message displayed in red  | Passed |
-
+| Returning user Profile and Rehabilitation Data display | Entered existing username and password | Weight bearing status: Invalid data format | Failed |

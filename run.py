@@ -507,7 +507,8 @@ def assess_weight_bearing_progress(metric_data):
             )
             return False
         days_since_surgery = int(metric_data[3])
-        wb_status = metric_data[7]
+        metrics = format_user_data(metric_data)
+        wb_status = metrics["weight_bearing"]
         if not wb_status:
             print(
                 "\nCannot perform weight bearing assessment: "
@@ -825,11 +826,13 @@ def process_new_user():
         "C: Most weight with aid but have limp\n"
         "D: Full weight bearing without aids\n"
     )
-    rom_valid, rom = validate_rom(responses.get(rom_q, ""))
-    wb_valid, wb = validate_weight_bearing(responses.get(wb_q, ""))
+    rom_valid, _ = validate_rom(responses.get(rom_q, ""))
+    wb_valid, _ = validate_weight_bearing(responses.get(wb_q, ""))
     if not (rom_valid and wb_valid):
         print("Invalid ROM or weight-bearing input. Please try again.")
         return
+    rom = ROM_CONVERSION[responses.get(rom_q, "").lower().strip()]
+    wb = WEIGHT_BEARING_CONVERSION[responses.get(wb_q, "").lower().strip()]
     complications_q = (
         "Have you had any complications since your surgery? "
         "(Yes/No)"

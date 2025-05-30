@@ -245,6 +245,7 @@ The program automatically calculates the user's recovery stage based on their su
 ## Python Version and Packages
 
 ## Bugs and Fixes
+Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
 
 ## Testing
 
