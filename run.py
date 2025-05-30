@@ -857,6 +857,28 @@ def process_new_user():
     update_rehab_metrics_worksheet(data)
 
 
+def display_update_options():
+    """
+    Display the available options for updating user data.
+    Returns the user's choice.
+    """
+    print(Fore.BLUE + "\nWould you like to update any of your data?")
+    print("Available options:")
+    print("1. Update Pain Level")
+    print("2. Update Knee Range of Motion")
+    print("3. Update Weight Bearing Status")
+    print("4. No updates needed")
+    while True:
+        choice = input("\nEnter your choice (1-4): ").strip()
+        if choice in ['1', '2', '3', '4']:
+            return choice
+        print(
+            Fore.RED +
+            "Please enter a number between 1 and 4" +
+            Style.RESET_ALL
+        )
+
+
 def main():
     """
     This is the start of the program.
@@ -867,6 +889,7 @@ def main():
         process_new_user()
     else:
         handle_returning_user()
+        display_update_options()
 
 
 main()
