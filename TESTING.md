@@ -70,6 +70,15 @@
 ## Google Sheets Testing
 | Feature | Testing Performed | Result | Pass/Fail |
 |---------|------------------|---------|-----------|
+| New User Registration | Created new user "test1", "test2" and "test3" with valid credentials | Username and password saved in users worksheet | Pass |
+| Duplicate Username | Attempted to create user "test1" again | System rejected duplicate username with appropriate message | Pass |
+| Pain Level Update | Created new user "test2" with pain level 0 | New entry created with updated pain level, assessment displayed | Pass |
+| ROM Update | Created new user "test3" with ROM option D | New entry created with updated ROM data, assessment displayed | Pass |
+| Weight Bearing Update | Created new user "test4" with weight bearing option B | New entry created with updated weight bearing data, assessment displayed | Pass |
+| User Metric Update | Created new user "test1", "test2" and "test3" with valid credentials | All Metric data saved in userdata worksheet | Pass |
+| Data Types | Verified numeric data (pain level, days since surgery) | Numbers saved correctly without formatting issues | Pass |
+| Data Types | Verified text data (username, name, complications) | Text saved correctly without formatting issues | Pass |
+| Data Types | Verified date format (surgery date) | Dates saved in correct DD/MM/YYYY format | Pass |
 
 ## Error Handling Testing
 

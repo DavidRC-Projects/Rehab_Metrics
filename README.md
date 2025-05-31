@@ -247,11 +247,23 @@ The program automatically calculates the user's recovery stage based on their su
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
 
+The ROM assessment function had a typo in the ROM_CONVERSION dictionary for option E missing a degrees symbol. This caused the ROM assessment not to appear when option E selected for new users.
+
 ## Testing
 
 ### Manual Testing
 
 See [TESTING.md](TESTING.md) for more details of manual testing.
+
+### Validation Testing
+
+I used CI Python Linter and followed PEP8.
+
+From this i removed blanked lines, white spaces and adjusted the code to make lines less than 79 characters and 72 characters for docstrings. Imports were grouped  in the order of standard library imports, related third party important and local application imports respectively. 
+
+https://peps.python.org/pep-0008/
+
+https://pep8ci.herokuapp.com/#
 
 ## Deployment
 

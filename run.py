@@ -1,12 +1,17 @@
+# Standard library imports
+from datetime import datetime
+
+# Third party imports
 import gspread
 from google.oauth2.service_account import Credentials
-from datetime import datetime
+from colorama import Fore, Style
+
+# Local application imports
 from guide import (
     get_rom_timeline_assessment,
     get_pain_timeline_assessment,
     get_weight_bearing_timeline_assessment
 )
-from colorama import Fore, Style
 
 # Required Google API scopes
 SCOPE = [
@@ -75,10 +80,10 @@ DISCLAIMER = Fore.YELLOW + (
 
 def welcome_user():
     """
-    This function displays a welcome message and requests a username input.
-    It also checks if the username is valid and if it already exists.
-    It then asks for a password and updates the users worksheet.
-    A try block is used to catch any unexpected errors.
+    Displays welcome message and requests username input.
+    Validates username and checks if it exists.
+    Handles password input and updates users worksheet.
+    Uses try block for error handling.
     """
     welcome_messages = [
         "Welcome, new user!",
@@ -129,9 +134,9 @@ def welcome_user():
 
 def validate_user(input_str):
     """
-    Validates username and name inputs:
-    - Must be 2-10 characters long
-    - Must not contain special characters
+    Validates username and name inputs.
+    Must be 2-10 characters long.
+    Must not contain special characters.
     """
     if len(input_str) < 2 or len(input_str) > 10:
         return False, (
@@ -151,9 +156,9 @@ def validate_user(input_str):
 
 def user_password():
     """
-    This function handles password input and validation.
-    It checks if the password is at least 6 characters long.
-    It checks if the password contains spaces.
+    Handles password input and validation.
+    Checks for minimum 6 characters length.
+    Checks for presence of spaces.
     """
     while True:
         password = input("Please enter a password (minimum 6 characters): ")
@@ -168,9 +173,9 @@ def user_password():
 
 def validate_password(password):
     """
-    This function validates the password.
-    It ensures it is at least 6 characters long.
-    This will also check for white spaces.
+    Validates password requirements.
+    Ensures minimum 6 characters length.
+    Checks for absence of spaces.
     """
     if len(password) < 6:
         return False, (
@@ -189,9 +194,9 @@ def validate_password(password):
 
 def questions():
     """
-    This function asks the user a series of questions.
-    It validates the answers and updates the worksheet.
-    Returns the valid answer or None if the user quits.
+    Asks user a series of validated questions.
+    Updates worksheet with responses.
+    Returns valid answers or None if user quits.
     """
     responses = {}
     question_set = [
@@ -284,10 +289,9 @@ def calculate_days_since_surgery(date_str):
 
 def validate_date(date_str):
     """
-    This function validates the surgery date ensuring it:
-    1. Is in DD/MM/YYYY format
-    2. Is not in the future
-    3. Is within the last 2 years
+    Validates surgery date format and range.
+    Must be in DD/MM/YYYY format.
+    Cannot be in future or older than 2 years.
     """
     success, days_ago = calculate_days_since_surgery(date_str)
     if not success:
@@ -309,10 +313,9 @@ def validate_date(date_str):
 
 def validate_complications(answer):
     """
-    This function accepts only 'yes' or 'no' answers.
-    It removes whitespace and converts to lowercase.
-    Uses a conditional statement to allow similar responses
-    to yes and no.
+    Validates complications response.
+    Accepts yes/no and variations (y/n, yep/nope).
+    Removes whitespace and converts to lowercase.
     """
     if answer.lower() in ("yes", "no", 'y', 'n', 'yep', 'nope'):
         return True, ""
@@ -321,9 +324,9 @@ def validate_complications(answer):
 
 def validate_pain_scale(pain):
     """
-    This function validates the pain scale.
-    It checks if the input is a number between 0 and 10.
-    If the input is 10, it will print a message and exit.
+    Validates pain scale input (0-10).
+    Exits with warning if pain level is 10.
+    Returns formatted pain level message.
     """
     try:
         num = int(pain)
@@ -356,12 +359,11 @@ def validate_pain_scale(pain):
 
 def validate_rom(answer):
     """
-    This function validates range of motion (ROM) input.
-    This will remove whitespace and converts to lowercase.
-    It then checks if the input matches the valid options.
-    If valid, it returns True and prints the message.
-    If invalid, it returns False and prompts the user
-    to enter a valid choice.
+    Validates range of motion (ROM) input.
+    Removes whitespace and converts to lowercase.
+    Checks if input matches valid options.
+    Returns True and prints message if valid.
+    Returns False and prompts for valid choice if invalid.
     """
     choice = answer.lower().strip()
     if choice in ROM_CONVERSION:
@@ -376,9 +378,9 @@ def validate_rom(answer):
 
 def validate_weight_bearing(answer):
     """
-    This function validates the weight bearing status.
-    Returns a tuple (is_valid, message).
-    If the input is 'a', recommends medical review and exits.
+    Validates weight bearing status input.
+    Returns tuple (is_valid, message).
+    Exits with warning if input is 'a'.
     """
     if answer is None:
         return False, "Please choose A, B, C or D."
@@ -407,12 +409,11 @@ def validate_weight_bearing(answer):
 
 def assess_rom_progress(metric_data):
     """
-    Assesses user's Range of Motion (ROM) progress using their metric data.
-    It returns True if it successfully provides an assessment.
-    It checks what ROM was recorded and converts it to a choice.
-    Converts the number of days since surgery to an integer.
-    It uses conditional statements to determine the ROM choice.
-    A try block is used to catch any unexpected errors.
+    Assesses user's Range of Motion (ROM) progress.
+    Returns True if assessment is successful.
+    Converts ROM data to choice and days to integer.
+    Uses conditional statements for ROM choice.
+    Includes error handling with try block.
     """
     try:
         if not metric_data[3]:
@@ -455,13 +456,10 @@ def assess_rom_progress(metric_data):
 
 def assess_pain_progress(metric_data):
     """
-    Assesses user's pain level progress using their metric data.
-    It returns True if it successfully provides and assessment.
-    It checks if the days since surgery is availiable.
-    It checks if the pain level is availiable.
-    A try block is used to catch any unexpected errors.
-    It uses the get_pain_timeline_assessment function to
-    get the assessment.
+    Assesses user's pain level progress.
+    Returns True if assessment is successful.
+    Checks days since surgery and pain level.
+    Uses get_pain_timeline_assessment for feedback.
     """
     try:
         if not metric_data[3]:
@@ -494,13 +492,10 @@ def assess_pain_progress(metric_data):
 
 def assess_weight_bearing_progress(metric_data):
     """
-    Assesses user's weight bearing progress using their metric data.
-    It returns True if it successfully provides an assessment.
-    It checks if the days since surgery is availiable.
-    It checks if the weight bearing status is availiable.
-    A try block is used to catch any unexpected errors.
-    It uses the get_weight_bearing_timeline_assessment function
-    to get the assessment.
+    Assesses user's weight bearing progress.
+    Returns True if assessment is successful.
+    Checks days since surgery and weight bearing status.
+    Uses get_weight_bearing_timeline_assessment.
     """
     try:
         if not metric_data[3]:
@@ -575,7 +570,8 @@ def update_user_worksheet(username, password):
 
 def check_user_status():
     """
-    This function asks if the user is new or returning.
+    Asks if user is new or returning.
+    Returns True for new user, False for returning.
     """
     print(DASH)
     print(SPACE)
@@ -605,11 +601,9 @@ def check_existing_username(username):
 
 def get_user_row(username, worksheet):
     """
-    This finds the row number in Google Sheets
-    where the username is stored in 'userdata'.
-    This will skip the header row and start at
-    row 1 where it loops through the usernames.
-    It returns None if the username is not found.
+    Finds row number for username in worksheet.
+    Skips header row, starts at row 1.
+    Returns None if username not found.
     """
     try:
         usernames = worksheet.col_values(1)
@@ -641,11 +635,10 @@ def get_user_metric_data(username, metric_worksheet):
 
 def format_user_data(metric_data):
     """
-    Format the metric data for display.
-    This function takes a row of metric data from the userdata worksheet.
-    It formats the data into a structured dictionary.
-    It removes whitespace and converts to lowercase.
-    Replaces the label for pain level and weightbearing status.
+    Formats metric data for display.
+    Creates structured dictionary from worksheet data.
+    Removes whitespace and converts to lowercase.
+    Formats pain level and weight bearing status.
     """
     metrics = {
         "username": metric_data[0],
@@ -671,8 +664,9 @@ def format_user_data(metric_data):
 
 def display_user_metrics(metrics):
     """
-    Display the formatted user metrics from the worksheet.
-    It uses the metrics dictionary to print the data.
+    Displays formatted user metrics.
+    Uses metrics dictionary to print data.
+    Includes all user profile and rehabilitation data.
     """
     print(Fore.YELLOW + "\nYour Profile and Rehabilitation Data:")
     print("-" * 50 + Style.RESET_ALL)
@@ -777,8 +771,9 @@ def handle_returning_user():
 
 def user_quit(input_str):
     """
-    Checks if the user wants to quit the program.
-    Returns True if user wants to quit, False otherwise.
+    Checks if user wants to quit program.
+    Returns True if user types 'quit'.
+    Returns False otherwise.
     """
     if input_str.lower() == "quit":
         print("You chose to Quit and will return to the start")
@@ -788,11 +783,10 @@ def user_quit(input_str):
 
 def process_new_user():
     """
-    Handle the registration and data collection for a new user.
-    It checks if the username is valid and if it already exists.
-    It converts the surgery date to a date object.
-    It works out the number of days since surgery.
-    It then updates the worksheet.
+    Handles new user registration and data collection.
+    Validates username and checks for duplicates.
+    Converts surgery date and calculates days.
+    Updates worksheet with collected data.
     """
     username = welcome_user()
     if username is None:
@@ -862,8 +856,9 @@ def process_new_user():
 
 def display_update_options():
     """
-    Display the available options for updating user data.
-    Returns the user's choice.
+    Displays available update options.
+    Returns user's choice (1-4).
+    Handles invalid input with error message.
     """
     print(Fore.BLUE + "\nWould you like to update any of your data?")
     print("Available options:")
@@ -882,8 +877,9 @@ def display_update_options():
 
 def main():
     """
-    This is the start of the program.
-    Handles both new and returning users.
+    Program entry point.
+    Handles new and returning users.
+    Manages user flow and data updates.
     """
     is_new_user = check_user_status()
     if is_new_user:
