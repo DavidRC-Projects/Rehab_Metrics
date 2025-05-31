@@ -220,6 +220,10 @@ The ROM assessment function had a typo in the ROM_CONVERSION dictionary for opti
 
 A deprecation warning occured when i copied the spreadsheet initialisation from run.py to guide.py. Removing this in guide.py resolved the warning.
 
+When the surgery date was entered as today's date, the program calculated days_since_surgery = 0, which evaluated as falsy in conditional checks. This incorrectly triggered error messages like:
+Cannot perform ROM assessment: Days since surgery not available
+To fix this i updated the logic in the validate_date() function to check if days_ago <= 0. Now, the program provides clear feedback and prompts the user to re-enter a valid surgery date instead of treating 0 as missing data.
+
 There are currently no known bugs in the program. All previously identified issues related to data indexing, string mismatches, and weight-bearing status formatting have been resolved.
 
 ## Testing

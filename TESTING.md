@@ -86,6 +86,7 @@
 |---------|------------------|---------|-----------|
 | Invalid Date Input | Entered date 01/01/2020 | Error message displayed | Pass |
 | Invalid Surgery Date | Entered surgery date after current date | Error message displayed | Pass |
+| Input Surgery date | Entered todays date in input | ROM, Pain and Weightbearing assessments could not provide data | Failed |
 
 ## Fixes
 | Feature | Fix | Result | Pass/Fail |
@@ -96,3 +97,4 @@
 | Non-numeric Input for ROM | Entered letters/special characters | Error message displayed in red | Passed |
 | Invalid Selection for weight bearing question | Entered invalid option F | Error message displayed in red  | Passed |
 | Returning user Profile and Rehabilitation Data display | Entered existing username and password | Weight bearing status: Invalid data format | Passed |
+| Input Surgery date | Entered todays date in input | Displays error message | Passed |

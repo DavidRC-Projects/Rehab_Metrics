@@ -5,6 +5,7 @@ from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 from colorama import Fore, Style
+import maskpass
 
 # Local application imports
 from guide import (
@@ -157,15 +158,18 @@ def validate_user(input_str):
 def user_password():
     """
     Handles password input and validation.
+    Uses maskpass to hide password.
     Checks for minimum 6 characters length.
     Checks for presence of spaces.
     """
     while True:
-        password = input("Please enter a password (minimum 6 characters):\n")
+        password = maskpass.askpass("Please enter a password"
+                                    "(minimum 6 characters):\n", mask="*")
         if user_quit(password):
             return "quit"
         is_valid_pass, pass_error = validate_password(password)
         if is_valid_pass:
+            print("Password entered.")
             return password
         else:
             print(Fore.RED + pass_error + Style.RESET_ALL)
@@ -293,10 +297,12 @@ def validate_date(date_str):
     success, days_ago = calculate_days_since_surgery(date_str)
     if not success:
         return False, "Please enter your surgery date in DD/MM/YYYY format."
-    if days_ago < 0:
+    if days_ago <= 0:
         return False, (
-            "The surgery date cannot be in the future. "
-            "Please check and try again."
+            "The surgery date cannot be in the future.\n"
+            "If you've had your surgery today it may best "
+            "to use this tool tomorrow :)\n"
+            "Please check the date entered and try again."
         )
     if days_ago > 730:
         return False, (
@@ -758,9 +764,10 @@ def handle_returning_user():
         username = input("\nPlease enter your username:\n").strip()
         if user_quit(username):
             return False
-        password = input("Please enter your password:\n").strip()
+        password = maskpass.askpass("Please enter your password:\n", mask="*")
         if user_quit(password):
             return False
+        print("Password entered.")
         if verify_password(username, password):
             if get_user_data(username):
                 return True
