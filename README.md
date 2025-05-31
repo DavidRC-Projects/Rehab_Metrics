@@ -241,8 +241,16 @@ The program automatically calculates the user's recovery stage based on their su
 * Provide more tailored advice for stage of recovery by asking more detailed questions 
 
 ## Technologies Used
+* Visual Studio Code with assistance of flake8 linter extension.
+* [Github](https://github.com/) to host the repository.
+* The [CI Python Linter](https://pep8ci.herokuapp.com/#) for validating the Python code.
+* [Heroku](https://pep8ci.herokuapp.com/) for deploying the website.
+* Flow charts from [Lucid Chart](https://lucid.app).
 
 ## Python Version and Packages
+The project was developed using Python 3.13.2.
+
+The following Python packages were used: 
 
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
@@ -257,9 +265,19 @@ See [TESTING.md](TESTING.md) for more details of manual testing.
 
 ### Validation Testing
 
-I used CI Python Linter and followed PEP8.
+I used the CI Python Linter and followed the PEP8 guidelines to validate my code.
 
-From this i removed blanked lines, white spaces and adjusted the code to make lines less than 79 characters and 72 characters for docstrings. Imports were grouped  in the order of standard library imports, related third party important and local application imports respectively. 
+As a result of the linting process, I made the following adjustments:
+
+1. Removed unnecessary blank lines and trailing white spaces.
+2. Ensured that all lines are under 79 characters, and limited docstring lines to 72 characters as recommended.
+3. Grouped imports in the correct order:
+* Standard library imports
+* Related third-party imports
+* Local application imports
+
+***** image on python linter run.py
+***** image of python linter guide.py
 
 https://peps.python.org/pep-0008/
 

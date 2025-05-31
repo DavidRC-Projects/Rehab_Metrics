@@ -41,7 +41,7 @@ DASH = Fore.BLUE + "-" * 50
 CENTER_WIDTH = 50
 NOT_VALID = (
     '!', '?', '@', '*', '^', '.', '£', '$', '%', ',', '~', '`',
-    '+', '=', '<', '>', '|', '\\', '/', '[', ']', '{', '}', '#'
+    '+', '=', '<', '>', '|', '\\', '/', '[', ']', '{', '}', '#', ' '
 )
 
 # ROM (Range of Motion) conversion
@@ -136,7 +136,7 @@ def validate_user(input_str):
     """
     Validates username and name inputs.
     Must be 2-10 characters long.
-    Must not contain special characters.
+    Must not contain special characters or spaces.
     """
     if len(input_str) < 2 or len(input_str) > 10:
         return False, (
@@ -148,7 +148,7 @@ def validate_user(input_str):
         if char in input_str:
             return False, (
                 Fore.RED +
-                "Invalid name. Please avoid special characters." +
+                "Invalid name. Please avoid special characters and spaces." +
                 Style.RESET_ALL
             )
     return True, ""
@@ -571,6 +571,7 @@ def update_user_worksheet(username, password):
 def check_user_status():
     """
     Asks if user is new or returning.
+    Validates input to ensure only 'y' or 'n' is accepted.
     Returns True for new user, False for returning.
     """
     print(DASH)
@@ -579,9 +580,12 @@ def check_user_status():
     print(SPACE)
     print(DASH)
     print(DISCLAIMER)
-    print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
-    status = input("Please enter (Y) for Yes or (N) for No: ")
-    return status.lower() == 'y'
+    while True:
+        print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
+        status = input("Please enter (Y) for Yes or (N) for No: ").strip().lower()
+        if status in ['y', 'n']:
+            return status == 'y'
+        print(Fore.RED + "Please enter only 'Y' for Yes or 'N' for No." + Style.RESET_ALL)
 
 
 def check_existing_username(username):
@@ -735,10 +739,9 @@ def verify_password(username, password):
 def handle_returning_user():
     """
     Handle the login process for returning users.
-    It checks if the username and password are valid.
-    Also checks if the worksheet is empty.
-    This uses a while loop to allow the user to try again.
-    It also checks if the user wants to quit the program.
+    Returns True if login successful, False if user quits.
+    Checks if username and password are valid.
+    Uses while loop to allow retry attempts.
     """
     print(
         Fore.BLUE +
@@ -748,13 +751,13 @@ def handle_returning_user():
     while True:
         username = input("\nPlease enter your username: ").strip()
         if user_quit(username):
-            return
+            return False
         password = input("Please enter your password: ").strip()
         if user_quit(password):
-            return
+            return False
         if verify_password(username, password):
             if get_user_data(username):
-                break
+                return True
         else:
             print(
                 Fore.RED +
@@ -766,7 +769,7 @@ def handle_returning_user():
             "\nWould you like to try again? (Y/N): "
         ).lower()
         if retry != 'y':
-            break
+            return False
 
 
 def user_quit(input_str):
@@ -857,7 +860,7 @@ def process_new_user():
 def display_update_options():
     """
     Displays available update options.
-    Returns user's choice (1-4).
+    Returns user's choice (1-2).
     Handles invalid input with error message.
     """
     print(Fore.BLUE + "\nWould you like to update any of your data?")
@@ -885,10 +888,12 @@ def main():
     if is_new_user:
         process_new_user()
     else:
-        handle_returning_user()
-        choice = display_update_options()
-        if choice in ['1']:
-            process_new_user()
+        login_successful = handle_returning_user()
+        if login_successful:
+            choice = display_update_options()
+            if choice == '1':
+                process_new_user()
 
 
 main()
+
