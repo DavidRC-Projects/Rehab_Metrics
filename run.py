@@ -271,9 +271,6 @@ def questions():
                     else error_message
                 )
                 print(msg)
-    if answer.lower() in ("yes", "y", 'yep'):
-        print("Please consult a healthcare professional about your "
-              "complications.")
     return responses
 
 
@@ -316,9 +313,16 @@ def validate_complications(answer):
     Validates complications response.
     Accepts yes/no and variations (y/n, yep/nope).
     Removes whitespace and converts to lowercase.
+    Exits program if 'y' response.
     """
-    if answer.lower() in ("yes", "no", 'y', 'n', 'yep', 'nope'):
+    answer = answer.lower().strip()
+    if answer in ("no", 'n', 'nope'):
         return True, ""
+    if answer in ("yes", 'y', 'yep'):
+        print("Before using this tool we recommend you seek advice "
+              "from a healthcare professional. "
+              "Take care!")
+        exit()
     return False, ""
 
 
@@ -582,10 +586,12 @@ def check_user_status():
     print(DISCLAIMER)
     while True:
         print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
-        status = input("Please enter (Y) for Yes or (N) for No: ").strip().lower()
+        status = input("Please enter (Y) for Yes"
+                       "or (N) for No: ").strip().lower()
         if status in ['y', 'n']:
             return status == 'y'
-        print(Fore.RED + "Please enter only 'Y' for Yes or 'N' for No." + Style.RESET_ALL)
+        print(Fore.RED + "Please enter only 'Y' for Yes "
+              "or 'N' for No." + Style.RESET_ALL)
 
 
 def check_existing_username(username):
@@ -672,7 +678,7 @@ def display_user_metrics(metrics):
     Uses metrics dictionary to print data.
     Includes all user profile and rehabilitation data.
     """
-    print(Fore.YELLOW + "\nYour Profile and Rehabilitation Data:")
+    print(Fore.YELLOW + "\nYour Profile:")
     print("-" * 50 + Style.RESET_ALL)
     print(f"Username: {metrics['username']}")
     print(f"Name: {metrics['name']}")
@@ -896,4 +902,3 @@ def main():
 
 
 main()
-

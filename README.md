@@ -1,11 +1,11 @@
 # Rebab Metrics
 
-Rehab Metrics is a post-surgery rehabilitation tracking tool that helps patients monitor their recovery progress, with a particular focus on knee rehabilitation. Built in Python and deployed via Code Institute's Heroku terminal, the app features secure user registration and login with validation for usernames and passwords. Users enter their details, and the app calculates their stage in the rehabilitation journey, providing feedback on pain levels, knee range of motion, and weight bearing status. All data is securely stored using Google Sheets integration. Rehab Metrics is intended as a supportive self-monitoring tool and includes prompts to consult a healthcare professional when needed, as it does not provide medical advice.
+Rehab Metrics is a post-surgery tracking tool that helps users monitor their recovery progress, with a particular focus on knee recovery. Built in Python and deployed via Code Institute's Heroku terminal, the app features secure user registration and login with validation for usernames and passwords. Users enter their details, and the app calculates their stage in the recovery journey, providing feedback on pain levels, knee range of motion, and weight bearing status. All data is securely stored using Google Sheets integration. Rehab Metrics is intended as a supportive self-monitoring tool and includes prompts to consult a healthcare professional when needed, as it does not provide medical advice.
 
 ## Project Plan
 
 ### Project Goals
-I developed Rehab Metrics inspired by a close relative who recently underwent a knee replacement. They had many questions about their recovery, particularly around the expected timeline and what level of movement and activity they should be achieving in the first few months. This app aims to provide clear, stage appropriate guidance to help users monitor their progress and feel more confident during their recovery. From this experience, I realised I could create a project that collects user data and provides advice on key areas of recovery, helping patients understand their progress and what to expect during rehabilitation.
+I developed Rehab Metrics inspired by a close relative who recently underwent a knee replacement surgery. They had many questions about their recovery, particularly around the expected timeline and what level of movement and activity they should be achieving in the first few months. This app aims to provide clear, stage appropriate guidance to help users monitor their progress and feel more confident during their recovery. From this experience, I realised I could create a project that collects user data and provides advice on key areas of recovery, helping patients understand their progress and what to expect during rehabilitation.
 
 ## User Stories
 
@@ -17,24 +17,24 @@ The target audience for Rehab Metrics is people who have recently undergone knee
 
 As a first-time user, I want to:
 
-* Easily navigate the application and understand its purpose
-* Enter my personal and surgery details
-* Have a record of my details that provides feedback on my progress
+* Easily navigate the application and understand its purpose.
+* Enter my personal details related to recovery.
+* Have a record of my details that provides feedback on my progress.
 
 ### Returning Visitor Goals
 
 As a returning user, I want to:
 
-* Log in securely with my username
-* Enter my password to protect my information
-* Review my previously entered details and progress
+* Log in securely with my username.
+* Enter my password to protect my information.
+* Review my previously entered details and progress.
 
 ### Site Owner Goals
-As the creator of Rehab Metrics, my goal is to develop an intuitive and accessible rehabilitation tracking tool for individuals recovering from knee surgery. I aim to:
+As the creator of Rehab Metrics, my goal is to develop an intuitive and accessible post operation tracking tool for individuals recovering from knee surgery. I aim to:
 
 * Create a user-friendly interface that avoids medical jargon.
 * Ask clear, structured questions that users can easily understand and respond to.
-* Convert the user's input into approximate, meaningful feedback about their stage of recovery.
+* Convert the user's input into meaningful feedback to give guidance on their stage of recovery.
 * Store data securely using Google Sheets.
 * Allow returning users to retrieve their previous entries by logging in with a username and password.
 * The focus is to provide reassurance and progress tracking during a crucial recovery period.
@@ -73,11 +73,11 @@ From the image above you can see there is a welcome message displayed with instr
 
 ![Questions and assessment](assets/questions.png)
 
-The questions() function guides the user through a structured assessment consisting of six simple questions. These questions are designed to collect relevant post-operative information following a knee replacement surgery. The collected data contributes to a personalised rehabilitation log of their data.
+The questions() function guides the user through a structured assessment consisting of six simple questions. These questions are designed to collect relevant post-operative information following a knee replacement surgery. The collected data contributes to a personalised log of their data.
 
 The six questions include:
 1. First Name
-The user is prompted to enter their first name and make the tool more personalised.
+The user is prompted to enter their first name to make the tool more personalised.
 2. Surgery Date
 The user inputs the date of their knee replacement surgery. This information is used to calculate how many days have passed since the procedure.
 3. Complications
@@ -247,10 +247,14 @@ The program automatically calculates the user's recovery stage based on their su
 * [Heroku](https://pep8ci.herokuapp.com/) for deploying the website.
 * Flow charts from [Lucid Chart](https://lucid.app).
 
-## Python Version and Packages
+## Python Version, Packages and Libaries Used
 The project was developed using Python 3.13.2.
 
-The following Python packages were used: 
+The following Python packages and libaries were used:
+datetime - Used to work with date and time, particulary to calculate recovery timelines based on number of days since surgery.
+gspread - Used to interact with Google Sheets API for reading and writing data to a spreadsheet.
+google.oauth2.service_account.Credentials - Provides secure authentication for access to Google Sheets API.
+colorama - Used to add colour to the terminal output.
 
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
@@ -262,26 +266,26 @@ The ROM assessment function had a typo in the ROM_CONVERSION dictionary for opti
 ### Manual Testing
 
 See [TESTING.md](TESTING.md) for more details of manual testing.
+Manual tests were carried out throughout the development process. Each feature was tested to ensure correct functionality, including error handling, user input validation, and support for multiple user accounts. This included:
+- Username and Name Validation: Inputs were tested to confirm that whitespace and special characters were not allowed. The username was validated to accept only 2–10 characters.
+- Password Validation: Password inputs were tested to ensure they were at least 6 characters long and contained no whitespace.
+- New and Returning Users: Multiple scenarios were tested, including new user registration, returning user login, invalid entries, and quitting mid-process.
 
 ### Validation Testing
 
-I used the CI Python Linter and followed the PEP8 guidelines to validate my code.
+I used the [CI Python Linter](https://pep8ci.herokuapp.com/#) and followed the [PEP8 guidelines](https://peps.python.org/pep-0008/) to validate my code.
 
 As a result of the linting process, I made the following adjustments:
 
 1. Removed unnecessary blank lines and trailing white spaces.
 2. Ensured that all lines are under 79 characters, and limited docstring lines to 72 characters as recommended.
 3. Grouped imports in the correct order:
-* Standard library imports
-* Related third-party imports
-* Local application imports
+- Standard library imports
+- Related third-party imports
+- Local application imports
 
 ***** image on python linter run.py
 ***** image of python linter guide.py
-
-https://peps.python.org/pep-0008/
-
-https://pep8ci.herokuapp.com/#
 
 ## Deployment
 
