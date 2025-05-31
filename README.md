@@ -249,6 +249,10 @@ As a result of the linting process, I made the following adjustments:
 ***** image of python linter guide.py
 
 ## Deployment
+This project was deployed using the Code Institute’s mock terminal for Heroku
+
+Steps for deployment:
+add the list of requirements by writing in the terminal "pip3 freeze > requirements.txt". 
 
 ## Forking and Cloning
 
