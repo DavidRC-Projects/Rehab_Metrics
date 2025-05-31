@@ -152,6 +152,10 @@ Each assessment question has tailored validation to ensure data is appropriate.
 * validate_rom() - Accepts only choices A–E. 
 * validate_weight_bearing() - Accepts only choices A–D.
 
+### Update Menu options
+The function display_update_options() was added to give the users a choice to restart the assessment process or exit the program.
+In future updates, it will allow users to update individual metrics they previously entered.
+
 ### Safety Feature
 The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
 * If a user reports a pain level of 10 (the maximum on the 0–10 scale), the program immediately terminates the session and advises the user to consult a healthcare professional. This serves as a safeguard against potentially serious complications.
@@ -174,62 +178,9 @@ The program evaluates recovery progress across four key timeframes following kne
 * 6-12 weeks: Mid-term recovery
 * 12+ weeks: Long-term recovery
 
-#### Week 0-2 (Initial Recovery)
-* Range of Motion (ROM):
-  - Poor: Less than 90° knee flexion
-  - Good: Approximately 90° knee flexion
-  - Excellent: Greater than 100° knee flexion
-* Pain Levels:
-  - High (8-10): Normal but requires close monitoring
-  - Typical (6-7): Expected for this stage
-  - Well Controlled (0-5): Excellent progress
-* Weight Bearing:
-  - Appropriate: 0-25% weight-bearing
-  - Progressing Well: 50-75% weight-bearing
-  - Excellent: 75%+ weight-bearing
+In guide.py, the program uses floor division (//) to convert the number of days into weeks. It then applies a series of conditional statements to assess the user’s input (e.g., range of motion, pain level, weight-bearing status) against clinically expected norms for each recovery stage. Each function generates customised feedback based on the user’s data, helping them understand whether their progress is poor, typical or above expectations.
 
-#### Week 2-6 (Early Recovery)
-* Range of Motion (ROM):
-  - Poor: Less than 90° knee flexion
-  - Functional: Approximately 90° knee flexion
-  - Excellent: Greater than 100° knee flexion
-* Pain Levels:
-  - Concerning: 6 or higher
-  - Typical: 3-4
-  - Well Managed: 2 or lower
-* Weight Bearing:
-  - Slow Progress: 50% or less weight-bearing
-  - Appropriate: 75%+ weight-bearing
-  - Excellent: Full weight-bearing
-
-#### Week 6-12 (Mid-term Recovery)
-* Range of Motion (ROM):
-  - Poor: Less than 90° knee flexion
-  - Functional: Approximately 90° knee flexion
-  - Excellent: Greater than 100° knee flexion
-* Pain Levels:
-  - Concerning: 6 or higher
-  - Typical: 4-5
-  - Excellent: 3 or lower
-* Weight Bearing:
-  - Below Expected: 50% or less weight-bearing
-  - Progressing: 75%+ weight-bearing
-  - Appropriate: Full weight-bearing
-
-#### Week 12+ (Long-term Recovery)
-* Range of Motion (ROM):
-  - Poor: Less than 100° knee flexion
-  - Good: Approximately 100° knee flexion
-  - Optimal: 120° knee flexion
-* Pain Levels:
-  - Elevated: 5 or higher
-  - Typical: 3-4
-  - Excellent: 2 or lower
-* Weight Bearing:
-  - Below Expected: Less than 100% weight-bearing
-  - Excellent: Full weight-bearing
-
-The program automatically calculates the user's recovery stage based on their surgery date and provides stage-appropriate feedback for each metric. This timeline-based assessment helps users understand their progress in context and identify areas that may require attention or healthcare professional consultation.
+The program automatically calculates the user's recovery stage based on their surgery date and provides stage-appropriate feedback for each metric. This timeline-based assessment helps users understand their progress and identify areas that may require attention or healthcare professional consultation.
 
 ## Future Features
 * Provide assessment advice on all metrics.
@@ -259,7 +210,17 @@ colorama - Used to add colour to the terminal output.
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
 
-The ROM assessment function had a typo in the ROM_CONVERSION dictionary for option E missing a degrees symbol. This caused the ROM assessment not to appear when option E selected for new users.
+During development, one recurring issue was encountering KeyErrors. These typically occurred when I modified the text within string-based questions but did not update corresponding keys in other parts of the program that relied on those exact strings (e.g., when storing or retrieving user responses from dictionaries).
+
+Weight-bearing assessment bug - There was an issue with how weight-bearing status was formatted and assessed. This was due to the weight-bearing status being stored as a prefix. Therefore, it caused problems when trying to access the progress. The issue was resolved by using .replace() to strip the prefix and extract only the relevant weight-bearing value.
+
+There was an indexing error when accessing the ROM data from the user’s dataset. The function was referencing a column index that was one position too low, causing incorrect data to be retrieved for the ROM metric. Another issue that arose were mismatched headers in Google Sheets. The logic was updated to skip the first column when reading data from Google Sheets and making sure the correct header columns aligned accurately with the values.
+
+The ROM assessment function had a typo in the ROM_CONVERSION dictionary for option E missing a degrees symbol. This caused the ROM assessment not to appear when option E selected for new users. In addition, the assessment display required the validate_rom to store the ROM measurement and not the assessment message and adjusted format_user_data to display only the ROM measurement in the user profile.
+
+A deprecation warning occured when i copied the spreadsheet initialisation from run.py to guide.py. Removing this in guide.py resolved the warning.
+
+There are currently no known bugs in the program. All previously identified issues related to data indexing, string mismatches, and weight-bearing status formatting have been resolved.
 
 ## Testing
 
