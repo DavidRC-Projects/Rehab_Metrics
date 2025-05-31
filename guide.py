@@ -1,7 +1,8 @@
 def get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery):
     """
-    This function evaluates ROM based on recovery timeline.
-    It checks if the user has had their surgery.
+    Checks range of motion (ROM) based on weeks since surgery.
+    Uses rom_degrees, a dictionary holding ROM values for
+    different choices.
     """
     try:
         weeks = days_since_surgery // 7
@@ -43,12 +44,7 @@ def get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery):
                     "Your ROM is poor for Week 6-12. "
                     "Consider consulting your healthcare provider."
                 )
-            elif user_rom <= 99:
-                return (
-                    "Your ROM is functional but still needs work "
-                    "for Week 6-12."
-                )
-            elif user_rom == 100:
+            elif user_rom <= 100:
                 return (
                     "Your ROM is functional but still needs work "
                     "for Week 6-12."
@@ -69,18 +65,19 @@ def get_rom_timeline_assessment(rom_degrees, choice, days_since_surgery):
                     "Your ROM is good but can still improve "
                     "for Week 12+."
                 )
-            elif user_rom == 120:
+            else:
                 return (
                     "Excellent progress! Your ROM has reached "
                     "optimal levels for function."
                 )
-    except Exception as e:
+    except Exception:
         return "Unable to assess ROM against timeline."
 
 
 def get_pain_timeline_assessment(pain_level, days_since_surgery):
     """
-    This function evaluates pain levels based on recovery timeline.
+    Checks pain level based on weeks since surgery.
+    Uses pain_level as the current pain value.
     """
     try:
         weeks = days_since_surgery // 7
@@ -95,11 +92,6 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
                 return (
                     "Your pain level is elevated for Week 12+. "
                     "Consider consulting your healthcare provider."
-                )
-            elif pain <= 3:
-                return (
-                    "Your pain level is typical for this stage. "
-                    "Continue monitoring and exercising as prescribed."
                 )
             else:
                 return (
@@ -129,12 +121,12 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
                     "Your pain level is higher than expected for Week 2-6. "
                     "Consider consulting your healthcare provider."
                 )
-            elif 3 <= pain <= 4:
+            elif pain == 5:
                 return (
                     "Your pain level is typical for Week 2-6. "
                     "Continue your prescribed exercises."
                 )
-            elif pain >= 2:
+            else:
                 return (
                     "Your pain is well managed for Week 2-6. "
                     "Keep up the good work!"
@@ -145,23 +137,25 @@ def get_pain_timeline_assessment(pain_level, days_since_surgery):
                     "Your pain level is concerning for Week 6-12. "
                     "Please consult your healthcare provider."
                 )
-            elif 4 <= pain <= 5:
+            elif pain == 5:
                 return (
                     "Your pain level is typical for Week 6-12. "
                     "Continue your exercises."
                 )
-            elif pain <= 3:
+            else:
                 return (
                     "Excellent pain level for Week 6-12. "
                     "Keep up with your exercises!"
                 )
-    except Exception as e:
+    except Exception:
         return "Unable to assess pain level against timeline."
 
 
 def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
     """
-    This function evaluates weight bearing status based on recovery timeline.
+    Checks weight bearing status based on weeks since surgery.
+    Uses wb_status to describe the current weight bearing level.
+    Uses wb_levels dict to map weight bearing status strings to numbers.
     """
     try:
         if days_since_surgery < 0:
@@ -182,73 +176,73 @@ def get_weight_bearing_timeline_assessment(wb_status, days_since_surgery):
         if weeks < 2:  # Week 0-2
             if wb_level == 1:
                 return (
-                    "[Week 0-2] Your weight bearing status is poor."
-                    "Please consult your healthcare provider for guidance"
+                    "Your weight bearing status is poor."
+                    "Please consult your healthcare provider for guidance."
                 )
             elif wb_level == 2:
                 return (
-                    "[Week 0-2] Your weight bearing is expected. "
+                    "Your weight bearing is expected. "
                     "Follow your healthcare provider's guidance for "
                     "progression."
                 )
             elif wb_level == 3:
                 return (
-                    "[Week 0-2] Your weight bearing is progressing well. "
+                    "Your weight bearing is progressing well. "
                     "Continue following your exercises."
                 )
             else:
                 return (
-                    "[Week 0-2] Your weight bearing status is excellent "
+                    "Your weight bearing status is excellent "
                     "for this stage!"
                 )
         elif weeks < 6:  # Week 2-6
             if wb_level <= 2:
                 return (
-                    "[Week 2-6] Your weight bearing is below expected. "
+                    "Your weight bearing is below expected. "
                     "Please consult your healthcare provider."
                 )
             elif wb_level == 3:
                 return (
-                    "[Week 2-6] Your weight bearing is below expected. "
+                    "Your weight bearing is below expected. "
                     "Please continue your exercises and consult your "
                     "healthcare provider if this worsens."
                 )
             else:
                 return (
-                    "[Week 2-6] Excellent progress! Your weight bearing "
+                    "Excellent progress! Your weight bearing "
                     "is advancing well."
                 )
         elif weeks < 12:  # Week 6-12
             if wb_level <= 2:
                 return (
-                    "[Week 6-12] Your weight bearing is lower than "
+                    "Your weight bearing is lower than "
                     "expected. Consider consulting your healthcare "
                     "provider."
                 )
             elif wb_level == 3:
                 return (
-                    "[Week 6-12] Your weight bearing is below expected. "
+                    "Your weight bearing is below expected. "
                     "Please continue your exercises and consult your "
                     "healthcare provider if this worsens."
                 )
             else:
                 return (
-                    "[Week 6-12] Excellent! Your weight bearing status "
+                    "Excellent! Your weight bearing status "
                     "is appropriate."
                 )
         else:  # Week 12+
             if wb_level <= 3:
                 return (
-                    "[Week 12+] Your weight bearing is lower than "
+                    "Your weight bearing is lower than "
                     "expected. Consider consulting your healthcare "
                     "provider."
                 )
             else:
                 return (
-                    "[Week 12+] Excellent! You have achieved full "
-                    "weight bearing status keep uo the good work!."
+                    "Excellent! You have achieved full "
+                    "weight bearing status keep up the good work!."
                 )
-    except Exception as e:
+    except Exception:
         return (
             "Unable to assess weight bearing status: "
             "Invalid data format"

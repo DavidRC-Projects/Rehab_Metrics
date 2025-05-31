@@ -87,16 +87,16 @@ A numeric pain rating is collected on a scale of 0-10 to help gauge their discom
 5. Knee Bend Assessment
 The user selects from one of the four options that best describes their ability to bend their knee. This selection is internally converted to an estimated knee flexion value and displayed back to the user.
 6. Weight Bearing Status
-The user selects one of four options to describe their current weight bearing status. This input is also converted into a descriptive status and shown back to the user.
+The user selects one of four options to describe their current weight bearing status. This input is also converted into a weight bearing status and shown back to the user.
 
-The answers provided by the user are stored for later display and progress tracking.
+The answers provided by the user are stored. This is then displayed later for existing users for progress tracking.
 
 
 ### Returning User Journey
 
 ![Questions and assessment](assets/existing_user.png) 
 
-Returning users begin by entering their previously registered username and password. The tool then verifies the credentials to ensure the user is authenticated before proceeding. Upon successful login, users are guided through the assessment questions to update their rehabilitation progress.
+Returning users begin by entering their previously registered username and password. The tool then verifies the credentials to ensure the user is authenticated before proceeding. Upon successful login, users are guided through the assessment questions to update their recovery timeline.
 
 This uses the functions handle_returning_user(), which works by prompting the user to input their username and password. It will then check if the username exists. The tool will then call verify_password() to authenticate the user. If authentication is successful, it loads the user's existing data from 'userdata' worksheet in Google Sheets. If login fails (due to incorrect credentials or non-existent username), the user is informed and given the option to retry or return to the main menu. Please see [Validation](#validation) for further details.
 
@@ -107,7 +107,7 @@ Upon completing the assessment questions, the app evaluates recovery progress us
 
 * get_pain_timeline_assessment() – Evaluates reported pain levels and highlights any concerning scores.
 
-* get_weight_bearing_timeline_assessment() – Evaluates weight-bearing progress and mobility status.
+* get_weight_bearing_timeline_assessment() – Evaluates weight-bearing progress.
 
 ### Data Storage
 
@@ -121,7 +121,7 @@ All user data is stored securely in Google Sheets using the gspread library:
 
 ### Data Processing and Retrival
 
-* The app determines how many days have elapsed since the user’s recorded surgery date using the calculate_days_since_surgery() function. This value is essential for placing the user's rehabilitation progress in the correct timeframe and helps tailor the feedback they receive accordingly.
+* The app determines how many days have elapsed since the user’s recorded surgery date using the calculate_days_since_surgery() function. This value is essential for placing the user's progress in the correct timeframe and helps tailor the feedback they receive accordingly.
 * The app retrieves the most recent user data from Google Sheets, allowing for comparison with current inputs.
 * get_user_data() – This function fetches the user's previous entries from the "userdata" worksheet based on their username.
 
@@ -134,7 +134,7 @@ The login process verifies both username and password before proceeding.
 validate_user(input_str)
 * Ensures that the username is between 2 and 10 characters long.
 * Disallows special characters using a predefined NOT_VALID list.
-* If the username is valid and unique (or exists for returning users), it is accepted.
+* If the username is valid and unique, it is accepted.
 
 user_password()
 * Prompts the user to enter a password.
@@ -144,7 +144,6 @@ user_password()
 validate_password(password)
 * Ensures the password is at least 6 characters long.
 * Disallows spaces to prevent formatting issues.
-* Returns True if the password is valid; otherwise, returns False.
 
 Each assessment question has tailored validation to ensure data is appropriate.
 * validate_date() - Checks if the surgery date is in the correct YYYY-MM-DD format and ensures the date is not in the future.
@@ -157,8 +156,8 @@ Each assessment question has tailored validation to ensure data is appropriate.
 The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
 * If a user reports a pain level of 10 (the maximum on the 0–10 scale), the program immediately terminates the session and advises the user to consult a healthcare professional. This serves as a safeguard against potentially serious complications.
 * If the user's input indicates severely limited weight-bearing ability (e.g., unable to place any weight on the operated leg), the program also exits and directs the user to consult a healthcare professional for further assessment.
+* If the user's input indicates complications (e.g., inputing 'yes'), the program exits and directs the user to consult a healthcare professional.
 * There are warning messages for concerning symptoms.
-* There are screening for any complications during the questions. 
 
 Images for safety features************************************
 
@@ -233,12 +232,13 @@ The program evaluates recovery progress across four key timeframes following kne
 The program automatically calculates the user's recovery stage based on their surgery date and provides stage-appropriate feedback for each metric. This timeline-based assessment helps users understand their progress in context and identify areas that may require attention or healthcare professional consultation.
 
 ## Future Features
-* Provide assessment advice on all metrics 
-* Questions on walking and climbing stairs to idetify any functional problems
-* Provide advice and compare their walking and ability to climb stairs with expected data within a 12 week timelime
-* Provide questions on swelling, fever and sudden worsening of symptoms to clear any red flags and to advise ther user to seek advice
-* Returning users can input new data and then compare any changes from their previous data. This would be good for user experience.
-* Provide more tailored advice for stage of recovery by asking more detailed questions 
+* Provide assessment advice on all metrics.
+* Include questions on walking and stair climbing to identify functional difficulties.
+* Compare users’ walking ability and stair climbing with expected recovery data across a 12-week timeline.
+* Add complication screening questions to identify red flags, such as swelling, fever, or sudden worsening of symptoms, and advise users to seek urgent medical attention if necessary.
+* Enable returning users to view their previous entries, update their information, and modify data in the worksheet.
+* Offer more tailored advice by introducing detailed questions relevant to the user's specific stage of recovery.
+* Improve password security by implementing hashed password input to hide the password as it is entered.
 
 ## Technologies Used
 * Visual Studio Code with assistance of flake8 linter extension.
