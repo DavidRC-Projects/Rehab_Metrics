@@ -66,7 +66,10 @@
 |---------|------------------|---------|-----------|
 | Multiple Session Data | Entered data across multiple sessions | All data correctly stored | Pass |
 | Data Retrieval | Accessed historical data | Correct data displayed | Pass |
-| File Access | | | |
+
+## Google Sheets Testing
+| Feature | Testing Performed | Result | Pass/Fail |
+|---------|------------------|---------|-----------|
 
 ## Error Handling Testing
 

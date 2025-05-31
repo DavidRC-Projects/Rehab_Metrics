@@ -45,7 +45,7 @@ ROM_CONVERSION = {
     "b": "Less than 90°",
     "c": "Approximately 90°",
     "d": "Greater than 100°",
-    "e": "Greater than 120",
+    "e": "Greater than 120°",
 }
 
 ROM_DEGREES = {
@@ -445,6 +445,9 @@ def assess_rom_progress(metric_data):
             print(Fore.BLUE + assessment)
             print(Fore.YELLOW + "-" * 50 + Style.RESET_ALL)
             return True
+        else:
+            print("\nUnable to determine ROM choice from data.")
+            return False
     except Exception as e:
         print(f"Error performing ROM assessment: {e}")
         return False
