@@ -109,7 +109,7 @@ def welcome_user():
 
     print(DASH)
     while True:
-        user_name = input(Style.RESET_ALL + "Please enter your username: ")
+        user_name = input(Style.RESET_ALL + "Please enter your username:\n")
         user_name = user_name.strip()
         if user_quit(user_name):
             return None
@@ -161,7 +161,7 @@ def user_password():
     Checks for presence of spaces.
     """
     while True:
-        password = input("Please enter a password (minimum 6 characters): ")
+        password = input("Please enter a password (minimum 6 characters):\n")
         if user_quit(password):
             return "quit"
         is_valid_pass, pass_error = validate_password(password)
@@ -587,7 +587,7 @@ def check_user_status():
     while True:
         print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
         status = input("Please enter (Y) for Yes"
-                       "or (N) for No: ").strip().lower()
+                       "or (N) for No:\n").strip().lower()
         if status in ['y', 'n']:
             return status == 'y'
         print(Fore.RED + "Please enter only 'Y' for Yes "
@@ -755,10 +755,10 @@ def handle_returning_user():
         Style.RESET_ALL
     )
     while True:
-        username = input("\nPlease enter your username: ").strip()
+        username = input("\nPlease enter your username:\n").strip()
         if user_quit(username):
             return False
-        password = input("Please enter your password: ").strip()
+        password = input("Please enter your password:\n").strip()
         if user_quit(password):
             return False
         if verify_password(username, password):
@@ -772,7 +772,7 @@ def handle_returning_user():
             )
         retry = input(
             Fore.BLUE +
-            "\nWould you like to try again? (Y/N): "
+            "\nWould you like to try again? (Y/N):\n"
         ).lower()
         if retry != 'y':
             return False
@@ -874,7 +874,7 @@ def display_update_options():
     print("1. Yes updates needed")
     print("2. No updates needed")
     while True:
-        choice = input("\nEnter your choice (1-2): ").strip()
+        choice = input("\nEnter your choice (1-2):\n").strip()
         if choice in ['1', '2']:
             return choice
         print(
