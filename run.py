@@ -586,7 +586,7 @@ def check_user_status():
     print(DISCLAIMER)
     while True:
         print(Fore.BLUE + "\nAre you a new user?" + Style.RESET_ALL)
-        status = input("Please enter (Y) for Yes"
+        status = input("Please enter (Y) for Yes "
                        "or (N) for No:\n").strip().lower()
         if status in ['y', 'n']:
             return status == 'y'
@@ -785,7 +785,8 @@ def user_quit(input_str):
     Returns False otherwise.
     """
     if input_str.lower() == "quit":
-        print("You chose to Quit and will return to the start")
+        print("You chose to Quit and will exit")
+        quit_message()
         return True
     return False
 
@@ -884,6 +885,24 @@ def display_update_options():
         )
 
 
+def quit_message():
+    """
+    Displays a farewell message when the user exits the program.
+    Used when the user chooses not to update their data or quit.
+    """
+    end_message = [
+        "Thank you for using Rehab Metrics!",
+        "We hope this tool has been beneficial.",
+        "Come back soon!",
+    ]
+    print(DASH)
+    print(SPACE)
+    for message in end_message:
+        print(message.center(CENTER_WIDTH))
+    print(SPACE)
+    print(DASH)
+
+
 def main():
     """
     Program entry point.
@@ -899,6 +918,8 @@ def main():
             choice = display_update_options()
             if choice == '1':
                 process_new_user()
+            if choice == '2':
+                quit_message()
 
 
 main()
