@@ -252,12 +252,15 @@ As a result of the linting process, I made the following adjustments:
 This project was deployed using the Code Institute’s mock terminal for Heroku
 
 Steps for deployment:
-add the list of requirements by writing in the terminal "pip3 freeze > requirements.txt". 
+add the list of requirements by writing in the terminal "pip3 freeze > requirements.txt".
+Log into Heroku or create a new account and log in
 
 ## Forking and Cloning
 
 ## Credits
 
+
+https://www.geeksforgeeks.org/hiding-and-encrypting-passwords-in-python/
 ## Acknowledgements
 
 
