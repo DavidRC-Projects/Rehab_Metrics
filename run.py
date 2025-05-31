@@ -864,17 +864,15 @@ def display_update_options():
     """
     print(Fore.BLUE + "\nWould you like to update any of your data?")
     print("Available options:")
-    print("1. Update Pain Level")
-    print("2. Update Knee Range of Motion")
-    print("3. Update Weight Bearing Status")
-    print("4. No updates needed")
+    print("1. Yes updates needed")
+    print("2. No updates needed")
     while True:
-        choice = input("\nEnter your choice (1-4): ").strip()
-        if choice in ['1', '2', '3', '4']:
+        choice = input("\nEnter your choice (1-2): ").strip()
+        if choice in ['1', '2']:
             return choice
         print(
             Fore.RED +
-            "Please enter a number between 1 and 4" +
+            "Please enter a number between 1 and 2" +
             Style.RESET_ALL
         )
 
@@ -889,7 +887,9 @@ def main():
         process_new_user()
     else:
         handle_returning_user()
-        display_update_options()
+        choice = display_update_options()
+        if choice in ['1']:
+            process_new_user()
 
 
 main()

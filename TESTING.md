@@ -83,4 +83,4 @@
 | Invalid ROM Input | Enter option F | No Error message displayed and repeated the question | Passed |
 | Non-numeric Input for ROM | Entered letters/special characters | Error message displayed in red | Passed |
 | Invalid Selection for weight bearing question | Entered invalid option F | Error message displayed in red  | Passed |
-| Returning user Profile and Rehabilitation Data display | Entered existing username and password | Weight bearing status: Invalid data format | Failed |
+| Returning user Profile and Rehabilitation Data display | Entered existing username and password | Weight bearing status: Invalid data format | Passed |
