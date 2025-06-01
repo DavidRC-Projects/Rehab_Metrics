@@ -870,6 +870,7 @@ def process_new_user():
     assess_pain_progress(data)
     assess_weight_bearing_progress(data)
     update_rehab_metrics_worksheet(data)
+    quit_message()
 
 
 def display_update_options():
