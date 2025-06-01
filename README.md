@@ -95,10 +95,12 @@ The user selects one of four options to describe their current weight bearing st
 
 The answers provided by the user are stored. This is then displayed later for existing users for progress tracking.
 
+![Quit Feedback](assets/quit-feedback.png)
+
 
 ### Returning User Journey
 
-![Questions and assessment](assets/existing_user.png) 
+![Profile and Assessment](assets/existing-user.png)
 
 Returning users begin by entering their previously registered username and password. The tool then verifies the credentials to ensure the user is authenticated before proceeding. Upon successful login, users are guided through the assessment questions to update their recovery timeline.
 
@@ -146,6 +148,7 @@ user_password()
 * Prompts the user to enter a password.
 * Uses validate_password() for validation.
 * Continues prompting until a valid password is entered or the user types 'quit'.
+* Uses maskpass to hide the password when entered.
 
 validate_password(password)
 * Ensures the password is at least 6 characters long.
@@ -160,9 +163,24 @@ Each assessment question has tailored validation to ensure data is appropriate.
 * validate_rom() - Accepts only choices A–E. 
 * validate_weight_bearing() - Accepts only choices A–D.
 
+![Date Validation](assets/date-validation.png)
+
+![Complications Validation](assets/complications-validation.png)
+
+![Pain Validation](assets/pain-validation.png)
+
+![ROM Validation](assets/rom-validation.png)
+
+![Weight-bearing Validation](assets/wb-validation.png)
+
+
 ### Update Menu options
 The function display_update_options() was added to give the users a choice to restart the assessment process or exit the program.
 In future updates, it will allow users to update individual metrics they previously entered.
+
+![Update Data](assets/update-data.png)
+
+![Update Data Exit](assets/update-data-exit.png)
 
 ### Safety Feature
 The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
@@ -171,12 +189,18 @@ The program includes built-in safety mechanisms to help protect users by identif
 * If the user's input indicates complications (e.g., inputing 'yes'), the program exits and directs the user to consult a healthcare professional.
 * There are warning messages for concerning symptoms.
 
-Images for safety features************************************
+![Safety Feature For Complications](assets/safety-complications.png)
 
-### Program Controls & Error Handling
+![Safety Feature For Pain](assets/safety-pain.png)
+
+![Safety Feature For Weight-bearing](assets//safety-weightbearing.png)
+
+### Program Navigation
 * Users can exit the program at any point by typing 'quit'. This allows for a user-friendly and accommodating interruptions or changes of mind without causing errors or data loss.
-* After each input or action, the user receives immediate, clear feedback. This includes confirmation of successful entries, detailed error messages for invalid inputs, and instructions on how to proceed or correct mistakes.
-* All inputs are monitored for validity. Invalid entries prompt user-friendly error messages and re-prompt the user to try again.
+* After each input or action, the user receives immediate, clear feedback. This includes confirmation of successful entries, detailed error messages for invalid inputs.
+* Invalid entries prompt user-friendly error messages and re-prompt the user to try again. Please see [Validation](#validation) for further details.
+
+![User Quits by typing "quit"](assets/user-quits.png)
 
 ### Timeline Based Assessment
 The program evaluates recovery progress across four key timeframes following knee replacement surgery:
@@ -185,6 +209,8 @@ The program evaluates recovery progress across four key timeframes following kne
 * 2-6 weeks: Early recovery phase
 * 6-12 weeks: Mid-term recovery
 * 12+ weeks: Long-term recovery
+
+![Timeline Assessments](assets/timeline-assessments.png)
 
 In guide.py, the program uses floor division (//) to convert the number of days into weeks. It then applies a series of conditional statements to assess the user’s input (e.g., range of motion, pain level, weight-bearing status) against clinically expected norms for each recovery stage. Each function generates customised feedback based on the user’s data, helping them understand whether their progress is poor, typical or above expectations.
 
@@ -217,21 +243,23 @@ The following Python packages and libaries were used:
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
 
-During development, one recurring issue was encountering KeyErrors. These typically occurred when I modified the text within string-based questions but did not update corresponding keys in other parts of the program that relied on those exact strings (e.g., when storing or retrieving user responses from dictionaries).
+* During development, one recurring issue was encountering KeyErrors. These typically occurred when I modified the text within string-based questions but did not update corresponding keys in other parts of the program that relied on those exact strings (e.g., when storing or retrieving user responses from dictionaries).
 
-Weight-bearing assessment bug - There was an issue with how weight-bearing status was formatted and assessed. This was due to the weight-bearing status being stored as a prefix. Therefore, it caused problems when trying to access the progress. The issue was resolved by using .replace() to strip the prefix and extract only the relevant weight-bearing value.
+* Weight-bearing assessment bug - There was an issue with how weight-bearing status was formatted and assessed. This was due to the weight-bearing status being stored as a prefix. Therefore, it caused problems when trying to access the progress. The issue was resolved by using .replace() to strip the prefix and extract only the relevant weight-bearing value.
 
-There was an indexing error when accessing the ROM data from the user’s dataset. The function was referencing a column index that was one position too low, causing incorrect data to be retrieved for the ROM metric. Another issue that arose were mismatched headers in Google Sheets. The logic was updated to skip the first column when reading data from Google Sheets and making sure the correct header columns aligned accurately with the values.
+* There was an indexing error when accessing the ROM data from the user’s dataset. The function was referencing a column index that was one position too low, causing incorrect data to be retrieved for the ROM metric. Another issue that arose were mismatched headers in Google Sheets. The logic was updated to skip the first column when reading data from Google Sheets and making sure the correct header columns aligned accurately with the values.
 
-The ROM assessment function had a typo in the ROM_CONVERSION dictionary for option E missing a degrees symbol. This caused the ROM assessment not to appear when option E selected for new users. In addition, the assessment display required the validate_rom to store the ROM measurement and not the assessment message and adjusted format_user_data to display only the ROM measurement in the user profile.
+* The ROM assessment function had a typo in the ROM_CONVERSION dictionary for option E missing a degrees symbol. This caused the ROM assessment not to appear when option E selected for new users. In addition, the assessment display required the validate_rom to store the ROM measurement and not the assessment message and adjusted format_user_data to display only the ROM measurement in the user profile.
 
-A deprecation warning occured when i copied the spreadsheet initialisation from run.py to guide.py. Removing this in guide.py resolved the warning.
+* A deprecation warning occured when i copied the spreadsheet initialisation from run.py to guide.py. Removing this in guide.py resolved the warning.
 
-When the surgery date was entered as today's date, the program calculated days_since_surgery = 0, which evaluated as falsy in conditional checks. This incorrectly triggered error messages like:
+* When the surgery date was entered as today's date, the program calculated days_since_surgery = 0, which evaluated as falsy in conditional checks. This incorrectly triggered error messages like:
 Cannot perform ROM assessment: Days since surgery not available
 To fix this i updated the logic in the validate_date() function to check if days_ago <= 0. Now, the program provides clear feedback and prompts the user to re-enter a valid surgery date instead of treating 0 as missing data.
 
-There are currently no known bugs in the program. All previously identified issues related to data indexing, string mismatches, and weight-bearing status formatting have been resolved.
+* Heroku deployment error after adding maskpass import and updating requirements.txt. Resolved by removing macOS-only dependencies from requirements.txt, which were incompatible with Heroku's linux enviroment.
+
+There are currently to my knowledge no known bugs in the program. All previously identified issues related to data indexing, string mismatches, and weight-bearing status formatting have been resolved.
 
 ## Testing
 
@@ -256,8 +284,9 @@ As a result of the linting process, I made the following adjustments:
 - Related third-party imports
 - Local application imports
 
-***** image on python linter run.py
-***** image of python linter guide.py
+![Run Pythin Linter](assets/run-python-linter.png)
+
+![Guide Python Linter](assets/guide-python-linter.png)
 
 ## Deployment
 This project was deployed using the Code Institute’s mock terminal for Heroku.
