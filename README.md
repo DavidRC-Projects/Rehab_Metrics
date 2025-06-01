@@ -1,11 +1,13 @@
 # Rebab Metrics
 
+![Welcome to Rehab Metrics](assets/rehab-metrics.jpeg)
+
 Rehab Metrics is a post-surgery tracking tool that helps users monitor their recovery progress, with a particular focus on knee recovery. Built in Python and deployed via Code Institute's Heroku terminal, the app features secure user registration and login with validation for usernames and passwords. Users enter their details, and the app calculates their stage in the recovery journey, providing feedback on pain levels, knee range of motion, and weight bearing status. All data is securely stored using Google Sheets integration. Rehab Metrics is intended as a supportive self-monitoring tool and includes prompts to consult a healthcare professional when needed, as it does not provide medical advice.
 
 ## Project Plan
 
 ### Project Goals
-I developed Rehab Metrics inspired by a close relative who recently underwent a knee replacement surgery. They had many questions about their recovery, particularly around the expected timeline and what level of movement and activity they should be achieving in the first few months. This app aims to provide clear, stage appropriate guidance to help users monitor their progress and feel more confident during their recovery. From this experience, I realised I could create a project that collects user data and provides advice on key areas of recovery, helping patients understand their progress and what to expect during rehabilitation.
+I developed Rehab Metrics inspired by a close relative who recently underwent a knee replacement surgery. They had many questions about their recovery, particularly around the expected timeline and what level of movement and activity they should be achieving in the first few months. This app aims to provide clear, stage appropriate guidance to help users monitor their progress and feel more confident during their recovery. From this experience, I realised I could create a project that collects user data and provides advice on key areas of recovery, helping users understand their progress and what to expect during recovery.
 
 ## User Stories
 
@@ -66,7 +68,9 @@ The welcome_user function works together with the functions validate_user, check
 
 From the image above you can see there is a welcome message displayed with instructions and a disclaimer. If the user enters 'yes' for a new user then the program will then prompt the user to enter their username and validate this. Validation also includes checking the google sheet for usernames that already exist. After entering the username a prompt will appear to input a password. Both the username and password will be saved in Google sheets if the credentials are valid.
 
-![Google worksheet users](assets/googleusers.png)********************************
+![Google worksheet users](assets/googleusers.png)
+
+![Google worksheet users](assets/googleuserdata.png)
 
 
 ### New User Journey
@@ -189,7 +193,6 @@ The program automatically calculates the user's recovery stage based on their su
 * Add complication screening questions to identify red flags, such as swelling, fever, or sudden worsening of symptoms, and advise users to seek urgent medical attention if necessary.
 * Enable returning users to view their previous entries, update their information, and modify data in the worksheet.
 * Offer more tailored advice by introducing detailed questions relevant to the user's specific stage of recovery.
-* Improve password security by implementing hashed password input to hide the password as it is entered.
 
 ## Technologies Used
 * Visual Studio Code with assistance of flake8 linter extension.
@@ -253,18 +256,46 @@ As a result of the linting process, I made the following adjustments:
 ***** image of python linter guide.py
 
 ## Deployment
-This project was deployed using the Code Institute’s mock terminal for Heroku
+This project was deployed using the Code Institute’s mock terminal for Heroku.
 
 Steps for deployment:
-add the list of requirements by writing in the terminal "pip3 freeze > requirements.txt".
-Log into Heroku or create a new account and log in
+1. Add the list of requirements by writing in the terminal "pip3 freeze > requirements.txt".
+2. Log into Heroku.
+4. Click "NEW" in the top right-hand corner and choos the option Create new app.
+5. Input a unique app name.
+6. Choose Region - Europe.
+7. Choose "Settings" from the menu.
+8. Go to section "Config Vars" and click button "Reveal Config Vars”.
+9. Add key and value. For this project I added creds.json as the key and copied the contents of this into the value.
+10. Go to section "Build packs" and click "Add build pack”.
+11. Go to "Deploy" in the menu bar.
+12. Go to section "deployment method", choose "GitHub".
+13. New section will appear "Connect to GitHub".
+14. Type the name of your repository and click "search".
+15. Once Heroku finds your repository - click "connect".
+16. Click "Enable automatic deploys" or manually deploy by choosing "Deploy branch".
+17. Click "Deploy branch".
 
 ## Forking and Cloning
+To fork this repository:
+
+1. Log in to your Github account.
+2. Navigate to the repository page.
+3. Click the "Fork" button in the top-right corner.
+
+To Clone:
+
+1. Go to the forked repository on Github.
+2. Click the green "Code" button.
+3. Copy the HTTPS link: https://github.com/DavidRC-Projects/Rehab_Metrics.git.
+4. Open your terminal and type: git clone https://github.com/DavidRC-Projects/Rehab_Metrics.git.
 
 ## Credits
 
+https://www.canva.com/dream-lab
 
 https://www.geeksforgeeks.org/hiding-and-encrypting-passwords-in-python/
+
 ## Acknowledgements
 
 
