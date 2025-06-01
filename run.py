@@ -754,6 +754,7 @@ def handle_returning_user():
     Returns True if login successful, False if user quits.
     Checks if username and password are valid.
     Uses while loop to allow retry attempts.
+    Maskpass hides the password.
     """
     print(
         Fore.BLUE +

@@ -140,6 +140,8 @@ validate_user(input_str)
 * Disallows special characters using a predefined NOT_VALID list.
 * If the username is valid and unique, it is accepted.
 
+![New User Validation](assets/new-user-validation.png)
+
 user_password()
 * Prompts the user to enter a password.
 * Uses validate_password() for validation.
@@ -148,6 +150,8 @@ user_password()
 validate_password(password)
 * Ensures the password is at least 6 characters long.
 * Disallows spaces to prevent formatting issues.
+
+![Password Validation](assets/password-validation.png)
 
 Each assessment question has tailored validation to ensure data is appropriate.
 * validate_date() - Checks if the surgery date is in the correct YYYY-MM-DD format and ensures the date is not in the future.
@@ -205,10 +209,10 @@ The program automatically calculates the user's recovery stage based on their su
 The project was developed using Python 3.13.2.
 
 The following Python packages and libaries were used:
-datetime - Used to work with date and time, particulary to calculate recovery timelines based on number of days since surgery.
-gspread - Used to interact with Google Sheets API for reading and writing data to a spreadsheet.
-google.oauth2.service_account.Credentials - Provides secure authentication for access to Google Sheets API.
-colorama - Used to add colour to the terminal output.
+* datetime - Used to work with date and time, particulary to calculate recovery timelines based on number of days since surgery.
+* gspread - Used to interact with Google Sheets API for reading and writing data to a spreadsheet.
+* google.oauth2.service_account.Credentials - Provides secure authentication for access to Google Sheets API.
+* colorama - Used to add colour to the terminal output.
 
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
