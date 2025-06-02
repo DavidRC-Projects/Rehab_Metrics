@@ -210,18 +210,21 @@ All inputs are validated. Invalid entries trigger error messages in red coloured
 Exception handling is implemented using try and except blocks across the program. If an error occurs, the function catches it and returns False, allowing the program to continue running safely while giving the user another opportunity to enter valid input. For example, the assess_pain_progress function checks for missing data (like days since surgery or pain level) and provides specific messages. If an unexpected issue arises, it catches the exception and returns False.
 
 I have used exception handling with the following functions:
-calculate_days_since_surgery
-validate_pain_scale
-assess_rom_progress
-assess_pain_progress
-assess_weight_bering_progress
-update_rehab_metrics
-update_user_worksheet
-check_existing_username
-get_user_row
-get_user_data
-verify_password
-process_new_user
+* calculate_days_since_surgery
+* validate_pain_scale
+* assess_rom_progress
+* assess_pain_progress
+* assess_weight_bering_progress
+* update_rehab_metrics
+* update_user_worksheet
+* check_existing_username
+* get_user_row
+* get_user_data
+* verify_password
+* process_new_user
+* get_rom_timeline_assessment
+* get_pain_timeline_assessment
+* get_weight_bearing_timeline_assessment
 
 #### User Login Validation
 The login process verifies both username and password before proceeding.
