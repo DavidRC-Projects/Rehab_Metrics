@@ -36,20 +36,20 @@ Link to live page: [Rehab-Metrics](https://rehab-metrics-5347677ed9d1.herokuapp.
 * [Python Version, Packages and Libaries Used](#python-version,-packages-and-libaries-used)
 
 ## Bugs and Fixes
-* [Bugs and Fixes](bugs-and-fixes)
+* [Bugs and Fixes](#bugs-and-fixes)
 
 ### Testing
-* [Manual Test](manual-testing)
-* [Validation Testing](validation-testing)
+* [Manual Test](#manual-testing)
+* [Validation Testing](#validation-testing)
 
 ### Deployment and Local Deployment
-* [Deployment and Local Deployment](deployment-and-local-deployment)
-
+* [Deployment and Local Deployment](#deployment-and-local-deployment)
+ß
 ## Forking and Cloning
-* [Forking and Cloning](forking-and-cloning)
+* [Forking and Cloning](#forking-and-cloning)
 
 ### Credits and Acknowledgments
-* [Credits and Acknowledgments](credits-and-acknowledgments)
+* [Credits and Acknowledgments](#credits-and-acknowledgments)
 
 
 ## Project Plan
