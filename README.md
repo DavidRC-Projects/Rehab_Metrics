@@ -68,14 +68,21 @@ The welcome_user function works together with the functions validate_user, check
 
 From the image above you can see there is a welcome message displayed with instructions and a disclaimer. If the user enters 'yes' for a new user then the program will then prompt the user to enter their username and validate this. Validation also includes checking the google sheet for usernames that already exist. After entering the username a prompt will appear to input a password. Both the username and password will be saved in Google sheets if the credentials are valid.
 
+#### Google Worksheet users
+
+This worksheet stores the username and passwords:
+
 ![Google worksheet users](assets/googleusers.png)
+
+
+#### Google Worksheet userdata
+
+This worksheet stores the metric data:
 
 ![Google worksheet users](assets/googleuserdata.png)
 
 
 ### New User Journey
-
-![Questions and assessment](assets/questions.png)
 
 The questions() function guides the user through a structured assessment consisting of six simple questions. These questions are designed to collect relevant post-operative information following a knee replacement surgery. The collected data contributes to a personalised log of their data.
 
@@ -93,14 +100,19 @@ The user selects from one of the four options that best describes their ability 
 6. Weight Bearing Status
 The user selects one of four options to describe their current weight bearing status. This input is also converted into a weight bearing status and shown back to the user.
 
+#### Sample Assessment Questions
+
+![Questions and assessment](assets/questions.png)
+
 The answers provided by the user are stored. This is then displayed later for existing users for progress tracking.
+
+#### Exit Message
 
 ![Quit Feedback](assets/quit-feedback.png)
 
+When users exit the program, they receive a friendly message encouraging future engagement.
 
 ### Returning User Journey
-
-![Profile and Assessment](assets/existing-user.png)
 
 Returning users begin by entering their previously registered username and password. The tool then verifies the credentials to ensure the user is authenticated before proceeding. Upon successful login, users are guided through the assessment questions to update their recovery timeline.
 
@@ -114,6 +126,12 @@ Upon completing the assessment questions, the app evaluates recovery progress us
 * get_pain_timeline_assessment() – Evaluates reported pain levels and highlights any concerning scores.
 
 * get_weight_bearing_timeline_assessment() – Evaluates weight-bearing progress.
+
+#### Sample Profile and Assessments
+
+![Profile and Assessment](assets/existing-user.png)
+
+Returning users can view their previously entered data alongside updated assessments, helping them monitor recovery progress over time.
 
 ### Data Storage
 
@@ -135,11 +153,31 @@ All user data is stored securely in Google Sheets using the gspread library:
 
 All inputs are validated. Invalid entries trigger error messages in red coloured text and offer retry prompts.
 
+#### Exception handling
+
+Exception handling is implemented using try and except blocks across the program. If an error occurs, the function catches it and returns False, allowing the program to continue running safely while giving the user another opportunity to enter valid input. For example, the assess_pain_progress function checks for missing data (like days since surgery or pain level) and provides specific messages. If an unexpected issue arises, it catches the exception and returns False.
+
+I have used exception handling with the following functions:
+Calculate_days_since_surgery
+Validate_pain_scale
+assess_rom_progress
+assess_pain_progress
+assess_weight_bering_progress
+update_rehab_metrics
+update_user_worksheet
+check_existing_username
+get_user_row
+get_user_data
+verify_password
+process_new_user
+
+#### User Login Validation
 The login process verifies both username and password before proceeding.
 
 validate_user(input_str)
 * Ensures that the username is between 2 and 10 characters long.
 * Disallows special characters using a predefined NOT_VALID list.
+* Disallows white spaces.
 * If the username is valid and unique, it is accepted.
 
 ![New User Validation](assets/new-user-validation.png)
@@ -152,24 +190,34 @@ user_password()
 
 validate_password(password)
 * Ensures the password is at least 6 characters long.
-* Disallows spaces to prevent formatting issues.
+* Disallows white spaces to prevent formatting issues.
 
 ![Password Validation](assets/password-validation.png)
 
 Each assessment question has tailored validation to ensure data is appropriate.
-* validate_date() - Checks if the surgery date is in the correct YYYY-MM-DD format and ensures the date is not in the future.
+* validate_date() - Checks if the surgery date is in the correct YYYY-MM-DD format and ensures the date is not in the future or 0 days.
 * validate_complications() - Accepts only "Yes", "No", or variations thereof (e.g., "Y", "N").
 * validate_pain_scale() - Confirms that the pain input is a number between 0 and 10.
 * validate_rom() - Accepts only choices A–E. 
 * validate_weight_bearing() - Accepts only choices A–D.
 
+#### Date Validation
+
 ![Date Validation](assets/date-validation.png)
+
+#### Complications Validation
 
 ![Complications Validation](assets/complications-validation.png)
 
+#### Pain Level Validation
+
 ![Pain Validation](assets/pain-validation.png)
 
+#### ROM Validation
+
 ![ROM Validation](assets/rom-validation.png)
+
+#### Weight-bearing Validation
 
 ![Weight-bearing Validation](assets/wb-validation.png)
 
@@ -178,27 +226,53 @@ Each assessment question has tailored validation to ensure data is appropriate.
 The function display_update_options() was added to give the users a choice to restart the assessment process or exit the program.
 In future updates, it will allow users to update individual metrics they previously entered.
 
+#### Update Data Option 
+
 ![Update Data](assets/update-data.png)
 
+Selecting option 1 restarts the program, allowing the user to re-enter and add new data. In future updates, this will be expanded to let users select specific metrics they want to update.
+
+#### Exit Option
+
 ![Update Data Exit](assets/update-data-exit.png)
+
+Selecting option 2 exits the program and displays a friendly farewell message.
 
 ### Safety Feature
 The program includes built-in safety mechanisms to help protect users by identifying red flags that may require clinical attention:
 * If a user reports a pain level of 10 (the maximum on the 0–10 scale), the program immediately terminates the session and advises the user to consult a healthcare professional. This serves as a safeguard against potentially serious complications.
 * If the user's input indicates severely limited weight-bearing ability (e.g., unable to place any weight on the operated leg), the program also exits and directs the user to consult a healthcare professional for further assessment.
 * If the user's input indicates complications (e.g., inputing 'yes'), the program exits and directs the user to consult a healthcare professional.
-* There are warning messages for concerning symptoms.
+* The program includes warning messages for concerning symptoms. While it advises users to consult their healthcare professional, it still allows them to continue using the tool to support ongoing tracking and awareness.
+
+#### Safety Feature for Complications
 
 ![Safety Feature For Complications](assets/safety-complications.png)
 
+If the user reports "yes" to having post-operative complications, this suggests the presence of issues that may affect recovery. To avoid misleading the user with inaccurate feedback, the program exits immediately and recommends seeking medical advice before continuing with the tool.
+
+#### Safety Feature for Pain
+
+A reported pain level of 10 will trigger a warning message and exit the program, advising the user that their symptoms may require professional medical review before continuing with the program.
+
 ![Safety Feature For Pain](assets/safety-pain.png)
+
+#### Safety Feature for Weight-bering
+
+If a user reports being non-weight-bearing, the program will flag this and advise them to contact a healthcare professional. Inability to bear weight may indicate serious complications, making the use of this program inappropriate at any stage of recovery.
 
 ![Safety Feature For Weight-bearing](assets//safety-weightbearing.png)
 
-### Program Navigation
+If the user is not weight-bearing beyond expected recovery timeframes, the program highlights this and suggests contacting a healthcare professional.
+
+### Program Navigation and Feedback
 * Users can exit the program at any point by typing 'quit'. This allows for a user-friendly and accommodating interruptions or changes of mind without causing errors or data loss.
 * After each input or action, the user receives immediate, clear feedback. This includes confirmation of successful entries, detailed error messages for invalid inputs.
 * Invalid entries prompt user-friendly error messages and re-prompt the user to try again. Please see [Validation](#validation) for further details.
+
+#### User Exit
+
+Below the user types 'quit' to exit the program.
 
 ![User Quits by typing "quit"](assets/user-quits.png)
 
@@ -209,6 +283,11 @@ The program evaluates recovery progress across four key timeframes following kne
 * 2-6 weeks: Early recovery phase
 * 6-12 weeks: Mid-term recovery
 * 12+ weeks: Long-term recovery
+
+
+#### Timeline Assessments Example
+
+This example shows each assessment with messages that notify the user about their progress in range of motion (ROM), pain, and weight bearing. The user also receives confirmation that their data has been saved successfully, followed by a farewell message indicating the program has ended.
 
 ![Timeline Assessments](assets/timeline-assessments.png)
 
@@ -230,15 +309,21 @@ The program automatically calculates the user's recovery stage based on their su
 * The [CI Python Linter](https://pep8ci.herokuapp.com/#) for validating the Python code.
 * [Heroku](https://pep8ci.herokuapp.com/) for deploying the website.
 * Flow charts from [Lucid Chart](https://lucid.app).
+* Image Resizer [Image Resizer](https://imageresizer.com/) to resize images.
+* Tiny PNG [TinyPNG](https://tinypng.com/) - To compress images and convert them to png.
+* Slack - For updates and communication.
+* [Canva](https://www.canva.com/) - For custom Rehab Metrics image.
+* [Google ](https://www.canva.com/) - For custom Rehab Metrics image.
 
 ## Python Version, Packages and Libaries Used
 The project was developed using Python 3.13.2.
 
-The following Python packages and libaries were used:
+The following packages and libaries were used:
 * datetime - Used to work with date and time, particulary to calculate recovery timelines based on number of days since surgery.
-* gspread - Used to interact with Google Sheets API for reading and writing data to a spreadsheet.
-* google.oauth2.service_account.Credentials - Provides secure authentication for access to Google Sheets API.
-* colorama - Used to add colour to the terminal output.
+* gspread - Used to interact with Google Sheets API for reading and writing data to a spreadsheet. This was chosen for its efficient and simple for managing spreadhseet data.
+* google.oauth2.service_account.Credentials - Provides secure authentication for access to Google Sheets API. This ensures only authorised users can access or update the stored data.
+* colorama - Used to add colour to the terminal output and improve user experience.
+* maskpass - Used to mask passwords when entered. This improves the security by hiding sensitive data.
 
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
@@ -284,7 +369,11 @@ As a result of the linting process, I made the following adjustments:
 - Related third-party imports
 - Local application imports
 
+#### 
+
 ![Run Pythin Linter](assets/run-python-linter.png)
+
+#### 
 
 ![Guide Python Linter](assets/guide-python-linter.png)
 
@@ -309,6 +398,8 @@ Steps for deployment:
 16. Click "Enable automatic deploys" or manually deploy by choosing "Deploy branch".
 17. Click "Deploy branch".
 
+[Heroku Rehab-Metric Link](https://rehab-metrics-5347677ed9d1.herokuapp.com/)
+
 ## Forking and Cloning
 To fork this repository:
 
@@ -329,6 +420,13 @@ https://www.canva.com/dream-lab
 
 https://www.geeksforgeeks.org/hiding-and-encrypting-passwords-in-python/
 
+https://www.reddit.com/r/learnpython/comments/11eg5af/beginners_python_cheat_sheets_updated/
+
+Love Sandwiches
+
+https://github.com/burnash/gspread - provided examples for using Google Worksheets with Python.
+
+Nice Guidelines
 ## Acknowledgements
 
 

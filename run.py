@@ -21,7 +21,7 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-# Load credentials from the service account JSON key file
+# Load credentials from the service account
 CREDS = Credentials.from_service_account_file("creds.json")
 
 # Apply the necessary scopes to the credentials
@@ -84,7 +84,6 @@ def welcome_user():
     Displays welcome message and requests username input.
     Validates username and checks if it exists.
     Handles password input and updates users worksheet.
-    Uses try block for error handling.
     """
     welcome_messages = [
         "Welcome, new user!",
