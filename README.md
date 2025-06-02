@@ -4,6 +4,54 @@
 
 Rehab Metrics is a post-surgery tracking tool that helps users monitor their recovery progress, with a particular focus on knee recovery. Built in Python and deployed via Code Institute's Heroku terminal, the app features secure user registration and login with validation for usernames and passwords. Users enter their details, and the app calculates their stage in the recovery journey, providing feedback on pain levels, knee range of motion, and weight bearing status. All data is securely stored using Google Sheets integration. Rehab Metrics is intended as a supportive self-monitoring tool and includes prompts to consult a healthcare professional when needed, as it does not provide medical advice.
 
+Link to live page: [Rehab-Metrics](https://rehab-metrics-5347677ed9d1.herokuapp.com/)
+
+## Contents
+
+* [Project Goals](#project-goals)
+* [User Stories](#user-stories)
+
+### Features
+* [Welcome Message and User Check](#user-stories)
+* [Google Worksheet](#google-worksheet-users)
+* [New User Journey](#new-user-journey)
+* [Assessment Questions](#assessment-questions)
+* [Returning User Journey](#returning-user-journey)
+* [Profile and Assessment](#profile-and-assessment)
+* [Data Storage](#data-storage)
+* [Data Processing and Retrival](#data-processing-and-retrival)
+* [Validation](#validation)
+* [Update Menu Options](#update-menu-options)
+* [Exit Option](#exit-option)
+* [Safety Features](#safety-feature)
+* [Timeline Based Assessment](#timeline-based-assessment)
+
+### Future Features
+* [Future Features](#future-features)
+
+### Technologies Used
+* [Technologies Used](#technologies-used)
+
+### Python Version, Packages and Libaries Used
+* [Python Version, Packages and Libaries Used](#python-version,-packages-and-libaries-used)
+
+## Bugs and Fixes
+* [Bugs and Fixes](bugs-and-fixes)
+
+### Testing
+* [Manual Test](manual-testing)
+* [Validation Testing](validation-testing)
+
+### Deployment and Local Deployment
+* [Deployment and Local Deployment](deployment-and-local-deployment)
+
+## Forking and Cloning
+* [Forking and Cloning](forking-and-cloning)
+
+### Credits and Acknowledgments
+* [Credits and Acknowledgments](credits-and-acknowledgments)
+
+
 ## Project Plan
 
 ### Project Goals
@@ -41,16 +89,20 @@ As the creator of Rehab Metrics, my goal is to develop an intuitive and accessib
 * Allow returning users to retrieve their previous entries by logging in with a username and password.
 * The focus is to provide reassurance and progress tracking during a crucial recovery period.
 
+[Back to Contents](#contents)
+
 ### Structure of the program
 At the start of the project, I created a draft flowchart to visualise the program's intended structure. I had a clear end goal in mind, outlining the key questions and the type of data I aimed to collect and store using Google Sheets.
 
-The early flow focused on capturing user information and guiding them through recover related questions:
+The early flow focused on capturing user information and guiding them through recovery related questions:
 
-![Draft algorithm](assets/draftalgorithm.png)
+![Initial Flow Chart](assets/draftalgorithm.png)
      
 As the project progressed, I refined the flow to include input validation and safety checks to improve the user experience. The final algorithm shows the outcome for new and existing users:
 
-![Algorithm](assets/algorithm.png)
+![Flowchart showing the algorithm design for user questions and data flow](assets/algorithm.png)
+
+[Back to Contents](#contents)
 
 ## Features
 
@@ -100,7 +152,7 @@ The user selects from one of the four options that best describes their ability 
 6. Weight Bearing Status
 The user selects one of four options to describe their current weight bearing status. This input is also converted into a weight bearing status and shown back to the user.
 
-#### Sample Assessment Questions
+#### Assessment Questions
 
 ![Questions and assessment](assets/questions.png)
 
@@ -127,7 +179,7 @@ Upon completing the assessment questions, the app evaluates recovery progress us
 
 * get_weight_bearing_timeline_assessment() – Evaluates weight-bearing progress.
 
-#### Sample Profile and Assessments
+#### Profile and Assessments
 
 ![Profile and Assessment](assets/existing-user.png)
 
@@ -158,8 +210,8 @@ All inputs are validated. Invalid entries trigger error messages in red coloured
 Exception handling is implemented using try and except blocks across the program. If an error occurs, the function catches it and returns False, allowing the program to continue running safely while giving the user another opportunity to enter valid input. For example, the assess_pain_progress function checks for missing data (like days since surgery or pain level) and provides specific messages. If an unexpected issue arises, it catches the exception and returns False.
 
 I have used exception handling with the following functions:
-Calculate_days_since_surgery
-Validate_pain_scale
+calculate_days_since_surgery
+validate_pain_scale
 assess_rom_progress
 assess_pain_progress
 assess_weight_bering_progress
@@ -295,6 +347,8 @@ In guide.py, the program uses floor division (//) to convert the number of days 
 
 The program automatically calculates the user's recovery stage based on their surgery date and provides stage-appropriate feedback for each metric. This timeline-based assessment helps users understand their progress and identify areas that may require attention or healthcare professional consultation.
 
+[Back to Contents](#contents)
+
 ## Future Features
 * Provide assessment advice on all metrics.
 * Include questions on walking and stair climbing to identify functional difficulties.
@@ -302,6 +356,8 @@ The program automatically calculates the user's recovery stage based on their su
 * Add complication screening questions to identify red flags, such as swelling, fever, or sudden worsening of symptoms, and advise users to seek urgent medical attention if necessary.
 * Enable returning users to view their previous entries, update their information, and modify data in the worksheet.
 * Offer more tailored advice by introducing detailed questions relevant to the user's specific stage of recovery.
+
+[Back to Contents](#contents)
 
 ## Technologies Used
 * Visual Studio Code with assistance of flake8 linter extension.
@@ -315,6 +371,8 @@ The program automatically calculates the user's recovery stage based on their su
 * [Canva](https://www.canva.com/) - For custom Rehab Metrics image.
 * [Google ](https://www.canva.com/) - For custom Rehab Metrics image.
 
+[Back to Contents](#contents)
+
 ## Python Version, Packages and Libaries Used
 The project was developed using Python 3.13.2.
 
@@ -324,6 +382,8 @@ The following packages and libaries were used:
 * google.oauth2.service_account.Credentials - Provides secure authentication for access to Google Sheets API. This ensures only authorised users can access or update the stored data.
 * colorama - Used to add colour to the terminal output and improve user experience.
 * maskpass - Used to mask passwords when entered. This improves the security by hiding sensitive data.
+
+[Back to Contents](#contents)
 
 ## Bugs and Fixes
 Please see fixes in [TESTING.md](TESTING.md) for more details of bug fixes from manual testing.
@@ -345,6 +405,8 @@ To fix this i updated the logic in the validate_date() function to check if days
 * Heroku deployment error after adding maskpass import and updating requirements.txt. Resolved by removing macOS-only dependencies from requirements.txt, which were incompatible with Heroku's linux enviroment.
 
 There are currently to my knowledge no known bugs in the program. All previously identified issues related to data indexing, string mismatches, and weight-bearing status formatting have been resolved.
+
+[Back to Contents](#contents)
 
 ## Testing
 
@@ -369,13 +431,15 @@ As a result of the linting process, I made the following adjustments:
 - Related third-party imports
 - Local application imports
 
-#### 
+#### Validation Check for run.py using CI Python Linter 
 
-![Run Pythin Linter](assets/run-python-linter.png)
+![Run Python Linter](assets/run-python-linter.png)
 
-#### 
+#### Validation Check for guide.py using CI Python Linter 
 
 ![Guide Python Linter](assets/guide-python-linter.png)
+
+[Back to Contents](#contents)
 
 ## Deployment
 This project was deployed using the Code Institute’s mock terminal for Heroku.
@@ -400,6 +464,8 @@ Steps for deployment:
 
 [Heroku Rehab-Metric Link](https://rehab-metrics-5347677ed9d1.herokuapp.com/)
 
+[Back to Contents](#contents)
+
 ## Forking and Cloning
 To fork this repository:
 
@@ -414,19 +480,29 @@ To Clone:
 3. Copy the HTTPS link: https://github.com/DavidRC-Projects/Rehab_Metrics.git.
 4. Open your terminal and type: git clone https://github.com/DavidRC-Projects/Rehab_Metrics.git.
 
+[Back to Contents](#contents)
+
 ## Credits
 
-https://www.canva.com/dream-lab
+[Canva Dream Lab](https://www.canva.com/dream-lab) - Used to create the rehab metrics image featured in the introduction.
 
-https://www.geeksforgeeks.org/hiding-and-encrypting-passwords-in-python/
+[Geeksfor Geeks](https://www.geeksforgeeks.org/hiding-and-encrypting-passwords-in-python/) - This article introduced me to the idea of using the maskpass module to securely hide passwords in my project.
 
-https://www.reddit.com/r/learnpython/comments/11eg5af/beginners_python_cheat_sheets_updated/
+[Reddit: LearnPython Cheat Sheets](https://www.reddit.com/r/learnpython/comments/11eg5af/beginners_python_cheat_sheets_updated/) - I used this helpful cheat sheet to better understand Python syntax and functionality during development.
 
-Love Sandwiches
+The Love Sandwiches project (Code Institute) - This project inspired me to use Google Sheets as a data storage solution and provided a foundation for connecting a Python app with a Google Worksheet.
 
-https://github.com/burnash/gspread - provided examples for using Google Worksheets with Python.
+[Gspread Github Repository](https://github.com/burnash/gspread) - Offered clear documentation and code examples for working with Google Sheets using Python.
 
-Nice Guidelines
+[YouTube Tutorial by Tech With Tim](https://www.youtube.com/watch?v=cnPlKLEGR7E) and [Google Sheets Playlist](https://www.youtube.com/playlist?list=PL3JVwFmb_BnSee8RFaRPZ3nykuMRlaQp1-) - These videos helped me understand how to read from and write to specific rows, columns, and cells in Google Sheets using Python.
+
+[Nice Guidelines](https://www.nice.org.uk/guidance/ng157) - Informed the clinical advice provided within the application, supplemented by my own physiotherapy background.
+
+[Back to Contents](#contents)
+
 ## Acknowledgements
 
+* I would like thank my mentor Jubril Akolade for his advice, expert guidance and support.
+* I would like to thank my partner and family for their unwavering support during this project.
 
+[Back to Contents](#contents)
